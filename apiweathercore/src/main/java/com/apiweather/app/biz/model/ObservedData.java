@@ -14,6 +14,7 @@ public class ObservedData {
 	private Long idObserver;
 	
 	private Date date;
+	
 	private float waterLevel;
 	
 	

@@ -12,7 +12,7 @@ import com.apiweather.app.biz.repo.CollectedDataRepository;
 
 @RestController
 @RequestMapping(value = "/collected")
-public class CollectedRessource extends AbstractModelRessource<CollectedDataRepository, CollectedData, Long>{
+public class CollectedRessource extends AbstractCommonRessource<CollectedDataRepository, CollectedData, Long>{
 	
 	public CollectedRessource(CollectedDataRepository repo) {
 		super(repo);

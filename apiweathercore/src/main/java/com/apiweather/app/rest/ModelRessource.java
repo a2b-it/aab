@@ -21,7 +21,7 @@ import com.apiweather.app.biz.repo.ModelRepository;
 
 @RestController
 @RequestMapping(value = "/model")
-public class ModelRessource extends AbstractModelRessource<ModelRepository, Model, Long>{
+public class ModelRessource extends AbstractCommonRessource<ModelRepository, Model, Long>{
 
 	public ModelRessource(ModelRepository repo) {
 		super(repo);

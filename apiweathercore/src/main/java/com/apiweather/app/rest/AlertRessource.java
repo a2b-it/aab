@@ -1,17 +1,26 @@
 package com.apiweather.app.rest;
 
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import com.apiweather.app.biz.model.Alert;
 import com.apiweather.app.biz.repo.AlertRepository;
+import com.apiweather.app.biz.repo.AlertRepositoryCustom;
+import com.apiweather.app.tools.exception.EntityNotFoundException;
+
+
 
 
 
@@ -20,8 +29,12 @@ import com.apiweather.app.biz.repo.AlertRepository;
 @RequestMapping(value = "/alert")
 @RestController
 @Validated
-public class AlertRessource extends AbstractModelRessource<AlertRepository, Alert, Long> {
+public class AlertRessource extends AbstractCommonRessource<AlertRepository, Alert, Long> {
 
+	@Autowired
+	@Qualifier("alertRepositoryCustom")
+	AlertRepositoryCustom alertRepositoryCustom;
+	
 	
 	@Autowired
 	public AlertRessource(AlertRepository repo) {
@@ -33,25 +46,11 @@ public class AlertRessource extends AbstractModelRessource<AlertRepository, Aler
 		return new ResponseEntity<String>("OK Alert",HttpStatus.OK);
 	}
 	
-	/*
-	@GetMapping("/list")
-	public ResponseEntity<List<Site>> list(Boolean inc) {		
-		List<Alert> liste = repo.findAll();
-		return new ResponseEntity(liste,HttpStatus.OK);
-	}
-	
-	@GetMapping("/get")
-	public ResponseEntity<Alert> getElement(Long id) {		
-		Optional<Alert> s = repo.findById(id);
-		return new ResponseEntity(s.get(),HttpStatus.OK);
-	}
-	
-	
-	@PostMapping("/save")
+	@PostMapping("/findLike")
 	@ResponseBody
-	public ResponseEntity<Alert> saveOrUpdate(@Valid @RequestBody Alert a) {		
-		Alert r = repo.save(a);
-		return new ResponseEntity(r,HttpStatus.OK);
-	} */
+	public ResponseEntity<Alert> getElementsByExpl(@RequestBody(required = true) Alert alert) throws EntityNotFoundException {		
+		List<Alert> alerts = alertRepositoryCustom.findAllLikeThis(alert);
+		return new ResponseEntity(alerts,HttpStatus.OK);
+	}
 		
 }

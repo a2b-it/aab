@@ -1,6 +1,7 @@
 package com.apiweather.app.biz.model;
 
 import java.io.File;
+import java.util.List;
 
 import org.springframework.data.annotation.Id;
 
@@ -28,7 +29,9 @@ public class Site {
 	
 	private String spokeperson;
 
+	private List<Station> stations;
 	
+	private List<Model> models;
 	
 	
 	

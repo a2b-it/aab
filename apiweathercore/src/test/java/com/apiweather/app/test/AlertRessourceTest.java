@@ -61,7 +61,7 @@ public class AlertRessourceTest {
 		// .andExpect(jsonPath("$[0].firstName", is("Laurent")));
 	}
 
-	
+	@Test
 	public void testAddAlert() throws Exception {
 		Alert alert = new Alert();
 		alert.setDate(new Date());
@@ -72,6 +72,7 @@ public class AlertRessourceTest {
 
 		ObjectMapper mapper = new ObjectMapper();
 		String s = mapper.writeValueAsString(alert);
+		System.out.println("====== alrt["+s+"]===");
 		MvcResult r = mockMvc
 				.perform(
 						buildRequest (post("/alert/add"), s))				
@@ -79,7 +80,7 @@ public class AlertRessourceTest {
 				.andDo(MockMvcResultHandlers.print())
 				.andReturn()
 				;
-		System.out.println("======["+r.getResponse().getContentAsString()+"]===");
+		System.out.println("======response ["+r.getResponse().getContentAsString()+"]===");
 		Alert rv = mapper.readValue(r.getResponse().getContentAsString(), Alert.class);
 		alerts.add(rv);
 		// .andExpect(jsonPath("$[0].firstName", is("Laurent")));
@@ -88,7 +89,7 @@ public class AlertRessourceTest {
 	
 	public void deleteById() throws Exception {
 		Alert a = alerts.get(0);
-		mockMvc.perform(get("/alert/remove/" + a.getIdAlert()).header("Authorization",
+		mockMvc.perform(get("/alert/remove/" + a.getIdalert()).header("Authorization",
 				" Basic " + Base64Utils.encodeToString("user:password".getBytes())))
 				// .header("Authorization", "Bearer " + accessToken))
 				.andExpect(status().isOk()).andExpect(jsonPath("$", is("OK Alert")));
@@ -109,6 +110,7 @@ public class AlertRessourceTest {
 		rq.accept(MediaType.APPLICATION_JSON)
         .contentType(MediaType.APPLICATION_JSON)
 		.content(content)
+		.characterEncoding("utf-8")
 		.header(
 				"Authorization", " Basic " + Base64Utils.encodeToString("user:password".getBytes()))
 		.with(

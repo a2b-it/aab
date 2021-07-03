@@ -18,4 +18,6 @@ public class Model {
 	private int priority;
 	
 	private Site site;
+	
+	private Output output;
 }

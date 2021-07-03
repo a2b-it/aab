@@ -11,4 +11,5 @@ public class Weather {
 	
 	@Id
 	private Long weatherId;
+	
 }

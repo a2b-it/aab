@@ -22,12 +22,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.apiweather.app.tools.exception.EntityNotFoundException;
 
 
-public class AbstractModelRessource <R, T, L>{
+public class AbstractCommonRessource <R, T, L>{
 
 	private R repo;
 		
 	@Autowired
-	public AbstractModelRessource(R repo) {
+	public AbstractCommonRessource(R repo) {
 		super();
 		this.repo = repo;
 	}
@@ -49,7 +49,7 @@ public class AbstractModelRessource <R, T, L>{
 
 	@PostMapping("/add")
 	@ResponseBody
-	public ResponseEntity<T> addElement(@Valid @RequestBody T t) {		
+	public ResponseEntity<T> addElement(@Valid @RequestBody(required = true) T t) {		
 		T r = (T) ((MongoRepository< T, L>)repo).insert(t);
 		return new ResponseEntity(r,HttpStatus.OK);
 	}
@@ -73,5 +73,11 @@ public class AbstractModelRessource <R, T, L>{
 	public ResponseEntity<T> removeElementById(@Valid @NotNull @PathVariable(name = "id")L l) {		
 		((MongoRepository< T, L>)repo).deleteById(l);
 		return new ResponseEntity("element removed",HttpStatus.OK);
+
+	}
+	
+	
+	protected R getRepository () {
+		return this.repo;
 	}
 }

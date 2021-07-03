@@ -12,7 +12,7 @@ import com.apiweather.app.biz.repo.StationRepository;
 
 @RestController
 @RequestMapping(value = "/station")
-public class StationRessource extends AbstractModelRessource<StationRepository, Station, Long>{
+public class StationRessource extends AbstractCommonRessource<StationRepository, Station, Long>{
 
 	public StationRessource(StationRepository repo) {
 		super(repo);
