@@ -17,6 +17,6 @@ public class Station {
 	private List<Alert> alerts;
 	private List<ObservedData> observedDatas;
 	private List<CollectedData> collectedDatas;
-	
+	private List<Weather> weathers;
 	
 }

@@ -1,4 +1,4 @@
-package com.apiweather.app.cfg.model;
+package com.apiweather.app.inner.model;
 
 import java.io.Serializable;
 import java.util.Collection;

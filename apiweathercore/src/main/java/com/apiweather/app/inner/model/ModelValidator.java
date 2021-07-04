@@ -1,4 +1,4 @@
-package com.apiweather.app.cfg.model;
+package com.apiweather.app.inner.model;
 
 public interface ModelValidator {
 
