@@ -1,0 +1,167 @@
+{
+	"info": {
+		"_postman_id": "4925f8e3-5e68-486d-8256-77ba0d2941d6",
+		"name": "CAM",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "DWJ",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkd2oiLCJzY29wZXMiOiJST0xFX01BVENISU5HIiwiaWF0IjoxNjExMDQ3OTQ4LCJleHAiOjE2MTEwNDk3NDh9.3JPSITt2YazRdZbIRhzonsF_yO8vxB398wd4ch0cpG0",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"nom\": \"HANIYA\", \r\n\"prenom\": \"ISMAIL\", \r\n\"raisonsociale\": \"\", \r\n\"typepersonne\": \"PP\", \r\n\"referencepiece\": \"\", \r\n\"nationnalite\": \"\", \r\n\"anneenaissance\": \"\", \r\n\"mode\":\"L\",\r\n\"seuil\": \"20\",\r\n\"limit\": \"1\",\r\n\"typelist\": \"A\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://10.90.91.49/DWJFiltrage/dwj/matching",
+					"protocol": "https",
+					"host": [
+						"10",
+						"90",
+						"91",
+						"49"
+					],
+					"path": [
+						"DWJFiltrage",
+						"dwj",
+						"matching"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "auth/signin",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"username\":\"dwj\", \"password\":\"GC@M+DVVJ$2020\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://10.90.91.49/DWJFiltrage/auth/signin",
+					"protocol": "https",
+					"host": [
+						"10",
+						"90",
+						"91",
+						"49"
+					],
+					"path": [
+						"DWJFiltrage",
+						"auth",
+						"signin"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "prepareMatchingBatch",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkd2oiLCJzY29wZXMiOiJST0xFX01BVENISU5HIiwiaWF0IjoxNjE2NzYwNzI1LCJleHAiOjE2MTY3NjI1MjV9.gUnkdZPoREOjQX0BsmMz5AXW15Kp-HFtR2EMfUBdnQI",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"clients\":\r\n[\r\n    {\"nom\": \"haniya\", \r\n    \"prenom\": \"ismail\", \r\n    \"raisonsociale\": \"\", \r\n    \"typepersonne\": \"PP\", \r\n    \"referencepiece\": \"\", \r\n    \"nationnalite\": \"\", \r\n    \"anneenaissance\": \"\", \r\n    \"idclient\": \"\"\r\n    },\r\n    {\"nom\": \"atwa\", \r\n    \"prenom\": \"ali\", \r\n    \"raisonsociale\": \"\", \r\n    \"typepersonne\": \"PP\", \r\n    \"referencepiece\": \"\", \r\n    \"nationnalite\": \"\", \r\n    \"anneenaissance\": \"\", \r\n    \"idclient\": \"\"}\r\n    ]\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://10.90.91.49/DWJFiltrage/dwj/prepareMatchingBatch",
+					"protocol": "https",
+					"host": [
+						"10",
+						"90",
+						"91",
+						"49"
+					],
+					"path": [
+						"DWJFiltrage",
+						"dwj",
+						"prepareMatchingBatch"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getMatchingBatch",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkd2oiLCJzY29wZXMiOiJST0xFX01BVENISU5HIiwiaWF0IjoxNjE2NzYwNzI1LCJleHAiOjE2MTY3NjI1MjV9.gUnkdZPoREOjQX0BsmMz5AXW15Kp-HFtR2EMfUBdnQI",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"clients\":\r\n[\r\n    {\"nom\": \"haniya\", \r\n    \"prenom\": \"ismail\", \r\n    \"raisonsociale\": \"\", \r\n    \"typepersonne\": \"PP\", \r\n    \"referencepiece\": \"\", \r\n    \"nationnalite\": \"\", \r\n    \"anneenaissance\": \"\", \r\n    \"idclient\": \"\"\r\n    },\r\n    {\"nom\": \"atwa\", \r\n    \"prenom\": \"ali\", \r\n    \"raisonsociale\": \"\", \r\n    \"typepersonne\": \"PP\", \r\n    \"referencepiece\": \"\", \r\n    \"nationnalite\": \"\", \r\n    \"anneenaissance\": \"\", \r\n    \"idclient\": \"\"}\r\n    ]\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://10.90.91.49/DWJFiltrage/dwj/getMatchingBatch",
+					"protocol": "https",
+					"host": [
+						"10",
+						"90",
+						"91",
+						"49"
+					],
+					"path": [
+						"DWJFiltrage",
+						"dwj",
+						"getMatchingBatch"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

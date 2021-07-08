@@ -1,0 +1,21 @@
+17:22:29.384      -----DSS---zopen   New file opened,  File: F:\Workspaces\apigeo\TestHEC\MyDSS_file2.dss
+17:22:29.384                         Handle 4;  Process: 22280;  DSS Version:  7-IC
+17:22:29.384                         Single-user advisory access mode
+17:22:29.390 -----DSS--- zwrite  Handle 4;  Version 1:  /MOROCCO FLOOD HAZARD/BGE_EL_MELLAH/ET/01Jan1974/1Day/EL MELLAH HMS/
+17:22:29.390 -----DSS--- zread   Handle 4;  Version 1:  /MOROCCO FLOOD HAZARD/BGE_EL_MELLAH/ET/01Jan1974/1Day/EL MELLAH HMS/
+17:22:29.390 -----DSS--- zwrite  Handle 4;  Version 2:  /MOROCCO FLOOD HAZARD/BGE_EL_MELLAH/ET/01Jan1974/1Day/EL MELLAH HMS/
+17:22:29.391      -----DSS---zclose  Handle 4;  Process: 22280;  File: F:\Workspaces\apigeo\TestHEC\MyDSS_file2.dss
+17:22:29.391                         Number records:         1
+17:22:29.391                         File size:              15926  64-bit words
+17:22:29.391                         File size:              124 Kb;  0 Mb
+17:22:29.391                         Dead space:             73
+17:22:29.391                         Hash range:             8192
+17:22:29.391                         Number hash used:       1
+17:22:29.391                         Max paths for hash:     1
+17:22:29.391                         Corresponding hash:     1069
+17:22:29.391                         Number non unique hash: 0
+17:22:29.391                         Number bins used:       1
+17:22:29.391                         Number overflow bins:   0
+17:22:29.391                         Number physical reads:  16
+17:22:29.391                         Number physical writes: 28
+17:22:29.391                         Number denied locks:    0
