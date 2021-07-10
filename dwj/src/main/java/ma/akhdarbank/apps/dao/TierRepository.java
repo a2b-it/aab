@@ -7,6 +7,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
+import ma.akhdarbank.apps.model.LabFMatching;
 import ma.akhdarbank.apps.model.Tiers;
 
 @Repository
@@ -18,5 +19,10 @@ public interface TierRepository extends CrudRepository<Tiers, Long>, PagingAndSo
 		  countQuery = "SELECT count(*) FROM tiers", 
 		  nativeQuery = true)
 	Page<Tiers> findAllTiersWithPagination(Pageable pageable);
-
+	
+	
+	
+	@Query(value = "insert into LAB_F_MATCHING (ETX_RIM, NOM, PRENOM, ID_BATCH) values(:idclient, :nom, :prenom, :idbatch")
+	void Insert(LabFMatching batchTiers);
+	
 }

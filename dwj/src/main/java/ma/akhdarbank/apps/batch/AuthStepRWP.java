@@ -23,12 +23,6 @@ public class AuthStepRWP {
 	@Autowired
 	private ApiAuthClient apiAuthClientImp;
 	
-	@Value("${cam.auth.api.user}")
-	public String apiUserLogin;
-	
-	
-	@Value("${cam.auth.api.password}")
-	public String apiUserPassword;
 	
 	@Bean
 	/**
@@ -67,7 +61,7 @@ public class AuthStepRWP {
 
 		@Override
 		public String read() throws Exception, UnexpectedInputException, ParseException, NonTransientResourceException {			
-			return apiAuthClientImp.auth(apiUserLogin, apiUserPassword);
+			return apiAuthClientImp.auth();
 		}
 		
 	}

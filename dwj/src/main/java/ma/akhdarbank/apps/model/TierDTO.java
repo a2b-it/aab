@@ -1,10 +1,12 @@
 package ma.akhdarbank.apps.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
+@AllArgsConstructor
 public class TierDTO {
 	public String nom;
     public String prenom;
@@ -17,4 +19,6 @@ public class TierDTO {
     public Integer seuil;
     public Integer limit;
     public String typelist;
+    
+    
 }

@@ -1,12 +1,11 @@
 package ma.akhdarbank.apps.clients;
 
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -15,20 +14,22 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import ma.akhdarbank.apps.RestClientsFactory;
 import ma.akhdarbank.apps.model.TicketBatch;
 import ma.akhdarbank.apps.model.TierBatch;
-import ma.akhdarbank.apps.model.TierDTO;
+import ma.akhdarbank.apps.model.TierBatchs;
 
+
+@Component
 public class ApiBatchMatchingClientImp implements ApiBatchMatchingClient {
-
 	
 	@Autowired
-	RestClientsFactory clientfactory;
+	private RestClientsFactory clientfactory;
 	
 	
 	@Override
-	public Long prepareDataForMathing(String token, List<TierDTO> tiers) {
+	public Long prepareDataForMathing(String token, TierBatchs tiers) {
 		RestTemplate client = clientfactory.createApiBatchMatchingClient();
 		String url = clientfactory.getPrepMathingUrl();
 		HttpHeaders headers = new HttpHeaders();
+		//
 	    headers.setContentType(MediaType.APPLICATION_JSON);
 	    headers.setBearerAuth(token);
 	    //ObjectMapper objectMapper = new ObjectMapper();	    
