@@ -14,21 +14,21 @@ public class GetDataStepRWP {
 
 	
 	@Bean
-    public ItemReader<TierBatch> reader() {
+    public ItemReader<TierBatch> getDataReader() {
 		// from rest
 		return new RESTTierBatchResponseReader();
  
     }
 	
 	@Bean
-    public ItemWriter<TierBatch> writer() {
+    public ItemWriter<TierBatch> getDatawriter() {
 		// to database
 		return null;
  
     }
 	
 	@Bean
-    public ItemProcessor<TierBatch,Long> processor() {
+    public ItemProcessor<TierBatch,Long> getDataProcessor() {
 		// 
 		return null;
  

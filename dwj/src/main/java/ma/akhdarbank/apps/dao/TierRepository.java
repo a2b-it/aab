@@ -7,10 +7,13 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
-import ma.akhdarbank.apps.model.LabFMatching;
 import ma.akhdarbank.apps.model.Tiers;
 
-@Repository
+/**
+ * not used
+ * @author javauser
+ *
+ */
 public interface TierRepository extends CrudRepository<Tiers, Long>, PagingAndSortingRepository<Tiers, Long> {
 	
 	
@@ -22,7 +25,8 @@ public interface TierRepository extends CrudRepository<Tiers, Long>, PagingAndSo
 	
 	
 	
-	@Query(value = "insert into LAB_F_MATCHING (ETX_RIM, NOM, PRENOM, ID_BATCH) values(:idclient, :nom, :prenom, :idbatch")
-	void Insert(LabFMatching batchTiers);
+	@Query(value = "insert into LAB_F_MATCHING (ETX_RIM, NOM, PRENOM, ID_BATCH) values(:idclient, :nom, :prenom, :idbatch)"
+			, nativeQuery = true)
+	void InsertByAABColumns(String idclient,String nom, String prenom, String idbatch);
 	
 }

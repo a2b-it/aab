@@ -1,4 +1,4 @@
-package ma.akhdarbank.apps;
+package com.apiweather.app.jobs;
 
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecutionListener;
@@ -8,27 +8,24 @@ import org.springframework.batch.core.configuration.annotation.JobBuilderFactory
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import ma.akhdarbank.apps.batch.AuthStepRWP;
-import ma.akhdarbank.apps.batch.JobCompletionListener;
-import ma.akhdarbank.apps.clients.ApiAuthClient;
+import com.apiweather.app.jobs.domain.SpacFile;
+
+
 
 @Configuration
 @EnableBatchProcessing
-public class DwjAppsBatchConfig {
+public class IndarAppsBatchConfig {
 
 	@Autowired
     public JobBuilderFactory jobBuilderFactory;
 
     @Autowired
-    public StepBuilderFactory stepBuilderFactory;       
-	
-    @Autowired
-    private ApiAuthClient apiAuthClientImp;
-    
-    
+    public StepBuilderFactory stepBuilderFactory;       	   
+        
     @Bean
 	public JobExecutionListener listener() {
 		return new JobCompletionListener();
@@ -39,21 +36,20 @@ public class DwjAppsBatchConfig {
 		return jobBuilderFactory.get("processJob")
 				.incrementer(new RunIdIncrementer())
 				.listener(listener())
-				.flow(authStep())
+				.flow(weatherDataStep())
 				.end()
 				.build();
 	}
 
     
-    
 	@Bean
-    public Step authStep() {
-		AuthStepRWP authStepRWP = new AuthStepRWP();
-        return stepBuilderFactory.get("auth")
-                .<String, String> chunk(1)
-                .reader(authStepRWP.new AuthStepReader(apiAuthClientImp))
+    public Step weatherDataStep() {		
+		WeatherDataStepRWP p = new WeatherDataStepRWP();
+        return stepBuilderFactory.get("weatherData")
+                .<SpacFile, SpacFile> chunk(1)
+                .reader(p.weatherDataFileReader())
                 //.processor(processor())
-                .writer(authStepRWP.new AuthStepWriter())
+                .writer(p.weatherDataFileWriter())
                 .build();
     }
 	/*

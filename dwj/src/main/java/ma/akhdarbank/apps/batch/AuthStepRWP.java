@@ -29,7 +29,7 @@ public class AuthStepRWP {
 	 * from rest get token
 	 * @return
 	 */
-    public ItemReader<String> reader() {	
+    public ItemReader<String> authReader() {	
 		return new AuthStepReader(apiAuthClientImp);
  
     }
@@ -39,7 +39,7 @@ public class AuthStepRWP {
 	 * save token to flow or memrory 
 	 * @return
 	 */
-    public ItemWriter<String> writer() {
+    public ItemWriter<String> authWriter() {
 		
 		return new AuthStepWriter();
  
@@ -50,6 +50,7 @@ public class AuthStepRWP {
 		
 		ApiAuthClient apiAuthClientImp;
 		
+		private StepExecution stepExecution;
 		
 		@Autowired
 		public AuthStepReader(ApiAuthClient apiAuthClientImp) {
@@ -60,9 +61,17 @@ public class AuthStepRWP {
 
 
 		@Override
-		public String read() throws Exception, UnexpectedInputException, ParseException, NonTransientResourceException {			
+		public String read() throws Exception, UnexpectedInputException, ParseException, NonTransientResourceException {
+			ExecutionContext stepContext = this.stepExecution.getExecutionContext();
+			String token = (String) stepContext.get("auth_token");
+			if (token != null) return null;
 			return apiAuthClientImp.auth();
 		}
+		
+		@BeforeStep
+	    public void saveStepExecution(StepExecution stepExecution) {
+	        this.stepExecution = stepExecution;
+	    }
 		
 	}
 	

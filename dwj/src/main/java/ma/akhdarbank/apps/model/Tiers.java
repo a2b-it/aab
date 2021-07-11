@@ -2,6 +2,7 @@ package ma.akhdarbank.apps.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 import lombok.Getter;
@@ -15,6 +16,7 @@ import lombok.Setter;
 public class Tiers {
 	
 	@Column(name = "IDENTIFIANT")
+	@Id
 	private Long id;
 	
 	

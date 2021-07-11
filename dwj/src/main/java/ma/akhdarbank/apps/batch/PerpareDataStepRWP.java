@@ -18,6 +18,7 @@ import org.springframework.batch.item.database.support.SqlPagingQueryProviderFac
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 
+import ma.akhdarbank.apps.batch.AuthStepRWP.AuthStepWriter;
 import ma.akhdarbank.apps.clients.ApiBatchMatchingClient;
 import ma.akhdarbank.apps.dao.TierRepositoryCustom;
 import ma.akhdarbank.apps.dao.TierRowMapper;
@@ -40,7 +41,7 @@ public class PerpareDataStepRWP {
 	}
 
 	@Bean
-	public JdbcPagingItemReader<Tiers> itemReader() throws Exception {
+	public JdbcPagingItemReader<Tiers> perpareDataReader() throws Exception {
 		//
 		Map<String, Object> parameterValues = new HashMap<>();
 		//parameterValues.put("status", "NEW");
@@ -67,6 +68,17 @@ public class PerpareDataStepRWP {
 
 		return provider.getObject();
 	}
+	
+	@Bean
+	/**
+	 * save data to remote api
+	 * @return
+	 */
+    public ItemWriter<Tiers> authWriter() {
+		
+		return new PerpareDataStepWriter();
+ 
+    }
 
 	public class PerpareDataStepWriter implements ItemWriter<Tiers> {
 
