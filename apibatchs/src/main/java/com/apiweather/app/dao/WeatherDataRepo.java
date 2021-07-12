@@ -1,5 +1,9 @@
 package com.apiweather.app.dao;
 
-public class WeatherDataRepo {
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
+@Repository
+public interface WeatherDataRepo  extends CrudRepository<T, ID>{
+		
 }

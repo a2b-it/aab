@@ -35,7 +35,7 @@ public class WeatherDataStepRWP {
 	 * from file get to data token
 	 * @return
 	 */
-    public FlatFileItemReader<SpacFile> weatherDataFileReader() {	
+    public FlatFileItemReader<SpacFile> weatherDataStepReader() {	
 		//Create reader instance
         FlatFileItemReader<SpacFile> reader = new FlatFileItemReader<SpacFile>();
          
@@ -71,7 +71,7 @@ public class WeatherDataStepRWP {
 	 * save token to flow or memrory 
 	 * @return
 	 */
-    public ItemWriter<SpacFile> weatherDataFileWriter() {
+    public ItemWriter<SpacFile> weatherDataStepWriter() {
 		
 		return new WeatherDataStepWriter();
  

@@ -47,9 +47,9 @@ public class IndarAppsBatchConfig {
 		WeatherDataStepRWP p = new WeatherDataStepRWP();
         return stepBuilderFactory.get("weatherData")
                 .<SpacFile, SpacFile> chunk(1)
-                .reader(p.weatherDataFileReader())
+                .reader(p.weatherDataStepReader())
                 //.processor(processor())
-                .writer(p.weatherDataFileWriter())
+                .writer(p.weatherDataStepWriter())
                 .build();
     }
 	/*
