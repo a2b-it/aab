@@ -13,6 +13,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.stereotype.Component;
 
+import com.apiweather.app.dss.DSSFileBuilder;
+import com.apiweather.app.dss.DssBlocHeader.TYPE_FILE;
 import com.apiweather.app.jobs.domain.SpacFile;
 import com.apiweather.app.jobs.domain.SpacFileMapper;
 
@@ -83,11 +85,22 @@ public class WeatherDataStepRWP {
 		
 		private StepExecution stepExecution;
 		
+		private DSSFileBuilder dSSFileBuilderImp;
+		
+		
+		
 		@Override
 		public void write(List<? extends SpacFile> items) throws Exception {
-			for (SpacFile line : items) {
-				System.out.println("tem "+line);
+			if(items==null)return ;
+			double[] tab= new double[] {items.size()};
+			for (int i=0;i<items.size();i++) {
+				tab[i]=items.get(i).getValeur();
 			}
+			
+			dSSFileBuilderImp.init("F:/Workspaces/apigeo/TestHEC/MyDSS_file.dss");
+			dSSFileBuilderImp.create(TYPE_FILE.REGULAR_SERIES, "MOROCCO FLOOD HAZARD","BGE_EL_MELLAH","ET","01Nov1974","1DAY","EL MELLAH HMS");
+			dSSFileBuilderImp.appendData(tab, "mm", "PER-CUM", 60*24);
+			dSSFileBuilderImp.close();
 		}
 		
 		@BeforeStep

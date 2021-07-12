@@ -1,16 +1,25 @@
 package com.apiweather.app.dss;
 
-import hec.heclib.dss.HecDataManager;
+import java.io.File;
+import java.util.List;
+
+import com.apiweather.app.dss.DssBlocHeader.TYPE_FILE;
+import com.apiweather.app.excep.DSSBuildingException;
 
 public interface DSSFileBuilder {
+		
+
+	public void init(String dssFilePath);
 	
-	public HecDataManager manager ();
+	public void logStatus ();
 	
-	public void setLogFile (String path);
+	public DSSFileBuilder create(TYPE_FILE type, String ... pathParts)  throws DSSBuildingException;
 	
-	public void setDefaultDSSFileName (String path);
+	public DSSFileBuilder appendData(double[] data, String units, String type, int interval)  throws DSSBuildingException;
 	
+	public DSSFileBuilder appendData(List<Object> objs, String units, String type, int interval)  throws DSSBuildingException;
 	
+	public File build()  throws DSSBuildingException;
 	
-	
+	public int close ();
 }

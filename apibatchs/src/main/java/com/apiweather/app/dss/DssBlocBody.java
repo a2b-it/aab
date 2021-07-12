@@ -2,8 +2,8 @@ package com.apiweather.app.dss;
 
 public interface DssBlocBody  {
 
-	public int init (String dssFilePath);
+	public int init (DssBlocHeader header, String dssFilePath) ;
 
-	void addData(double[] values);
+	public int addData (double[] values, String units, String type, int interval);
 
 }

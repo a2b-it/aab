@@ -2,6 +2,7 @@ package com.apiweather.app.dss;
 
 import hec.heclib.dss.HecTimeSeries;
 import hec.heclib.util.HecTime;
+import hec.io.TimeSeriesContainer;
 import lombok.Getter;
 
 @Getter
@@ -22,9 +23,10 @@ public class TimeSerieDssBlocHeader implements DssBlocHeader {
 	private String partF;
 	
 	private HecTime index;
-	
-	
+		
 	private TYPE_FILE type_file;
+	
+	private HecTimeSeries dssTimeSeriesWrite;
 
 	@Override
 	public void setPathPartA(String part) {
@@ -63,6 +65,14 @@ public class TimeSerieDssBlocHeader implements DssBlocHeader {
 
 	@Override
 	public String getPath() {
+		StringBuilder b = new StringBuilder();
+		this.path = b.append("/").append(partA)
+			.append("/").append(partB)
+				.append("/").append(partC)
+					.append("/").append(partD)
+						.append("/").append(partE)
+							.append("/").append(partF)
+								.append("/").toString();
 		return this.path;
 		
 		
@@ -71,14 +81,30 @@ public class TimeSerieDssBlocHeader implements DssBlocHeader {
 	@Override
 	public int init(TYPE_FILE type, String dssFilePath) {
 		this.type_file=type;		
-		HecTimeSeries dssTimeSeriesWrite = new HecTimeSeries();		    		   
-	    return dssTimeSeriesWrite.setDSSFileName(dssFilePath);			
+		this.dssTimeSeriesWrite = new HecTimeSeries();		    		   
+	    return this.dssTimeSeriesWrite.setDSSFileName(dssFilePath);			
 	    
 	}
 
+	public int appendData(TimeSeriesContainer tsc) {
+		return dssTimeSeriesWrite.write(tsc);
+		
+	}
 	
 	public HecTime getIndex() {
 		return this.index;
+	}
+
+	@Override
+	public int end() {
+		dssTimeSeriesWrite.done();
+		return 0;
+	}
+
+	@Override
+	public int close() {
+		dssTimeSeriesWrite.close();		
+		return 0;
 	}
 
 	

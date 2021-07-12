@@ -1,8 +1,7 @@
 package com.apiweather.app.dss;
 
-import java.io.File;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.ArrayList;
+import java.util.List;
 
 import hec.heclib.dss.HecTimeSeries;
 import hec.heclib.util.HecTime;
@@ -20,30 +19,36 @@ public class TimeSerieDssBlocBody implements DssBlocBody {
 	
 	private TimeSerieDssBlocHeader header;	
 	
+
 	
-	@Autowired
-	public TimeSerieDssBlocBody(DssBlocHeader header) {
-		super();
-		this.header = (TimeSerieDssBlocHeader)header;
+	private String units ="mm";
+	private String type = "PER-CUM";			
+	private int interval = 60*24;
+	
+	
+	public TimeSerieDssBlocBody() {
+		super();		
 	}
 	
 	@Override
-	public int init (String dssFilePath) {
+	public int init (DssBlocHeader header, String dssFilePath) {
 		this.dssFilePath = dssFilePath;
-		HecTimeSeries dssTimeSeriesWrite = new HecTimeSeries();		    		   
-	    return dssTimeSeriesWrite.setDSSFileName(this.dssFilePath);			
+		this.header = (TimeSerieDssBlocHeader)header;
+//		/this.tscs = new ArrayList<TimeSeriesContainer> ();				
+	    return 0;			
 	    
 	}
 	
 	
 	@Override
-	public void addData (double[] values) {
+	public int addData (double[] values, String units, String type, int interval) {
 		//TODO adding some checks
+		this.units = units;
+		this.type = type;			
+		this.interval = interval;
 		String path = header.getPath();
 		TimeSeriesContainer tsc = createTimeSeriesContainer(path, values, header.getIndex() );
-		
-		
-		
+		return header.appendData(tsc);
 	}
 
 	
@@ -51,9 +56,9 @@ public class TimeSerieDssBlocBody implements DssBlocBody {
 		//if (tsc == null) {
 		TimeSeriesContainer	tsc = new TimeSeriesContainer();			
 		tsc.fullName = path;
-		tsc.units ="mm";
-	    tsc.type = "PER-CUM";			
-		tsc.interval = 60*24;
+		tsc.units =units;
+	    tsc.type = type;			
+		tsc.interval = interval;
 		//}		
 		tsc.setStartTime(start);
 		//double[] flows1 = new double[] {0.1f,2.1f,1.1f,4.1f,3.1f,6.1f,5.1f,8.1f,7.1f,9.1f};		

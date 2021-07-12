@@ -1,10 +1,5 @@
 package com.apiweather.app.dss;
 
-import com.apiweather.app.dss.DssBlocHeader.TYPE_FILE;
-
-import hec.heclib.util.HecTime;
-
-
 public interface DssBlocHeader {
 	
 	public void setPathPartA (String part);
@@ -28,6 +23,9 @@ public interface DssBlocHeader {
 		
 	}
 	
+	public int end ();
+	
+	public int close ();
 	
 
 }
