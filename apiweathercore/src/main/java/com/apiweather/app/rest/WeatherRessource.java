@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.apiweather.app.biz.model.Weather;
+import com.apiweather.app.biz.model.weather.Forcast;
 import com.apiweather.app.biz.repo.WeatherRepository;
-import com.apiweather.app.inner.model.weather.Forcast;
 import com.apiweather.app.rest.clients.WeatherApiCaller;
 import com.apiweather.app.tools.exception.EntityNotFoundException;
 

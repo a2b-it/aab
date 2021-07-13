@@ -1,4 +1,4 @@
-package com.apiweather.app.inner.model.weather;
+package com.apiweather.app.biz.model.weather;
 
 public class Weather {
 	public int id;

@@ -12,11 +12,18 @@ import lombok.Setter;
 public class Station {
 	@Id
 	private Long stationId;	
+	
 	private float[][] coordinates;
+	
 	private String name;
+	
 	private List<Alert> alerts;
+	
 	private List<ObservedData> observedDatas;
+	
 	private List<CollectedData> collectedDatas;
+	
 	private List<Weather> weathers;
 	
 }
+

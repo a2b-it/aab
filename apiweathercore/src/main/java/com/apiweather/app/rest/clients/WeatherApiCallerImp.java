@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.apiweather.app.inner.model.weather.Forcast;
+import com.apiweather.app.biz.model.weather.Forcast;
 
 @Component
 public class WeatherApiCallerImp implements WeatherApiCaller {
