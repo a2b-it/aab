@@ -8,6 +8,7 @@ import org.springframework.batch.core.configuration.annotation.JobBuilderFactory
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,21 +33,33 @@ public class IndarAppsBatchConfig {
 	}
     
     @Bean
-	public Job processJob() {
-		return jobBuilderFactory.get("processJob")
+    @Qualifier(value = "dssFileJob")
+	public Job dssFileJob() {
+		return jobBuilderFactory.get("dssFileJob")
 				.incrementer(new RunIdIncrementer())
 				.listener(listener())
 				.flow(weatherDataStep())
 				.end()
 				.build();
 	}
+    
+    @Bean
+    @Qualifier(value = "spacLoadingJob")
+   	public Job spacLoadingJob() {
+   		return jobBuilderFactory.get("spacLoadingJob")
+   				.incrementer(new RunIdIncrementer())
+   				.listener(listener())
+   				.flow(weatherDataStep())
+   				.end()
+   				.build();
+   	}
 
     
 	@Bean
     public Step weatherDataStep() {		
 		WeatherDataStepRWP p = new WeatherDataStepRWP();
         return stepBuilderFactory.get("weatherData")
-                .<SpacFile, SpacFile> chunk(1)
+                .<SpacFile, SpacFile> chunk(10)
                 .reader(p.weatherDataStepReader())
                 //.processor(processor())
                 .writer(p.weatherDataStepWriter())

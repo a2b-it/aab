@@ -3,13 +3,16 @@ package com.apiweather.app.dss;
 import java.io.File;
 import java.util.List;
 
+import org.springframework.stereotype.Component;
+
 import com.apiweather.app.dss.DssBlocHeader.TYPE_FILE;
 import com.apiweather.app.excep.DSSBuildingException;
 
+@Component
 public interface DSSFileBuilder {
 		
 
-	public void init(String dssFilePath);
+	public void init(String dssFilePath, String logFilePath);
 	
 	public void logStatus ();
 	

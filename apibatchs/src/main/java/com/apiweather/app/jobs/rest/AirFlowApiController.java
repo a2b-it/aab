@@ -27,13 +27,13 @@ public class AirFlowApiController {
 	@Autowired
 	JobLauncher jobLauncher;
 	
-	Job processJob;
+	Job dssFileJob;
 	
 	@GetMapping("/runjob")
     public void startJob() throws JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException, JobParametersInvalidException {
 	//some parameters
     Map<String, JobParameter> parameters = new HashMap<>();
-    JobExecution jobExecution = (JobExecution) jobLauncher.run(processJob, new JobParameters(parameters));
+    JobExecution jobExecution = (JobExecution) jobLauncher.run(dssFileJob, new JobParameters(parameters));
     
 	
 	}    

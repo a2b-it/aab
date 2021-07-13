@@ -1,0 +1,63 @@
+18:02:36.724      -----DSS---zopen   New file opened,  File: F:\Workspaces\apigeo\apibatchs\MyDSS_file.dss
+18:02:36.724                         Handle 4;  Process: 8568;  DSS Version:  7-IC
+18:02:36.724                         Single-user advisory access mode
+18:02:36.727 -----DSS--- zwrite  Handle 4;  Version 1:  /MOROCCO FLOOD HAZARD/BGE_EL_MELLAH/ET/01Jan1970/1Day/EL MELLAH HMS/
+18:02:36.732 -----DSS--- zread   Handle 4;  Version 1:  /MOROCCO FLOOD HAZARD/BGE_EL_MELLAH/ET/01Jan1970/1Day/EL MELLAH HMS/
+18:02:36.732 -----DSS--- zwrite  Handle 4;  Version 2:  /MOROCCO FLOOD HAZARD/BGE_EL_MELLAH/ET/01Jan1970/1Day/EL MELLAH HMS/
+18:02:36.737 -----DSS--- zread   Handle 4;  Version 2:  /MOROCCO FLOOD HAZARD/BGE_EL_MELLAH/ET/01Jan1970/1Day/EL MELLAH HMS/
+18:02:36.738 -----DSS--- zwrite  Handle 4;  Version 3:  /MOROCCO FLOOD HAZARD/BGE_EL_MELLAH/ET/01Jan1970/1Day/EL MELLAH HMS/
+18:02:36.744 -----DSS--- zread   Handle 4;  Version 3:  /MOROCCO FLOOD HAZARD/BGE_EL_MELLAH/ET/01Jan1970/1Day/EL MELLAH HMS/
+18:02:36.744 -----DSS--- zwrite  Handle 4;  Version 4:  /MOROCCO FLOOD HAZARD/BGE_EL_MELLAH/ET/01Jan1970/1Day/EL MELLAH HMS/
+18:02:36.750 -----DSS--- zread   Handle 4;  Version 4:  /MOROCCO FLOOD HAZARD/BGE_EL_MELLAH/ET/01Jan1970/1Day/EL MELLAH HMS/
+18:02:36.750 -----DSS--- zwrite  Handle 4;  Version 5:  /MOROCCO FLOOD HAZARD/BGE_EL_MELLAH/ET/01Jan1970/1Day/EL MELLAH HMS/
+18:02:36.756 -----DSS--- zread   Handle 4;  Version 5:  /MOROCCO FLOOD HAZARD/BGE_EL_MELLAH/ET/01Jan1970/1Day/EL MELLAH HMS/
+18:02:36.756 -----DSS--- zwrite  Handle 4;  Version 6:  /MOROCCO FLOOD HAZARD/BGE_EL_MELLAH/ET/01Jan1970/1Day/EL MELLAH HMS/
+18:02:36.760 -----DSS--- zread   Handle 4;  Version 6:  /MOROCCO FLOOD HAZARD/BGE_EL_MELLAH/ET/01Jan1970/1Day/EL MELLAH HMS/
+18:02:36.760 -----DSS--- zwrite  Handle 4;  Version 7:  /MOROCCO FLOOD HAZARD/BGE_EL_MELLAH/ET/01Jan1970/1Day/EL MELLAH HMS/
+18:02:36.766 -----DSS--- zread   Handle 4;  Version 7:  /MOROCCO FLOOD HAZARD/BGE_EL_MELLAH/ET/01Jan1970/1Day/EL MELLAH HMS/
+18:02:36.767 -----DSS--- zwrite  Handle 4;  Version 8:  /MOROCCO FLOOD HAZARD/BGE_EL_MELLAH/ET/01Jan1970/1Day/EL MELLAH HMS/
+18:02:36.772 -----DSS--- zread   Handle 4;  Version 8:  /MOROCCO FLOOD HAZARD/BGE_EL_MELLAH/ET/01Jan1970/1Day/EL MELLAH HMS/
+18:02:36.772 -----DSS--- zwrite  Handle 4;  Version 9:  /MOROCCO FLOOD HAZARD/BGE_EL_MELLAH/ET/01Jan1970/1Day/EL MELLAH HMS/
+18:02:36.776 -----DSS--- zread   Handle 4;  Version 9:  /MOROCCO FLOOD HAZARD/BGE_EL_MELLAH/ET/01Jan1970/1Day/EL MELLAH HMS/
+18:02:36.776 -----DSS--- zwrite  Handle 4;  Version 10:  /MOROCCO FLOOD HAZARD/BGE_EL_MELLAH/ET/01Jan1970/1Day/EL MELLAH HMS/
+18:02:36.780 -----DSS--- zread   Handle 4;  Version 10:  /MOROCCO FLOOD HAZARD/BGE_EL_MELLAH/ET/01Jan1970/1Day/EL MELLAH HMS/
+18:02:36.780 -----DSS--- zwrite  Handle 4;  Version 11:  /MOROCCO FLOOD HAZARD/BGE_EL_MELLAH/ET/01Jan1970/1Day/EL MELLAH HMS/
+18:02:36.784 -----DSS--- zread   Handle 4;  Version 11:  /MOROCCO FLOOD HAZARD/BGE_EL_MELLAH/ET/01Jan1970/1Day/EL MELLAH HMS/
+18:02:36.784 -----DSS--- zwrite  Handle 4;  Version 12:  /MOROCCO FLOOD HAZARD/BGE_EL_MELLAH/ET/01Jan1970/1Day/EL MELLAH HMS/
+18:02:36.790 -----DSS--- zread   Handle 4;  Version 12:  /MOROCCO FLOOD HAZARD/BGE_EL_MELLAH/ET/01Jan1970/1Day/EL MELLAH HMS/
+18:02:36.790 -----DSS--- zwrite  Handle 4;  Version 13:  /MOROCCO FLOOD HAZARD/BGE_EL_MELLAH/ET/01Jan1970/1Day/EL MELLAH HMS/
+18:02:36.794 -----DSS--- zread   Handle 4;  Version 13:  /MOROCCO FLOOD HAZARD/BGE_EL_MELLAH/ET/01Jan1970/1Day/EL MELLAH HMS/
+18:02:36.794 -----DSS--- zwrite  Handle 4;  Version 14:  /MOROCCO FLOOD HAZARD/BGE_EL_MELLAH/ET/01Jan1970/1Day/EL MELLAH HMS/
+18:02:36.797 -----DSS--- zread   Handle 4;  Version 14:  /MOROCCO FLOOD HAZARD/BGE_EL_MELLAH/ET/01Jan1970/1Day/EL MELLAH HMS/
+18:02:36.797 -----DSS--- zwrite  Handle 4;  Version 15:  /MOROCCO FLOOD HAZARD/BGE_EL_MELLAH/ET/01Jan1970/1Day/EL MELLAH HMS/
+18:02:36.801 -----DSS--- zread   Handle 4;  Version 15:  /MOROCCO FLOOD HAZARD/BGE_EL_MELLAH/ET/01Jan1970/1Day/EL MELLAH HMS/
+18:02:36.802 -----DSS--- zwrite  Handle 4;  Version 16:  /MOROCCO FLOOD HAZARD/BGE_EL_MELLAH/ET/01Jan1970/1Day/EL MELLAH HMS/
+18:02:36.808 -----DSS--- zread   Handle 4;  Version 16:  /MOROCCO FLOOD HAZARD/BGE_EL_MELLAH/ET/01Jan1970/1Day/EL MELLAH HMS/
+18:02:36.808 -----DSS--- zwrite  Handle 4;  Version 17:  /MOROCCO FLOOD HAZARD/BGE_EL_MELLAH/ET/01Jan1970/1Day/EL MELLAH HMS/
+18:02:36.812 -----DSS--- zread   Handle 4;  Version 17:  /MOROCCO FLOOD HAZARD/BGE_EL_MELLAH/ET/01Jan1970/1Day/EL MELLAH HMS/
+18:02:36.812 -----DSS--- zwrite  Handle 4;  Version 18:  /MOROCCO FLOOD HAZARD/BGE_EL_MELLAH/ET/01Jan1970/1Day/EL MELLAH HMS/
+18:02:36.815 -----DSS--- zread   Handle 4;  Version 18:  /MOROCCO FLOOD HAZARD/BGE_EL_MELLAH/ET/01Jan1970/1Day/EL MELLAH HMS/
+18:02:36.815 -----DSS--- zwrite  Handle 4;  Version 19:  /MOROCCO FLOOD HAZARD/BGE_EL_MELLAH/ET/01Jan1970/1Day/EL MELLAH HMS/
+18:02:36.819 -----DSS--- zread   Handle 4;  Version 19:  /MOROCCO FLOOD HAZARD/BGE_EL_MELLAH/ET/01Jan1970/1Day/EL MELLAH HMS/
+18:02:36.819 -----DSS--- zwrite  Handle 4;  Version 20:  /MOROCCO FLOOD HAZARD/BGE_EL_MELLAH/ET/01Jan1970/1Day/EL MELLAH HMS/
+18:02:36.823 -----DSS--- zread   Handle 4;  Version 20:  /MOROCCO FLOOD HAZARD/BGE_EL_MELLAH/ET/01Jan1970/1Day/EL MELLAH HMS/
+18:02:36.823 -----DSS--- zwrite  Handle 4;  Version 21:  /MOROCCO FLOOD HAZARD/BGE_EL_MELLAH/ET/01Jan1970/1Day/EL MELLAH HMS/
+18:02:36.827 -----DSS--- zread   Handle 4;  Version 21:  /MOROCCO FLOOD HAZARD/BGE_EL_MELLAH/ET/01Jan1970/1Day/EL MELLAH HMS/
+18:02:36.827 -----DSS--- zwrite  Handle 4;  Version 22:  /MOROCCO FLOOD HAZARD/BGE_EL_MELLAH/ET/01Jan1970/1Day/EL MELLAH HMS/
+18:02:36.829 -----DSS--- zread   Handle 4;  Version 22:  /MOROCCO FLOOD HAZARD/BGE_EL_MELLAH/ET/01Jan1970/1Day/EL MELLAH HMS/
+18:02:36.829 -----DSS--- zwrite  Handle 4;  Version 23:  /MOROCCO FLOOD HAZARD/BGE_EL_MELLAH/ET/01Jan1970/1Day/EL MELLAH HMS/
+18:02:42.692      -----DSS---zclose  Handle 4;  Process: 8568;  File: F:\Workspaces\apigeo\apibatchs\MyDSS_file.dss
+18:02:42.692                         Number records:         1
+18:02:42.692                         File size:              15927  64-bit words
+18:02:42.692                         File size:              124 Kb;  0 Mb
+18:02:42.692                         Dead space:             73
+18:02:42.692                         Hash range:             8192
+18:02:42.692                         Number hash used:       1
+18:02:42.692                         Max paths for hash:     1
+18:02:42.692                         Corresponding hash:     1325
+18:02:42.692                         Number non unique hash: 0
+18:02:42.692                         Number bins used:       1
+18:02:42.692                         Number overflow bins:   0
+18:02:42.692                         Number physical reads:  289
+18:02:42.692                         Number physical writes: 155
+18:02:42.692                         Number denied locks:    0

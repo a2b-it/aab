@@ -1,6 +1,7 @@
 package com.apiweather.app.dss;
 
 import java.io.File;
+import java.sql.Date;
 import java.util.List;
 
 import com.apiweather.app.dss.DssBlocHeader.TYPE_FILE;
@@ -8,6 +9,7 @@ import com.apiweather.app.excep.DSSBuildingException;
 
 import hec.heclib.dss.DSSErrorMessage;
 import hec.heclib.dss.HecDataManager;
+
 
 
 public class DSSFileBuilderImp implements DSSFileBuilder {
@@ -24,10 +26,13 @@ public class DSSFileBuilderImp implements DSSFileBuilder {
 	
 	
 	@Override
-	public void init(String dssFilePath) {
+	public void init(String dssFilePath, String logFilePath) {
 		HecDataManager dataManager = new HecDataManager();
 		this.dataManager = dataManager;
 		this.dssFilePath = dssFilePath; 
+		int status = HecDataManager.setLogFile(logFilePath);
+		if (status != 0) System.out.println("Error opening log file");
+		HecDataManager.setDefaultDSSFileName(dssFilePath);
 		
 	}
 
@@ -56,7 +61,11 @@ public class DSSFileBuilderImp implements DSSFileBuilder {
 
 	@Override
 	public DSSFileBuilder create(TYPE_FILE type, String... pathParts) {
-		int status = headerBloc.init(type, dssFilePath);
+		if (type==TYPE_FILE.REGULAR_SERIES) {
+			this.headerBloc = new TimeSerieDssBlocHeader ();
+			this.bodyBloc = new TimeSerieDssBlocBody();
+		}
+		int status = headerBloc.init(type, dssFilePath, new Date(141951600));
 		if (status<0) {
 			logStatus();
 		}

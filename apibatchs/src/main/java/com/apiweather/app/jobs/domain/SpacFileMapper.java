@@ -9,6 +9,8 @@ public class SpacFileMapper implements FieldSetMapper<SpacFile>{
 	@Override
 	public SpacFile mapFieldSet(FieldSet fieldSet) throws BindException {
 		SpacFile file = new SpacFile();
+		int n = fieldSet.getFieldCount();
+		file.setNligne(n);
 		file.setDate(fieldSet.readDate("Date","yyyy-mm-dd HH:mm:ss"));
 		file.setStationName(fieldSet.readString("Station"));
 		file.setType(fieldSet.readString("Type"));

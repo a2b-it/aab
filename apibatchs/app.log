@@ -1,0 +1,15 @@
+2021-07-13 00:05:52,834 INFO org.springframework.web.servlet.DispatcherServlet [http-nio-8080-exec-1] Initializing Servlet 'dispatcherServlet'
+2021-07-13 00:05:52,853 DEBUG org.springframework.web.servlet.DispatcherServlet [http-nio-8080-exec-1] Detected StandardServletMultipartResolver
+2021-07-13 00:05:52,853 DEBUG org.springframework.web.servlet.DispatcherServlet [http-nio-8080-exec-1] Detected AcceptHeaderLocaleResolver
+2021-07-13 00:05:52,853 DEBUG org.springframework.web.servlet.DispatcherServlet [http-nio-8080-exec-1] Detected FixedThemeResolver
+2021-07-13 00:05:52,856 DEBUG org.springframework.web.servlet.DispatcherServlet [http-nio-8080-exec-1] Detected org.springframework.web.servlet.view.DefaultRequestToViewNameTranslator@52885f0c
+2021-07-13 00:05:52,857 DEBUG org.springframework.web.servlet.DispatcherServlet [http-nio-8080-exec-1] Detected org.springframework.web.servlet.support.SessionFlashMapManager@61c1f74e
+2021-07-13 00:05:52,857 DEBUG org.springframework.web.servlet.DispatcherServlet [http-nio-8080-exec-1] enableLoggingRequestDetails='false': request parameters and headers will be masked to prevent unsafe logging of potentially sensitive data
+2021-07-13 00:05:52,857 INFO org.springframework.web.servlet.DispatcherServlet [http-nio-8080-exec-1] Completed initialization in 4 ms
+2021-07-13 00:05:52,857 DEBUG org.springframework.web.servlet.DispatcherServlet [http-nio-8080-exec-1] GET "/", parameters={}
+2021-07-13 00:05:52,859 DEBUG org.springframework.web.servlet.DispatcherServlet [http-nio-8080-exec-1] Completed 404 NOT_FOUND
+2021-07-13 00:05:52,861 DEBUG org.springframework.web.servlet.DispatcherServlet [http-nio-8080-exec-1] "ERROR" dispatch for GET "/error", parameters={}
+2021-07-13 00:05:52,892 DEBUG org.springframework.web.servlet.DispatcherServlet [http-nio-8080-exec-1] Exiting from "ERROR" dispatch, status 404
+2021-07-13 00:09:48,821 WARN org.springframework.beans.factory.support.DisposableBeanAdapter [Thread-7] Invocation of destroy method failed on bean with name 'inMemoryDatabaseShutdownExecutor': org.h2.jdbc.JdbcSQLNonTransientConnectionException: La base de données est déjà fermée (pour désactiver la fermeture automatique à l'arrêt de la VM, ajoutez "; DB_CLOSE_ON_EXIT = FALSE" à l'URL db)
+Database is already closed (to disable automatic closing at VM shutdown, add ";DB_CLOSE_ON_EXIT=FALSE" to the db URL) [90121-200]
+2021-07-13 00:09:48,822 DEBUG org.springframework.data.redis.listener.RedisMessageListenerContainer [Thread-7] Stopped RedisMessageListenerContainer

@@ -1,5 +1,9 @@
 package com.apiweather.app.dss;
 
+import java.util.Date;
+
+import com.apiweather.app.dss.DssBlocHeader.TYPE_FILE;
+
 public interface DssBlocHeader {
 	
 	public void setPathPartA (String part);
@@ -16,7 +20,7 @@ public interface DssBlocHeader {
 	
 	public String getPath ();
 	
-	public int init(TYPE_FILE type, String dssFilePath);
+	public int init(TYPE_FILE type, String dssFilePath, Date start);
 	
 	public static enum TYPE_FILE{
 		REGULAR_SERIES,

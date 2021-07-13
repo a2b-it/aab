@@ -1,5 +1,8 @@
 package com.apiweather.app.dss;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import hec.heclib.dss.HecTimeSeries;
 import hec.heclib.util.HecTime;
 import hec.io.TimeSeriesContainer;
@@ -79,9 +82,12 @@ public class TimeSerieDssBlocHeader implements DssBlocHeader {
 	}
 
 	@Override
-	public int init(TYPE_FILE type, String dssFilePath) {
+	public int init(TYPE_FILE type, String dssFilePath, Date start) {
 		this.type_file=type;		
-		this.dssTimeSeriesWrite = new HecTimeSeries();		    		   
+		this.dssTimeSeriesWrite = new HecTimeSeries();
+		SimpleDateFormat f = new SimpleDateFormat("ddMMMyyyy");
+		SimpleDateFormat fh = new SimpleDateFormat("HHmm");		
+		this.index = new HecTime(f.format(start),fh.format(start));
 	    return this.dssTimeSeriesWrite.setDSSFileName(dssFilePath);			
 	    
 	}
