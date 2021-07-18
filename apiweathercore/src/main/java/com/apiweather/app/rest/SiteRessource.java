@@ -26,6 +26,10 @@ import io.swagger.v3.oas.annotations.parameters.RequestBody;
 
 
 
+/**
+ * @author a.bouabidi
+ *
+ */
 @RestController
 @RequestMapping(value = "/site")
 public class SiteRessource extends AbstractCommonRessource<SiteRepository, Site, Long>{

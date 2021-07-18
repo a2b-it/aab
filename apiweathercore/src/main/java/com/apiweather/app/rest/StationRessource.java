@@ -10,6 +10,10 @@ import com.apiweather.app.biz.repo.StationRepository;
 
 
 
+/**
+ * @author a.bouabidi
+ *
+ */
 @RestController
 @RequestMapping(value = "/station")
 public class StationRessource extends AbstractCommonRessource<StationRepository, Station, Long>{

@@ -1,6 +1,6 @@
 package com.apiweather.app.tools.exception;
 
-public class BusinessException extends Throwable{
+public class BusinessException extends Exception{
 
 	/**
 	 * 

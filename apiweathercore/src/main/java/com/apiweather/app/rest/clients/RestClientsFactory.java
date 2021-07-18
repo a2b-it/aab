@@ -5,7 +5,6 @@ import java.time.Duration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
@@ -18,8 +17,12 @@ public class RestClientsFactory {
 	@Value("${airflow.url}")
 	private String airflowUrl;
 	
-	@Value("${weather.url}")
+	@Value("${weather.root.url}")
 	private String weatherUrl;
+	
+	
+	@Value("${weather.api.key}")
+	private String weatherApiKey;
 	
 	
 	@Autowired
@@ -55,6 +58,11 @@ public class RestClientsFactory {
 
 	public String getWeatherUrl() {
 		return weatherUrl;
+	}
+
+
+	public String getWeatherApiKey() {
+		return weatherApiKey;
 	}
 	
 	

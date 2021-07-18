@@ -1,5 +1,10 @@
 package com.apiweather.app.excep;
 
+
+/**
+ * @author a.bouabidi
+ *
+ */
 public class DSSBuildingException extends Exception {
 
 	/**

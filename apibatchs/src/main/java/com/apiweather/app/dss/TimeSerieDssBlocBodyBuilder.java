@@ -1,39 +1,51 @@
 package com.apiweather.app.dss;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import hec.heclib.dss.HecTimeSeries;
 import hec.heclib.util.HecTime;
 import hec.io.TimeSeriesContainer;
 import lombok.Getter;
 import lombok.Setter;
 
+
+/**
+ * @author a.bouabidi
+ *
+ */
 @Getter
 @Setter
-public class TimeSerieDssBlocBody implements DssBlocBody {
+public class TimeSerieDssBlocBodyBuilder implements DssBlocBodyBuilder {
 	
+	public static enum TYPE{
+		INST_VAL("INST-VAL"),
+		INST_CUM("INST-CUM"),
+		PER_AVER("PER-AVER"),
+		PER_CUM("PER-CUM");
+		
+		public final String value;
+
+	    private TYPE(String value) {
+	        this.value = value;
+	    }
+		
+	}
 	private String dssFilePath;
 	
 	private int init = 0;
 	
-	private TimeSerieDssBlocHeader header;	
-	
-
-	
+	private TimeSerieDssBlocHeaderBuilder header;	
+		
 	private String units ="mm";
-	private String type = "PER-CUM";			
+	private String type = TYPE.PER_CUM.value;			
 	private int interval = 60*24;
 	
 	
-	public TimeSerieDssBlocBody() {
+	public TimeSerieDssBlocBodyBuilder() {
 		super();		
 	}
 	
 	@Override
-	public int init (DssBlocHeader header, String dssFilePath) {
+	public int init (DssBlocHeaderBuilder header, String dssFilePath) {
 		this.dssFilePath = dssFilePath;
-		this.header = (TimeSerieDssBlocHeader)header;
+		this.header = (TimeSerieDssBlocHeaderBuilder)header;
 //		/this.tscs = new ArrayList<TimeSeriesContainer> ();				
 	    return 0;			
 	    

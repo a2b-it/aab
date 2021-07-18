@@ -6,6 +6,8 @@ import com.apiweather.app.biz.model.Weather;
 
 public interface WeatherRepository extends MongoRepository<Weather, Long> {
 	
-
+	
+	
+	
 
 }

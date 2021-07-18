@@ -22,6 +22,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.apiweather.app.tools.exception.EntityNotFoundException;
 
 
+/**
+ * @author a.bouabidi
+ *
+ * @param <R>
+ * @param <T>
+ * @param <L>
+ */
 public class AbstractCommonRessource <R, T, L>{
 
 	private R repo;

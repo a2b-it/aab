@@ -4,6 +4,11 @@ import org.springframework.batch.item.file.mapping.FieldSetMapper;
 import org.springframework.batch.item.file.transform.FieldSet;
 import org.springframework.validation.BindException;
 
+
+/**
+ * @author a.bouabidi
+ *
+ */
 public class SpacFileMapper implements FieldSetMapper<SpacFile>{
 
 	@Override
@@ -11,7 +16,7 @@ public class SpacFileMapper implements FieldSetMapper<SpacFile>{
 		SpacFile file = new SpacFile();
 		int n = fieldSet.getFieldCount();
 		file.setNligne(n);
-		file.setDate(fieldSet.readDate("Date","yyyy-mm-dd HH:mm:ss"));
+		file.setDateObs(fieldSet.readDate("Date","yyyy-mm-dd HH:mm:ss"));
 		file.setStationName(fieldSet.readString("Station"));
 		file.setType(fieldSet.readString("Type"));
 		file.setValeur(fieldSet.readDouble("Valeur"));

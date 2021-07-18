@@ -5,9 +5,13 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
-import com.apiweather.app.dss.DssBlocHeader.TYPE_FILE;
+import com.apiweather.app.dss.DssBlocHeaderBuilder.TYPE_FILE;
 import com.apiweather.app.excep.DSSBuildingException;
 
+/**
+ * @author a.bouabidi
+ *
+ */
 @Component
 public interface DSSFileBuilder {
 		

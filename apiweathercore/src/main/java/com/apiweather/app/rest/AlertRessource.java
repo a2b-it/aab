@@ -26,6 +26,10 @@ import com.apiweather.app.tools.exception.EntityNotFoundException;
 
 
 
+/**
+ * @author a.bouabidi
+ *
+ */
 @RequestMapping(value = "/alert")
 @RestController
 @Validated

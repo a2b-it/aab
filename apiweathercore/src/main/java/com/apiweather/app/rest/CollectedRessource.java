@@ -10,6 +10,10 @@ import com.apiweather.app.biz.repo.CollectedDataRepository;
 
 
 
+/**
+ * @author a.bouabidi
+ *
+ */
 @RestController
 @RequestMapping(value = "/collected")
 public class CollectedRessource extends AbstractCommonRessource<CollectedDataRepository, CollectedData, Long>{

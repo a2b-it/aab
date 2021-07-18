@@ -8593,3 +8593,327 @@ Database is already closed (to disable automatic closing at VM shutdown, add ";D
 2021-07-13 11:16:27,307 DEBUG org.springframework.data.redis.listener.RedisMessageListenerContainer [Thread-20] Stopped RedisMessageListenerContainer
 2021-07-13 11:16:27,315 INFO com.zaxxer.hikari.HikariDataSource [Thread-20] HikariPool-5 - Shutdown initiated...
 2021-07-13 11:16:27,318 INFO com.zaxxer.hikari.HikariDataSource [Thread-20] HikariPool-5 - Shutdown completed.
+2021-07-13 11:16:27,395 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Starting ApibatchsApplication using Java 11.0.6 on AABHQDSI00055 with PID 20124 (F:\Workspaces\apigeo\apibatchs\target\classes started by javauser in F:\Workspaces\apigeo\apibatchs)
+2021-07-13 11:16:27,395 DEBUG org.springframework.boot.StartupInfoLogger [restartedMain] Running with Spring Boot v2.5.2, Spring v5.3.8
+2021-07-13 11:16:27,395 INFO org.springframework.boot.SpringApplication [restartedMain] The following profiles are active: prod
+2021-07-13 11:16:28,043 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [restartedMain] Multiple Spring Data modules found, entering strict repository configuration mode!
+2021-07-13 11:16:28,043 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [restartedMain] Bootstrapping Spring Data MongoDB repositories in DEFAULT mode.
+2021-07-13 11:16:28,044 DEBUG org.springframework.data.repository.config.RepositoryConfigurationDelegate [restartedMain] Scanning for MongoDB repositories in packages com.apiweather.app.jobs.
+2021-07-13 11:16:28,046 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [restartedMain] Finished Spring Data repository scanning in 1 ms. Found 0 MongoDB repository interfaces.
+2021-07-13 11:16:28,047 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [restartedMain] Multiple Spring Data modules found, entering strict repository configuration mode!
+2021-07-13 11:16:28,048 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [restartedMain] Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2021-07-13 11:16:28,048 DEBUG org.springframework.data.repository.config.RepositoryConfigurationDelegate [restartedMain] Scanning for Redis repositories in packages com.apiweather.app.jobs.
+2021-07-13 11:16:28,049 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [restartedMain] Finished Spring Data repository scanning in 0 ms. Found 0 Redis repository interfaces.
+2021-07-13 11:16:28,095 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [restartedMain] Tomcat initialized with port(s): 8080 (http)
+2021-07-13 11:16:28,095 INFO org.apache.juli.logging.DirectJDKLog [restartedMain] Initializing ProtocolHandler ["http-nio-8080"]
+2021-07-13 11:16:28,095 INFO org.apache.juli.logging.DirectJDKLog [restartedMain] Starting service [Tomcat]
+2021-07-13 11:16:28,095 INFO org.apache.juli.logging.DirectJDKLog [restartedMain] Starting Servlet engine: [Apache Tomcat/9.0.48]
+2021-07-13 11:16:28,108 INFO org.apache.juli.logging.DirectJDKLog [restartedMain] Initializing Spring embedded WebApplicationContext
+2021-07-13 11:16:28,108 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [restartedMain] Root WebApplicationContext: initialization completed in 710 ms
+2021-07-13 11:16:28,120 INFO com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-6 - Starting...
+2021-07-13 11:16:28,121 INFO com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-6 - Start completed.
+2021-07-13 11:16:28,122 INFO org.springframework.boot.autoconfigure.h2.H2ConsoleAutoConfiguration [restartedMain] H2 console available at '/h2console/'. Database available at 'jdbc:h2:mem:AZ'
+2021-07-13 11:16:28,213 INFO org.springframework.batch.core.repository.support.JobRepositoryFactoryBean [restartedMain] No database type set, using meta data indicating: H2
+2021-07-13 11:16:28,214 INFO org.springframework.batch.core.launch.support.SimpleJobLauncher [restartedMain] No TaskExecutor has been set, defaulting to synchronous executor.
+2021-07-13 11:16:28,225 INFO com.mongodb.diagnostics.logging.SLF4JLogger [restartedMain] Cluster created with settings {hosts=[localhost:27017], mode=SINGLE, requiredClusterType=UNKNOWN, serverSelectionTimeout='30000 ms'}
+2021-07-13 11:16:28,228 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.util.Locale to class java.lang.String as writing converter.
+2021-07-13 11:16:28,228 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.lang.Character to class java.lang.String as writing converter.
+2021-07-13 11:16:28,228 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.math.BigDecimal to class java.lang.String as writing converter.
+2021-07-13 11:16:28,228 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.math.BigDecimal to class org.bson.types.Decimal128 as writing converter.
+2021-07-13 11:16:28,228 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.lang.String to class java.math.BigDecimal as reading converter.
+2021-07-13 11:16:28,228 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class org.bson.types.Decimal128 to class java.math.BigDecimal as reading converter.
+2021-07-13 11:16:28,228 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.math.BigInteger to class java.lang.String as writing converter.
+2021-07-13 11:16:28,228 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.lang.String to class java.math.BigInteger as reading converter.
+2021-07-13 11:16:28,228 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.net.URL to class java.lang.String as writing converter.
+2021-07-13 11:16:28,229 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.lang.String to class java.net.URL as reading converter.
+2021-07-13 11:16:28,229 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class org.bson.Document to class java.lang.String as reading converter.
+2021-07-13 11:16:28,229 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class org.springframework.data.mongodb.core.query.Term to class java.lang.String as writing converter.
+2021-07-13 11:16:28,229 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class org.springframework.data.mongodb.core.script.NamedMongoScript to class org.bson.Document as writing converter.
+2021-07-13 11:16:28,229 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class org.bson.Document to class org.springframework.data.mongodb.core.script.NamedMongoScript as reading converter.
+2021-07-13 11:16:28,229 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.util.Currency to class java.lang.String as writing converter.
+2021-07-13 11:16:28,229 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.lang.String to class java.util.Currency as reading converter.
+2021-07-13 11:16:28,229 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.util.concurrent.atomic.AtomicInteger to class java.lang.Integer as writing converter.
+2021-07-13 11:16:28,229 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.util.concurrent.atomic.AtomicLong to class java.lang.Long as writing converter.
+2021-07-13 11:16:28,229 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.lang.Long to class java.util.concurrent.atomic.AtomicLong as reading converter.
+2021-07-13 11:16:28,229 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.lang.Integer to class java.util.concurrent.atomic.AtomicInteger as reading converter.
+2021-07-13 11:16:28,230 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class org.bson.types.Binary to class [B as reading converter.
+2021-07-13 11:16:28,230 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class org.bson.BsonTimestamp to class java.time.Instant as reading converter.
+2021-07-13 11:16:28,230 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.lang.String to class java.net.URI as reading converter.
+2021-07-13 11:16:28,230 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.net.URI to class java.lang.String as writing converter.
+2021-07-13 11:16:28,230 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class org.springframework.data.geo.Box to class org.bson.Document as writing converter.
+2021-07-13 11:16:28,230 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class org.springframework.data.geo.Polygon to class org.bson.Document as writing converter.
+2021-07-13 11:16:28,230 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class org.springframework.data.geo.Circle to class org.bson.Document as writing converter.
+2021-07-13 11:16:28,230 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class org.springframework.data.mongodb.core.geo.Sphere to class org.bson.Document as writing converter.
+2021-07-13 11:16:28,230 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class org.bson.Document to class org.springframework.data.geo.Box as reading converter.
+2021-07-13 11:16:28,231 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class org.bson.Document to class org.springframework.data.geo.Polygon as reading converter.
+2021-07-13 11:16:28,231 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class org.bson.Document to class org.springframework.data.geo.Circle as reading converter.
+2021-07-13 11:16:28,231 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class org.bson.Document to class org.springframework.data.mongodb.core.geo.Sphere as reading converter.
+2021-07-13 11:16:28,231 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class org.bson.Document to class org.springframework.data.geo.Point as reading converter.
+2021-07-13 11:16:28,231 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class org.springframework.data.geo.Point to class org.bson.Document as writing converter.
+2021-07-13 11:16:28,231 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class org.springframework.data.mongodb.core.query.GeoCommand to class org.bson.Document as writing converter.
+2021-07-13 11:16:28,231 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from interface org.springframework.data.mongodb.core.geo.GeoJson to class org.bson.Document as writing converter.
+2021-07-13 11:16:28,231 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class org.springframework.data.mongodb.core.geo.GeoJsonPoint to class org.bson.Document as writing converter.
+2021-07-13 11:16:28,231 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class org.springframework.data.mongodb.core.geo.GeoJsonPolygon to class org.bson.Document as writing converter.
+2021-07-13 11:16:28,231 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class org.bson.Document to class org.springframework.data.mongodb.core.geo.GeoJsonPoint as reading converter.
+2021-07-13 11:16:28,231 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class org.bson.Document to class org.springframework.data.mongodb.core.geo.GeoJsonPolygon as reading converter.
+2021-07-13 11:16:28,232 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class org.bson.Document to class org.springframework.data.mongodb.core.geo.GeoJsonLineString as reading converter.
+2021-07-13 11:16:28,232 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class org.bson.Document to class org.springframework.data.mongodb.core.geo.GeoJsonMultiLineString as reading converter.
+2021-07-13 11:16:28,232 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class org.bson.Document to class org.springframework.data.mongodb.core.geo.GeoJsonMultiPoint as reading converter.
+2021-07-13 11:16:28,232 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class org.bson.Document to class org.springframework.data.mongodb.core.geo.GeoJsonMultiPolygon as reading converter.
+2021-07-13 11:16:28,232 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class org.bson.Document to class org.springframework.data.mongodb.core.geo.GeoJsonGeometryCollection as reading converter.
+2021-07-13 11:16:28,232 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class org.bson.Document to interface org.springframework.data.mongodb.core.geo.GeoJson as reading converter.
+2021-07-13 11:16:28,232 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.util.Date to class java.time.LocalDateTime as reading converter.
+2021-07-13 11:16:28,232 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.time.LocalDateTime to class java.util.Date as writing converter.
+2021-07-13 11:16:28,232 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.util.Date to class java.time.LocalDate as reading converter.
+2021-07-13 11:16:28,232 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.time.LocalDate to class java.util.Date as writing converter.
+2021-07-13 11:16:28,232 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.util.Date to class java.time.LocalTime as reading converter.
+2021-07-13 11:16:28,233 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.time.LocalTime to class java.util.Date as writing converter.
+2021-07-13 11:16:28,233 INFO com.mongodb.diagnostics.logging.SLF4JLogger [cluster-rtt-ClusterId{value='60ed67fcf0dae03c96b31b7e', description='null'}-localhost:27017] Opened connection [connectionId{localValue:12, serverValue:21}] to localhost:27017
+2021-07-13 11:16:28,233 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.util.Date to class java.time.Instant as reading converter.
+2021-07-13 11:16:28,234 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.time.Instant to class java.util.Date as writing converter.
+2021-07-13 11:16:28,234 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Skipping converter from class java.time.LocalDateTime to class java.time.Instant as reading converter. class java.time.LocalDateTime is not a store supported simple type!
+2021-07-13 11:16:28,234 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Skipping converter from class java.time.Instant to class java.time.LocalDateTime as reading converter. class java.time.Instant is not a store supported simple type!
+2021-07-13 11:16:28,234 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.time.ZoneId to class java.lang.String as writing converter.
+2021-07-13 11:16:28,234 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.lang.String to class java.time.ZoneId as reading converter.
+2021-07-13 11:16:28,234 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.time.Duration to class java.lang.String as writing converter.
+2021-07-13 11:16:28,234 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.lang.String to class java.time.Duration as reading converter.
+2021-07-13 11:16:28,234 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.time.Period to class java.lang.String as writing converter.
+2021-07-13 11:16:28,234 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.lang.String to class java.time.Period as reading converter.
+2021-07-13 11:16:28,234 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.lang.String to class java.time.LocalDate as reading converter.
+2021-07-13 11:16:28,235 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.lang.String to class java.time.LocalDateTime as reading converter.
+2021-07-13 11:16:28,235 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.lang.String to class java.time.Instant as reading converter.
+2021-07-13 11:16:28,239 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.util.Locale to class java.lang.String as writing converter.
+2021-07-13 11:16:28,239 INFO com.mongodb.diagnostics.logging.SLF4JLogger [cluster-ClusterId{value='60ed67fcf0dae03c96b31b7e', description='null'}-localhost:27017] Opened connection [connectionId{localValue:11, serverValue:22}] to localhost:27017
+2021-07-13 11:16:28,240 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.lang.Character to class java.lang.String as writing converter.
+2021-07-13 11:16:28,240 INFO com.mongodb.diagnostics.logging.SLF4JLogger [cluster-ClusterId{value='60ed67fcf0dae03c96b31b7e', description='null'}-localhost:27017] Monitor thread successfully connected to server with description ServerDescription{address=localhost:27017, type=STANDALONE, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=9, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=12495100}
+2021-07-13 11:16:28,240 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.math.BigDecimal to class java.lang.String as writing converter.
+2021-07-13 11:16:28,240 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.math.BigDecimal to class org.bson.types.Decimal128 as writing converter.
+2021-07-13 11:16:28,240 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.lang.String to class java.math.BigDecimal as reading converter.
+2021-07-13 11:16:28,240 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class org.bson.types.Decimal128 to class java.math.BigDecimal as reading converter.
+2021-07-13 11:16:28,241 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.math.BigInteger to class java.lang.String as writing converter.
+2021-07-13 11:16:28,241 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.lang.String to class java.math.BigInteger as reading converter.
+2021-07-13 11:16:28,241 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.net.URL to class java.lang.String as writing converter.
+2021-07-13 11:16:28,241 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.lang.String to class java.net.URL as reading converter.
+2021-07-13 11:16:28,241 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class org.bson.Document to class java.lang.String as reading converter.
+2021-07-13 11:16:28,241 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class org.springframework.data.mongodb.core.query.Term to class java.lang.String as writing converter.
+2021-07-13 11:16:28,241 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class org.springframework.data.mongodb.core.script.NamedMongoScript to class org.bson.Document as writing converter.
+2021-07-13 11:16:28,241 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class org.bson.Document to class org.springframework.data.mongodb.core.script.NamedMongoScript as reading converter.
+2021-07-13 11:16:28,241 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.util.Currency to class java.lang.String as writing converter.
+2021-07-13 11:16:28,242 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.lang.String to class java.util.Currency as reading converter.
+2021-07-13 11:16:28,242 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.util.concurrent.atomic.AtomicInteger to class java.lang.Integer as writing converter.
+2021-07-13 11:16:28,242 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.util.concurrent.atomic.AtomicLong to class java.lang.Long as writing converter.
+2021-07-13 11:16:28,242 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.lang.Long to class java.util.concurrent.atomic.AtomicLong as reading converter.
+2021-07-13 11:16:28,242 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.lang.Integer to class java.util.concurrent.atomic.AtomicInteger as reading converter.
+2021-07-13 11:16:28,242 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class org.bson.types.Binary to class [B as reading converter.
+2021-07-13 11:16:28,242 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class org.bson.BsonTimestamp to class java.time.Instant as reading converter.
+2021-07-13 11:16:28,243 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.lang.String to class java.net.URI as reading converter.
+2021-07-13 11:16:28,243 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.net.URI to class java.lang.String as writing converter.
+2021-07-13 11:16:28,243 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class org.springframework.data.geo.Box to class org.bson.Document as writing converter.
+2021-07-13 11:16:28,243 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class org.springframework.data.geo.Polygon to class org.bson.Document as writing converter.
+2021-07-13 11:16:28,243 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class org.springframework.data.geo.Circle to class org.bson.Document as writing converter.
+2021-07-13 11:16:28,243 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class org.springframework.data.mongodb.core.geo.Sphere to class org.bson.Document as writing converter.
+2021-07-13 11:16:28,243 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class org.bson.Document to class org.springframework.data.geo.Box as reading converter.
+2021-07-13 11:16:28,243 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class org.bson.Document to class org.springframework.data.geo.Polygon as reading converter.
+2021-07-13 11:16:28,244 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class org.bson.Document to class org.springframework.data.geo.Circle as reading converter.
+2021-07-13 11:16:28,244 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class org.bson.Document to class org.springframework.data.mongodb.core.geo.Sphere as reading converter.
+2021-07-13 11:16:28,244 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class org.bson.Document to class org.springframework.data.geo.Point as reading converter.
+2021-07-13 11:16:28,244 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class org.springframework.data.geo.Point to class org.bson.Document as writing converter.
+2021-07-13 11:16:28,244 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class org.springframework.data.mongodb.core.query.GeoCommand to class org.bson.Document as writing converter.
+2021-07-13 11:16:28,244 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from interface org.springframework.data.mongodb.core.geo.GeoJson to class org.bson.Document as writing converter.
+2021-07-13 11:16:28,244 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class org.springframework.data.mongodb.core.geo.GeoJsonPoint to class org.bson.Document as writing converter.
+2021-07-13 11:16:28,245 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class org.springframework.data.mongodb.core.geo.GeoJsonPolygon to class org.bson.Document as writing converter.
+2021-07-13 11:16:28,245 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class org.bson.Document to class org.springframework.data.mongodb.core.geo.GeoJsonPoint as reading converter.
+2021-07-13 11:16:28,245 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class org.bson.Document to class org.springframework.data.mongodb.core.geo.GeoJsonPolygon as reading converter.
+2021-07-13 11:16:28,245 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class org.bson.Document to class org.springframework.data.mongodb.core.geo.GeoJsonLineString as reading converter.
+2021-07-13 11:16:28,245 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class org.bson.Document to class org.springframework.data.mongodb.core.geo.GeoJsonMultiLineString as reading converter.
+2021-07-13 11:16:28,245 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class org.bson.Document to class org.springframework.data.mongodb.core.geo.GeoJsonMultiPoint as reading converter.
+2021-07-13 11:16:28,245 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class org.bson.Document to class org.springframework.data.mongodb.core.geo.GeoJsonMultiPolygon as reading converter.
+2021-07-13 11:16:28,245 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class org.bson.Document to class org.springframework.data.mongodb.core.geo.GeoJsonGeometryCollection as reading converter.
+2021-07-13 11:16:28,245 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class org.bson.Document to interface org.springframework.data.mongodb.core.geo.GeoJson as reading converter.
+2021-07-13 11:16:28,245 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.util.Date to class java.time.LocalDateTime as reading converter.
+2021-07-13 11:16:28,245 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.time.LocalDateTime to class java.util.Date as writing converter.
+2021-07-13 11:16:28,245 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.util.Date to class java.time.LocalDate as reading converter.
+2021-07-13 11:16:28,245 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.time.LocalDate to class java.util.Date as writing converter.
+2021-07-13 11:16:28,245 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.util.Date to class java.time.LocalTime as reading converter.
+2021-07-13 11:16:28,245 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.time.LocalTime to class java.util.Date as writing converter.
+2021-07-13 11:16:28,246 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.util.Date to class java.time.Instant as reading converter.
+2021-07-13 11:16:28,246 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.time.Instant to class java.util.Date as writing converter.
+2021-07-13 11:16:28,246 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Skipping converter from class java.time.LocalDateTime to class java.time.Instant as reading converter. class java.time.LocalDateTime is not a store supported simple type!
+2021-07-13 11:16:28,246 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Skipping converter from class java.time.Instant to class java.time.LocalDateTime as reading converter. class java.time.Instant is not a store supported simple type!
+2021-07-13 11:16:28,246 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.time.ZoneId to class java.lang.String as writing converter.
+2021-07-13 11:16:28,246 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.lang.String to class java.time.ZoneId as reading converter.
+2021-07-13 11:16:28,246 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.time.Duration to class java.lang.String as writing converter.
+2021-07-13 11:16:28,246 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.lang.String to class java.time.Duration as reading converter.
+2021-07-13 11:16:28,246 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.time.Period to class java.lang.String as writing converter.
+2021-07-13 11:16:28,246 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.lang.String to class java.time.Period as reading converter.
+2021-07-13 11:16:28,246 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.lang.String to class java.time.LocalDate as reading converter.
+2021-07-13 11:16:28,246 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.lang.String to class java.time.LocalDateTime as reading converter.
+2021-07-13 11:16:28,246 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.lang.String to class java.time.Instant as reading converter.
+2021-07-13 11:16:28,254 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.lang.String to class [B as writing converter.
+2021-07-13 11:16:28,254 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class [B to class java.lang.String as reading converter.
+2021-07-13 11:16:28,254 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.lang.Number to class [B as writing converter.
+2021-07-13 11:16:28,254 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class [B to class java.lang.Number as reading converter.
+2021-07-13 11:16:28,254 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.lang.Enum to class [B as writing converter.
+2021-07-13 11:16:28,254 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class [B to class java.lang.Enum as reading converter.
+2021-07-13 11:16:28,254 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.lang.Boolean to class [B as writing converter.
+2021-07-13 11:16:28,254 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class [B to class java.lang.Boolean as reading converter.
+2021-07-13 11:16:28,254 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.util.Date to class [B as writing converter.
+2021-07-13 11:16:28,254 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class [B to class java.util.Date as reading converter.
+2021-07-13 11:16:28,254 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.util.UUID to class [B as writing converter.
+2021-07-13 11:16:28,254 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class [B to class java.util.UUID as reading converter.
+2021-07-13 11:16:28,254 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.time.LocalDateTime to class [B as writing converter.
+2021-07-13 11:16:28,254 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class [B to class java.time.LocalDateTime as reading converter.
+2021-07-13 11:16:28,255 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.time.LocalDate to class [B as writing converter.
+2021-07-13 11:16:28,255 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class [B to class java.time.LocalDate as reading converter.
+2021-07-13 11:16:28,255 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.time.LocalTime to class [B as writing converter.
+2021-07-13 11:16:28,255 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class [B to class java.time.LocalTime as reading converter.
+2021-07-13 11:16:28,255 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.time.ZonedDateTime to class [B as writing converter.
+2021-07-13 11:16:28,255 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class [B to class java.time.ZonedDateTime as reading converter.
+2021-07-13 11:16:28,255 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.time.Instant to class [B as writing converter.
+2021-07-13 11:16:28,255 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class [B to class java.time.Instant as reading converter.
+2021-07-13 11:16:28,255 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.time.ZoneId to class [B as writing converter.
+2021-07-13 11:16:28,255 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class [B to class java.time.ZoneId as reading converter.
+2021-07-13 11:16:28,255 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.time.Period to class [B as writing converter.
+2021-07-13 11:16:28,255 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class [B to class java.time.Period as reading converter.
+2021-07-13 11:16:28,255 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.time.Duration to class [B as writing converter.
+2021-07-13 11:16:28,255 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class [B to class java.time.Duration as reading converter.
+2021-07-13 11:16:28,255 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.util.Date to class java.time.LocalDateTime as reading converter.
+2021-07-13 11:16:28,255 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.time.LocalDateTime to class java.util.Date as writing converter.
+2021-07-13 11:16:28,255 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.util.Date to class java.time.LocalDate as reading converter.
+2021-07-13 11:16:28,255 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.time.LocalDate to class java.util.Date as writing converter.
+2021-07-13 11:16:28,255 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.util.Date to class java.time.LocalTime as reading converter.
+2021-07-13 11:16:28,255 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.time.LocalTime to class java.util.Date as writing converter.
+2021-07-13 11:16:28,255 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.util.Date to class java.time.Instant as reading converter.
+2021-07-13 11:16:28,256 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.time.Instant to class java.util.Date as writing converter.
+2021-07-13 11:16:28,256 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.time.LocalDateTime to class java.time.Instant as reading converter.
+2021-07-13 11:16:28,256 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.time.Instant to class java.time.LocalDateTime as reading converter.
+2021-07-13 11:16:28,256 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.time.ZoneId to class java.lang.String as writing converter.
+2021-07-13 11:16:28,256 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.lang.String to class java.time.ZoneId as reading converter.
+2021-07-13 11:16:28,256 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.time.Duration to class java.lang.String as writing converter.
+2021-07-13 11:16:28,256 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.lang.String to class java.time.Duration as reading converter.
+2021-07-13 11:16:28,256 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.time.Period to class java.lang.String as writing converter.
+2021-07-13 11:16:28,256 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.lang.String to class java.time.Period as reading converter.
+2021-07-13 11:16:28,256 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.lang.String to class java.time.LocalDate as reading converter.
+2021-07-13 11:16:28,256 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.lang.String to class java.time.LocalDateTime as reading converter.
+2021-07-13 11:16:28,256 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.lang.String to class java.time.Instant as reading converter.
+2021-07-13 11:16:28,258 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.lang.String to class [B as writing converter.
+2021-07-13 11:16:28,258 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class [B to class java.lang.String as reading converter.
+2021-07-13 11:16:28,258 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.lang.Number to class [B as writing converter.
+2021-07-13 11:16:28,258 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class [B to class java.lang.Number as reading converter.
+2021-07-13 11:16:28,258 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.lang.Enum to class [B as writing converter.
+2021-07-13 11:16:28,258 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class [B to class java.lang.Enum as reading converter.
+2021-07-13 11:16:28,258 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.lang.Boolean to class [B as writing converter.
+2021-07-13 11:16:28,258 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class [B to class java.lang.Boolean as reading converter.
+2021-07-13 11:16:28,258 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.util.Date to class [B as writing converter.
+2021-07-13 11:16:28,258 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class [B to class java.util.Date as reading converter.
+2021-07-13 11:16:28,258 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.util.UUID to class [B as writing converter.
+2021-07-13 11:16:28,258 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class [B to class java.util.UUID as reading converter.
+2021-07-13 11:16:28,258 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.time.LocalDateTime to class [B as writing converter.
+2021-07-13 11:16:28,258 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class [B to class java.time.LocalDateTime as reading converter.
+2021-07-13 11:16:28,258 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.time.LocalDate to class [B as writing converter.
+2021-07-13 11:16:28,259 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class [B to class java.time.LocalDate as reading converter.
+2021-07-13 11:16:28,259 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.time.LocalTime to class [B as writing converter.
+2021-07-13 11:16:28,259 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class [B to class java.time.LocalTime as reading converter.
+2021-07-13 11:16:28,259 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.time.ZonedDateTime to class [B as writing converter.
+2021-07-13 11:16:28,259 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class [B to class java.time.ZonedDateTime as reading converter.
+2021-07-13 11:16:28,259 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.time.Instant to class [B as writing converter.
+2021-07-13 11:16:28,259 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class [B to class java.time.Instant as reading converter.
+2021-07-13 11:16:28,259 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.time.ZoneId to class [B as writing converter.
+2021-07-13 11:16:28,259 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class [B to class java.time.ZoneId as reading converter.
+2021-07-13 11:16:28,259 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.time.Period to class [B as writing converter.
+2021-07-13 11:16:28,259 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class [B to class java.time.Period as reading converter.
+2021-07-13 11:16:28,259 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.time.Duration to class [B as writing converter.
+2021-07-13 11:16:28,259 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class [B to class java.time.Duration as reading converter.
+2021-07-13 11:16:28,259 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.util.Date to class java.time.LocalDateTime as reading converter.
+2021-07-13 11:16:28,259 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.time.LocalDateTime to class java.util.Date as writing converter.
+2021-07-13 11:16:28,259 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.util.Date to class java.time.LocalDate as reading converter.
+2021-07-13 11:16:28,259 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.time.LocalDate to class java.util.Date as writing converter.
+2021-07-13 11:16:28,259 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.util.Date to class java.time.LocalTime as reading converter.
+2021-07-13 11:16:28,259 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.time.LocalTime to class java.util.Date as writing converter.
+2021-07-13 11:16:28,259 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.util.Date to class java.time.Instant as reading converter.
+2021-07-13 11:16:28,260 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.time.Instant to class java.util.Date as writing converter.
+2021-07-13 11:16:28,260 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.time.LocalDateTime to class java.time.Instant as reading converter.
+2021-07-13 11:16:28,260 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.time.Instant to class java.time.LocalDateTime as reading converter.
+2021-07-13 11:16:28,260 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.time.ZoneId to class java.lang.String as writing converter.
+2021-07-13 11:16:28,260 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.lang.String to class java.time.ZoneId as reading converter.
+2021-07-13 11:16:28,260 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.time.Duration to class java.lang.String as writing converter.
+2021-07-13 11:16:28,260 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.lang.String to class java.time.Duration as reading converter.
+2021-07-13 11:16:28,260 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.time.Period to class java.lang.String as writing converter.
+2021-07-13 11:16:28,260 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.lang.String to class java.time.Period as reading converter.
+2021-07-13 11:16:28,260 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.lang.String to class java.time.LocalDate as reading converter.
+2021-07-13 11:16:28,260 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.lang.String to class java.time.LocalDateTime as reading converter.
+2021-07-13 11:16:28,260 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.lang.String to class java.time.Instant as reading converter.
+2021-07-13 11:16:28,260 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.lang.String to class [B as writing converter.
+2021-07-13 11:16:28,260 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class [B to class java.lang.String as reading converter.
+2021-07-13 11:16:28,260 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.lang.Number to class [B as writing converter.
+2021-07-13 11:16:28,260 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class [B to class java.lang.Number as reading converter.
+2021-07-13 11:16:28,260 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.lang.Enum to class [B as writing converter.
+2021-07-13 11:16:28,260 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class [B to class java.lang.Enum as reading converter.
+2021-07-13 11:16:28,261 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.lang.Boolean to class [B as writing converter.
+2021-07-13 11:16:28,261 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class [B to class java.lang.Boolean as reading converter.
+2021-07-13 11:16:28,261 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.util.Date to class [B as writing converter.
+2021-07-13 11:16:28,261 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class [B to class java.util.Date as reading converter.
+2021-07-13 11:16:28,261 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.util.UUID to class [B as writing converter.
+2021-07-13 11:16:28,261 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class [B to class java.util.UUID as reading converter.
+2021-07-13 11:16:28,261 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.time.LocalDateTime to class [B as writing converter.
+2021-07-13 11:16:28,261 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class [B to class java.time.LocalDateTime as reading converter.
+2021-07-13 11:16:28,261 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.time.LocalDate to class [B as writing converter.
+2021-07-13 11:16:28,261 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class [B to class java.time.LocalDate as reading converter.
+2021-07-13 11:16:28,261 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.time.LocalTime to class [B as writing converter.
+2021-07-13 11:16:28,261 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class [B to class java.time.LocalTime as reading converter.
+2021-07-13 11:16:28,261 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.time.ZonedDateTime to class [B as writing converter.
+2021-07-13 11:16:28,261 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class [B to class java.time.ZonedDateTime as reading converter.
+2021-07-13 11:16:28,261 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.time.Instant to class [B as writing converter.
+2021-07-13 11:16:28,261 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class [B to class java.time.Instant as reading converter.
+2021-07-13 11:16:28,261 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.time.ZoneId to class [B as writing converter.
+2021-07-13 11:16:28,261 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class [B to class java.time.ZoneId as reading converter.
+2021-07-13 11:16:28,261 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.time.Period to class [B as writing converter.
+2021-07-13 11:16:28,262 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class [B to class java.time.Period as reading converter.
+2021-07-13 11:16:28,262 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.time.Duration to class [B as writing converter.
+2021-07-13 11:16:28,262 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class [B to class java.time.Duration as reading converter.
+2021-07-13 11:16:28,262 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.util.Date to class java.time.LocalDateTime as reading converter.
+2021-07-13 11:16:28,262 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.time.LocalDateTime to class java.util.Date as writing converter.
+2021-07-13 11:16:28,262 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.util.Date to class java.time.LocalDate as reading converter.
+2021-07-13 11:16:28,262 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.time.LocalDate to class java.util.Date as writing converter.
+2021-07-13 11:16:28,262 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.util.Date to class java.time.LocalTime as reading converter.
+2021-07-13 11:16:28,262 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.time.LocalTime to class java.util.Date as writing converter.
+2021-07-13 11:16:28,262 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.util.Date to class java.time.Instant as reading converter.
+2021-07-13 11:16:28,262 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.time.Instant to class java.util.Date as writing converter.
+2021-07-13 11:16:28,262 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.time.LocalDateTime to class java.time.Instant as reading converter.
+2021-07-13 11:16:28,262 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.time.Instant to class java.time.LocalDateTime as reading converter.
+2021-07-13 11:16:28,262 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.time.ZoneId to class java.lang.String as writing converter.
+2021-07-13 11:16:28,262 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.lang.String to class java.time.ZoneId as reading converter.
+2021-07-13 11:16:28,262 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.time.Duration to class java.lang.String as writing converter.
+2021-07-13 11:16:28,262 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.lang.String to class java.time.Duration as reading converter.
+2021-07-13 11:16:28,262 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.time.Period to class java.lang.String as writing converter.
+2021-07-13 11:16:28,262 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.lang.String to class java.time.Period as reading converter.
+2021-07-13 11:16:28,262 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.lang.String to class java.time.LocalDate as reading converter.
+2021-07-13 11:16:28,263 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.lang.String to class java.time.LocalDateTime as reading converter.
+2021-07-13 11:16:28,263 DEBUG org.springframework.data.convert.CustomConversions [restartedMain] Adding converter from class java.lang.String to class java.time.Instant as reading converter.
+2021-07-13 11:16:28,264 DEBUG org.springframework.data.redis.listener.RedisMessageListenerContainer [restartedMain] Postpone listening for Redis messages until actual listeners are added
+2021-07-13 11:16:28,264 DEBUG org.springframework.data.redis.listener.RedisMessageListenerContainer [restartedMain] Started RedisMessageListenerContainer
+2021-07-13 11:16:28,275 INFO org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer [restartedMain] LiveReload server is running on port 35729
+2021-07-13 11:16:28,287 INFO org.apache.juli.logging.DirectJDKLog [restartedMain] Starting ProtocolHandler ["http-nio-8080"]
+2021-07-13 11:16:28,289 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [restartedMain] Tomcat started on port(s): 8080 (http) with context path ''
+2021-07-13 11:16:28,294 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Started ApibatchsApplication in 0.929 seconds (JVM running for 684.436)
+2021-07-13 11:16:28,296 INFO org.springframework.boot.devtools.autoconfigure.ConditionEvaluationDeltaLoggingListener [restartedMain] Condition evaluation unchanged
+2021-07-13 12:29:07,007 INFO org.apache.juli.logging.DirectJDKLog [http-nio-8080-exec-1] Initializing Spring DispatcherServlet 'dispatcherServlet'
+2021-07-13 12:29:07,014 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-8080-exec-1] Initializing Servlet 'dispatcherServlet'
+2021-07-13 12:29:07,016 DEBUG org.springframework.web.servlet.DispatcherServlet [http-nio-8080-exec-1] Detected StandardServletMultipartResolver
+2021-07-13 12:29:07,017 DEBUG org.springframework.web.servlet.DispatcherServlet [http-nio-8080-exec-1] Detected AcceptHeaderLocaleResolver
+2021-07-13 12:29:07,017 DEBUG org.springframework.web.servlet.DispatcherServlet [http-nio-8080-exec-1] Detected FixedThemeResolver
+2021-07-13 12:29:07,029 DEBUG org.springframework.web.servlet.DispatcherServlet [http-nio-8080-exec-1] Detected org.springframework.web.servlet.view.DefaultRequestToViewNameTranslator@2a8f16df
+2021-07-13 12:29:07,029 DEBUG org.springframework.web.servlet.DispatcherServlet [http-nio-8080-exec-1] Detected org.springframework.web.servlet.support.SessionFlashMapManager@2448edfe
+2021-07-13 12:29:07,029 DEBUG org.springframework.web.servlet.FrameworkServlet [http-nio-8080-exec-1] enableLoggingRequestDetails='false': request parameters and headers will be masked to prevent unsafe logging of potentially sensitive data
+2021-07-13 12:29:07,029 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-8080-exec-1] Completed initialization in 15 ms
+2021-07-13 12:29:07,032 DEBUG org.springframework.core.log.LogFormatUtils [http-nio-8080-exec-1] GET "/", parameters={}
+2021-07-13 12:29:07,038 DEBUG org.springframework.web.servlet.FrameworkServlet [http-nio-8080-exec-1] Completed 404 NOT_FOUND
+2021-07-13 12:29:07,042 DEBUG org.springframework.core.log.LogFormatUtils [http-nio-8080-exec-1] "ERROR" dispatch for GET "/error", parameters={}
+2021-07-13 12:29:07,080 DEBUG org.springframework.web.servlet.FrameworkServlet [http-nio-8080-exec-1] Exiting from "ERROR" dispatch, status 404
+2021-07-13 14:44:23,875 WARN com.zaxxer.hikari.pool.HikariPool$HouseKeeper [HikariPool-6 housekeeper] HikariPool-6 - Thread starvation or clock leap detected (housekeeper delta=1h42m25s470ms302µs800ns).
+2021-07-13 14:55:21,016 INFO org.springframework.boot.admin.SpringApplicationAdminMXBeanRegistrar$SpringApplicationAdmin [RMI TCP Connection(122)-127.0.0.1] Application shutdown requested.
+2021-07-13 14:55:22,065 WARN org.springframework.beans.factory.support.DisposableBeanAdapter [RMI TCP Connection(122)-127.0.0.1] Invocation of destroy method failed on bean with name 'inMemoryDatabaseShutdownExecutor': org.h2.jdbc.JdbcSQLNonTransientConnectionException: La base de données est déjà fermée (pour désactiver la fermeture automatique à l'arrêt de la VM, ajoutez "; DB_CLOSE_ON_EXIT = FALSE" à l'URL db)
+Database is already closed (to disable automatic closing at VM shutdown, add ";DB_CLOSE_ON_EXIT=FALSE" to the db URL) [90121-200]
+2021-07-13 14:55:22,065 DEBUG org.springframework.data.redis.listener.RedisMessageListenerContainer [RMI TCP Connection(122)-127.0.0.1] Stopped RedisMessageListenerContainer
+2021-07-13 14:55:22,075 INFO com.zaxxer.hikari.HikariDataSource [RMI TCP Connection(122)-127.0.0.1] HikariPool-6 - Shutdown initiated...
+2021-07-13 14:55:22,080 INFO com.zaxxer.hikari.HikariDataSource [RMI TCP Connection(122)-127.0.0.1] HikariPool-6 - Shutdown completed.

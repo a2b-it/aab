@@ -1,13 +1,22 @@
 package com.apiweather.app.biz.model.weather;
 
+import lombok.Getter;
+import lombok.Setter;
+
+/**
+ * @author a.bouabidi
+ *
+ */
+@Getter
+@Setter
 public class Main {
-	public double temp;
-    public double feels_like;
-    public double temp_min;
-    public double temp_max;
-    public int pressure;
-    public int sea_level;
-    public int grnd_level;
-    public int humidity;
-    public double temp_kf;
+	private double temp;
+    private double feels_like;
+    private double temp_min;
+    private double temp_max;
+    private int pressure;
+    private int sea_level;
+    private int grnd_level;
+    private int humidity;
+    private double temp_kf;
 }

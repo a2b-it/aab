@@ -19,6 +19,10 @@ import com.apiweather.app.biz.repo.ModelRepository;
 
 
 
+/**
+ * @author a.bouabidi
+ *
+ */
 @RestController
 @RequestMapping(value = "/model")
 public class ModelRessource extends AbstractCommonRessource<ModelRepository, Model, Long>{

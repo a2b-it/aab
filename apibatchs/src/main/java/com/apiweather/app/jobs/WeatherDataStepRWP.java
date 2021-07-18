@@ -9,7 +9,6 @@ import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.item.file.mapping.DefaultLineMapper;
 import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.FileSystemResource;
@@ -17,7 +16,7 @@ import org.springframework.stereotype.Component;
 
 import com.apiweather.app.dss.DSSFileBuilder;
 import com.apiweather.app.dss.DSSFileBuilderImp;
-import com.apiweather.app.dss.DssBlocHeader.TYPE_FILE;
+import com.apiweather.app.dss.DssBlocHeaderBuilder.TYPE_FILE;
 import com.apiweather.app.jobs.domain.SpacFile;
 import com.apiweather.app.jobs.domain.SpacFileMapper;
 
@@ -26,6 +25,10 @@ import lombok.Setter;
 
 
 
+/**
+ * @author a.bouabidi
+ *
+ */
 @Component
 @Getter
 @Setter
@@ -95,18 +98,22 @@ public class WeatherDataStepRWP {
 		
 		@Override
 		public void write(List<? extends SpacFile> items) throws Exception {
-			if(items==null)return ;
+			DSSBlockData block = 
+			if(items==null) return ;
 			double[] tab= new double[items.size()];
 			for (int i=0;i<items.size();i++) {
-				tab[i]=items.get(i).getValeur();
-				System.out.println("size"+items.size());
+				
+				tab[i] = items.get(i).getValeur();
+				
+				//System.out.println("size"+items.size());
+				
 			}
 			if(this.dSSFileBuilderImp == null) {
 				this.dSSFileBuilderImp = new DSSFileBuilderImp();
-				dSSFileBuilderImp.init("F:/Workspaces/apigeo/apibatchs/MyDSS_file.dss", "F:/Workspaces/apigeo/apibatchs/logs/MyDSS_file.dss");
-				dSSFileBuilderImp.create(TYPE_FILE.REGULAR_SERIES, "MOROCCO FLOOD HAZARD","BGE_EL_MELLAH","ET","01Nov1974","1DAY","EL MELLAH HMS");				
+				this.dSSFileBuilderImp.init("F:/Workspaces/apigeo/apibatchs/MyDSS_file.dss", "F:/Workspaces/apigeo/apibatchs/logs/MyDSS_file.dss");
+				this.dSSFileBuilderImp.create(TYPE_FILE.REGULAR_SERIES, "MOROCCO FLOOD HAZARD","BGE_EL_MELLAH","ET","01Nov1974","1DAY","EL MELLAH HMS");				
 			}
-			dSSFileBuilderImp.appendData(tab, "mm", "PER-CUM", 60*24);			
+			this.dSSFileBuilderImp.appendData(tab, "mm", "PER-CUM", 60*24);			
 		}
 		
 		@BeforeStep

@@ -8,8 +8,14 @@ import hec.heclib.util.HecTime;
 import hec.io.TimeSeriesContainer;
 import lombok.Getter;
 
+
+
+/**
+ * @author a.bouabidi
+ *
+ */
 @Getter
-public class TimeSerieDssBlocHeader implements DssBlocHeader {
+public class TimeSerieDssBlocHeaderBuilder implements DssBlocHeaderBuilder {
 	
 	private String path;
 	

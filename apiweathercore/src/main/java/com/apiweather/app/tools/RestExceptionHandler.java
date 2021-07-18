@@ -29,17 +29,16 @@ public class RestExceptionHandler       	 {
 	
 		private static final Logger logger = LoggerFactory.getLogger(RestExceptionHandler.class);	
 		
-		private ResponseEntity<Object> buildResponseEntity(ApiError apiError) {
-		       return new ResponseEntity<>(apiError, apiError.getStatus());
+		private ResponseEntity<Object> buildResponseEntity(HttpStatus status, Exception ex) {
+			ApiError apiError =  new ApiError(status);
+			apiError.setMessage(ex.getMessage());
+		    return new ResponseEntity<>(apiError, apiError.getStatus());
 		}
 		
-	    @ExceptionHandler(value = { IllegalArgumentException .class })	
+	    @ExceptionHandler(value = { IllegalArgumentException.class })	
 	    public ResponseEntity<Object> handleInvalidInputException(IllegalArgumentException  ex) {	
-	        logger.error("Invalid Input Exception: ",ex.getMessage());	
-	        ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST);
-		    apiError.setMessage(ex.getMessage());
-	        
-	        return buildResponseEntity(apiError);
+	        logger.error("Invalid Input Exception: ",ex.getMessage());		     	        
+	        return buildResponseEntity(HttpStatus.BAD_REQUEST,ex);
 	    }
 	
 	    
@@ -47,36 +46,22 @@ public class RestExceptionHandler       	 {
 	   	
 	    @ExceptionHandler(value = { BusinessException.class })	
 	    public ResponseEntity<Object> handleBusinessException(BusinessException ex) {	
-	    	logger.error("Business Exception: ",ex.getMessage());	
-	    	ApiError apiError = new ApiError(HttpStatus.INTERNAL_SERVER_ERROR);
-		    apiError.setMessage(ex.getMessage());
-	       
-	        return buildResponseEntity(apiError);
+	    	logger.error("Business Exception: ",ex.getMessage());		       
+	        return buildResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR,ex);
 	    }
 	    
 	    	    	    	   	   
 	    public ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
 	        HttpHeaders headers, HttpStatus status, WebRequest request) {
 	    	logger.error("ConstraintViolation Exception: ",ex.getMessage());	
-	    	ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST);
-		     apiError.setMessage(ex.getMessage());
-		     apiError.setDebugMessage("Validation Failed: ");
-	    	 
-	      
-	          //ex.getBindingResult().toString());
-	      return buildResponseEntity(apiError);
+	    	    return buildResponseEntity(HttpStatus.BAD_REQUEST,ex);
 	    }  
 	   
 	    @ExceptionHandler(ConstraintViolationException.class)
 	    @ResponseStatus(HttpStatus.BAD_REQUEST)
 	    ResponseEntity<Object> handleConstraintViolationException(ConstraintViolationException e) {
-	    	logger.error("ConstraintViolation Exception: ",e.getMessage());	
-	    	 ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST);
-		     apiError.setMessage(e.getMessage());
-		     apiError.setDebugMessage("not valid due to validation error: ");
-		     //apiError.getSubErrors().addAll(e.getConstraintViolations());
-	    	
-	      return buildResponseEntity(apiError);
+	    	logger.error("ConstraintViolation Exception: ",e.getMessage());		    	 	    	
+	      return buildResponseEntity(HttpStatus.BAD_REQUEST,e);
 	    } 
 	    
 	    
@@ -85,17 +70,13 @@ public class RestExceptionHandler       	 {
 	    	logger.error("Unauthorized Exception: ",ex.getMessage());	
 	    	 ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST);
 		        apiError.setMessage(ex.getMessage());
-	        return buildResponseEntity(apiError);	
+	        return buildResponseEntity(HttpStatus.FORBIDDEN,ex);	
 	    }
 	    
 	    @ExceptionHandler(value= {EntityNotFoundException.class})
 	    protected ResponseEntity<Object> handleEntityNotFoundException(EntityNotFoundException ex) {
-	    	logger.error("EntityNotFound Exception: ",ex.getMessage());
-	        ApiError apiError = new ApiError(HttpStatus.NOT_FOUND);
-	        apiError.setMessage(ex.getMessage());
-	        return buildResponseEntity(apiError);
-	    }
-	    
-	 
+	    	logger.error("EntityNotFound Exception: ",ex.getMessage());	       
+	        return buildResponseEntity(HttpStatus.NOT_FOUND,ex);
+	    }	    	
 	   
 }

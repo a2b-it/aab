@@ -10,6 +10,10 @@ import com.apiweather.app.biz.repo.OutputRepository;
 
 
 
+/**
+ * @author a.bouabidi
+ *
+ */
 @RestController
 @RequestMapping(value = "/output")
 public class OutputRessource extends AbstractCommonRessource<OutputRepository, Output, Long>{

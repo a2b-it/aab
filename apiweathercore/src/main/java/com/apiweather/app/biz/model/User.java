@@ -1,14 +1,21 @@
 package com.apiweather.app.biz.model;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 
 import lombok.Getter;
 import lombok.Setter;
 
+
+/**
+ * @author a.bouabidi
+ *
+ */
 @Getter
 @Setter
 public class User {
-	
+	@Transient
+	public static final String SEQUENCE_NAME = "user_sequence";
 	@Id
 	private Long idUser;
 	private String email;

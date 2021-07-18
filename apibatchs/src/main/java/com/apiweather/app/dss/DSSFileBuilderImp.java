@@ -1,10 +1,12 @@
 package com.apiweather.app.dss;
 
 import java.io.File;
-import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
-import com.apiweather.app.dss.DssBlocHeader.TYPE_FILE;
+import com.apiweather.app.dss.DssBlocHeaderBuilder.TYPE_FILE;
 import com.apiweather.app.excep.DSSBuildingException;
 
 import hec.heclib.dss.DSSErrorMessage;
@@ -12,14 +14,18 @@ import hec.heclib.dss.HecDataManager;
 
 
 
+/**
+ * @author a.bouabidi
+ *
+ */
 public class DSSFileBuilderImp implements DSSFileBuilder {
 	
 	
 	private HecDataManager dataManager;
 	
-	private DssBlocBody bodyBloc;
+	private DssBlocBodyBuilder bodyBloc;
 	
-	private DssBlocHeader headerBloc;
+	private DssBlocHeaderBuilder headerBloc;
 	
 	private String dssFilePath;
 	
@@ -60,12 +66,19 @@ public class DSSFileBuilderImp implements DSSFileBuilder {
 
 
 	@Override
-	public DSSFileBuilder create(TYPE_FILE type, String... pathParts) {
+	public DSSFileBuilder create(TYPE_FILE type, String... pathParts) throws DSSBuildingException {
 		if (type==TYPE_FILE.REGULAR_SERIES) {
-			this.headerBloc = new TimeSerieDssBlocHeader ();
-			this.bodyBloc = new TimeSerieDssBlocBody();
+			this.headerBloc = new TimeSerieDssBlocHeaderBuilder ();
+			this.bodyBloc = new TimeSerieDssBlocBodyBuilder();
 		}
-		int status = headerBloc.init(type, dssFilePath, new Date(141951600));
+		SimpleDateFormat f = new SimpleDateFormat("ddMMMyyyy");
+		Date startDate = null;
+		try {
+			startDate = f.parse(pathParts[3]);
+		} catch (ParseException e) {
+			throw new DSSBuildingException(e);
+		}
+		int status = headerBloc.init(type, dssFilePath, startDate);
 		if (status<0) {
 			logStatus();
 		}

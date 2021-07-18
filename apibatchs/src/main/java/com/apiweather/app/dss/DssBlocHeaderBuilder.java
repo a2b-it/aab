@@ -2,9 +2,13 @@ package com.apiweather.app.dss;
 
 import java.util.Date;
 
-import com.apiweather.app.dss.DssBlocHeader.TYPE_FILE;
-
-public interface DssBlocHeader {
+import com.apiweather.app.dss.DssBlocHeaderBuilder.TYPE_FILE;
+/**
+ * 
+ * @author a.bouabidi
+ *
+ */
+public interface DssBlocHeaderBuilder {
 	
 	public void setPathPartA (String part);
 	

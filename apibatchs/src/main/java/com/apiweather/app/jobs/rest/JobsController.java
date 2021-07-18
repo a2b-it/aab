@@ -20,10 +20,14 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 
+/**
+ * @author a.bouabidi
+ *
+ */
 @RestController
 @AllArgsConstructor
 @Slf4j
-public class AirFlowApiController {
+public class JobsController {
 	@Autowired
 	JobLauncher jobLauncher;
 	
