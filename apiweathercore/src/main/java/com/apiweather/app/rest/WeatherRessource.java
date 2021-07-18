@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -84,6 +85,7 @@ public class WeatherRessource extends AbstractCommonRessource<WeatherRepository,
 	
 	@PostMapping("/savecurrent/{id}")
 	@ResponseBody
+	@Transactional
 	public ResponseEntity<AgroWeather> saveCurrentWeather(@Valid  @NotNull @PathVariable(name = "id") long idstation) throws EntityNotFoundException, BusinessException {		
 		Optional<Station> rs = stationRepository.findById(idstation);
 		if (rs.isEmpty()) throw new EntityNotFoundException ("Station was not found for parameters {id="+idstation+"}");
@@ -104,8 +106,8 @@ public class WeatherRessource extends AbstractCommonRessource<WeatherRepository,
 				 Station s = rs.get(j);
 				 AgroWeather fs= weatherApiCallerImp.getCurrentWeatherByLatAndLong(s.getLon(), s.getLon());
 				 fs.setStationId(s.getStationId());				 
-				 liste.add(fs);			 
-			}		
+				 liste.add(fs);			 				 
+			}				
 		}catch (Exception e) {
 			throw new BusinessException(e);
 		}					
@@ -114,6 +116,7 @@ public class WeatherRessource extends AbstractCommonRessource<WeatherRepository,
 	
 	@PostMapping("/savecurrent/all")
 	@ResponseBody
+	@Transactional
 	public ResponseEntity<AgroWeather> saveCurrentWeatherAll() throws EntityNotFoundException, BusinessException {		
 		List<Station> rs = stationRepository.findAll();
 		if (rs == null || rs.isEmpty()) throw new EntityNotFoundException ("no Station was found for parameters");
@@ -123,8 +126,10 @@ public class WeatherRessource extends AbstractCommonRessource<WeatherRepository,
 				 Station s = rs.get(j);
 				 AgroWeather fs= weatherApiCallerImp.getCurrentWeatherByLatAndLong(s.getLon(), s.getLon());
 				 fs.setStationId(s.getStationId());				 
-				 liste.add(fs);			 
+				 liste.add(fs);
+				 agroWeatherRepository.save(fs);
 			}		
+			
 		}catch (Exception e) {
 			throw new BusinessException(e);
 		}					
