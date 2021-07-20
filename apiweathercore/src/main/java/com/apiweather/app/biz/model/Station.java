@@ -16,9 +16,9 @@ public class Station {
 	@Id
 	private Long stationId;	
 	
-	private Long lon;
+	private Double lon;
 	
-	private Long lat;
+	private Double lat;
 	
 	private float[][] coordinates;
 	
@@ -30,7 +30,7 @@ public class Station {
 	
 	private List<CollectedData> collectedDatas;
 	
-	private List<Weather> weathers;
+	private List<WeatherPrecipt> weatherPrecipts;
 	
 }
 

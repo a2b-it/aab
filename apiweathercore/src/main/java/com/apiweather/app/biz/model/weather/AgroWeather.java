@@ -10,6 +10,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 
+import org.springframework.data.annotation.Id;
+
 /**
  * @author a.bouabidi
  *
@@ -18,11 +20,12 @@ import lombok.Setter;
 @Setter
 public class AgroWeather {
 	
-	private Long Id;	
+	@Id
+	private String Id;	
 	private Long stationId;
-	private int dt;
+	private long dt;
 	@JsonProperty("weather")
-	private List<WeatherCondition> weather;
+	private List<WeatherCondition> weatherCondition;
 	private Main main;
 	private Wind wind;
 	private Rain rain;

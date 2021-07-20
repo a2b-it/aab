@@ -22,7 +22,7 @@ public class WeatherApiCallerImp implements WeatherApiCaller {
 	RestClientsFactory clientfactory;
 	
 	@Override
-	public List<AgroForcast> getForecastByLatLong (long lon, long lat) {
+	public List<AgroForcast> getForecastByLatLong (double lon, double lat) {
 		String url = "forecast";
 		String rootUrl = clientfactory.getWeatherUrl();
 						
@@ -47,7 +47,7 @@ public class WeatherApiCallerImp implements WeatherApiCaller {
 	}
 
 	@Override
-	public AgroWeather getCurrentWeatherByLatAndLong (long lon, long lat) {
+	public AgroWeather getCurrentWeatherByLatAndLong (double lon, double lat) {
 		String url = "";
 		String rootUrl = clientfactory.getWeatherUrl();
 						

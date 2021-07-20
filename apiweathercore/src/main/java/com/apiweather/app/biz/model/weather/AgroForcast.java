@@ -14,7 +14,7 @@ import lombok.Setter;
 @Setter
 public class AgroForcast {
 	private Long stationId;
-	private int dt;
+	private long dt;
     private List<WeatherCondition> weather;
     private Main main;
     private Wind wind;
