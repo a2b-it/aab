@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.apiweather.app.rest.tools;
+package com.apiweather.app.tools.rest;
 
 /**
  * @author a.bouabidi

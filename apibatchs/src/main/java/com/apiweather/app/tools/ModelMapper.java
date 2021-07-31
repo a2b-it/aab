@@ -1,4 +1,4 @@
-package com.apiweather.app.rest.tools;
+package com.apiweather.app.tools;
 
 public interface ModelMapper<T, M> {
 	

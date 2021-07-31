@@ -31,7 +31,7 @@ public class MAin {
 			TimeSeriesContainer tsc,tsc2 = null;													
 			String path = "/MOROCCO FLOOD HAZARD/BGE_EL_MELLAH/ET/01Nov1974/1DAY/EL MELLAH HMS/";						
 			HecTime start = new HecTime("10Nov1974","2400");
-			/*tsc = createTimeSeriesContainer(path, new double[] {0.1f,2.1f,1.1f,4.1f,3.1f,6.1f,5.1f,8.1f,7.1f,9.1f} , start );			
+			/* tsc = createTimeSeriesContainer(path, new double[] {0.1f,2.1f,1.1f,4.1f,3.1f,6.1f,5.1f,8.1f,7.1f,9.1f} , start );			
 			status = dssTimeSeriesWrite.write(tsc);
 			dssTimeSeriesWrite.done();
 			if (status < 0) {

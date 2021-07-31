@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.apiweather.app.biz.model.ObservedData;
 import com.apiweather.app.biz.repo.ObservedDataRepository;
 import com.apiweather.app.rest.dto.SpacDTO;
-import com.apiweather.app.rest.tools.ModelMapper;
 import com.apiweather.app.tools.exception.BusinessException;
 import com.apiweather.app.tools.exception.EntityNotFoundException;
+import com.apiweather.app.tools.rest.ModelMapper;
 
 
 

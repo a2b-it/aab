@@ -31,7 +31,7 @@ import com.apiweather.app.dss.DSSFileBuilderImp;
 import com.apiweather.app.dss.DssBlocHeaderBuilder.TYPE_FILE;
 import com.apiweather.app.dss.model.DSSBlock;
 import com.apiweather.app.dss.model.DSSBlockData;
-import com.apiweather.app.dss.model.DSSBlockDataMapper;
+import com.apiweather.app.dss.model.DSSBlockDataDbMapper;
 import com.apiweather.app.dss.model.DSSFile;
 import com.apiweather.app.excep.DSSBuildingException;
 import com.apiweather.app.jobs.domain.SpacFile;
@@ -54,7 +54,7 @@ public class DssFileStepRWP {
 	 * 
 	 * @return
 	 */
-	public ItemReader<DSSBlockData> dssFileDataStepReader() {
+	public ItemReader<DSSBlockData> dssFileDataStepReader() throws IOException {
 		Resource[] resources = null;
 		ResourcePatternResolver patternResolver = new PathMatchingResourcePatternResolver();
 		try {
@@ -62,9 +62,9 @@ public class DssFileStepRWP {
 		} catch (IOException e) {
 			throw e;
 		}
-		MultiResourceItemReader<DSSBlock> reader = new MultiResourceItemReader<>();
+		MultiResourceItemReader<DSSBlockData> reader = new MultiResourceItemReader<>();
 		reader.setResources (resources);
-		reader.setDelegate (fileReader());
+		//reader.setDelegate (fileReader());
 		return reader;
 
 	}
@@ -95,7 +95,7 @@ public class DssFileStepRWP {
 					}
 				});
 				// Set values in Employee class
-				setFieldSetMapper(new DSSBlockDataMapper());
+				setFieldSetMapper(new DSSBlockDataDbMapper());
 			}
 		});
 

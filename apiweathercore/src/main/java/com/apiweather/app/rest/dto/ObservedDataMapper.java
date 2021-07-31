@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import com.apiweather.app.biz.model.ObservedData;
 import com.apiweather.app.biz.model.ObservedData.CATEG;
 import com.apiweather.app.cfg.SequenceGeneratorService;
-import com.apiweather.app.rest.tools.ModelMapper;
+import com.apiweather.app.tools.rest.ModelMapper;
 
 import lombok.Setter;
 

@@ -11,7 +11,7 @@ import org.springframework.validation.BindException;
  * @author a.bouabidi
  *
  */
-public class DSSBlockDataMapper  implements FieldSetMapper<DSSBlockData>{
+public class DSSBlockDataDbMapper  implements FieldSetMapper<DSSBlockData>{
 
 	@Override
 	public DSSBlockData mapFieldSet(FieldSet fieldSet) throws BindException {

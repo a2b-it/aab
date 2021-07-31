@@ -31,9 +31,11 @@ import com.apiweather.app.biz.repo.AgroWeatherRepository;
 import com.apiweather.app.biz.repo.StationRepository;
 import com.apiweather.app.biz.repo.WeatherPreciptRepository;
 import com.apiweather.app.rest.clients.WeatherApiCaller;
-import com.apiweather.app.rest.tools.ModelMapper;
+import com.apiweather.app.rest.dto.WeatherPrecipDTO;
+import com.apiweather.app.rest.dto.WeatherPreciptByDayDTO;
 import com.apiweather.app.tools.exception.BusinessException;
 import com.apiweather.app.tools.exception.EntityNotFoundException;
+import com.apiweather.app.tools.rest.ModelMapper;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -66,8 +68,7 @@ public class ServiceWeather {
 	@Autowired
 	ModelMapper<WeatherPrecipt, AgroWeather> weatherPreciptMapper = null;
 	
-	@Autowired
-	MongoTemplate mongoTemplate;
+	
 	
 	/**
 	 * skip if last saved data is less than 60 mn older  	
@@ -131,11 +132,11 @@ public class ServiceWeather {
 		return fs;
 	}
 	
-	
-	@Getter
-	@Setter
-	private class Output{
-		int total; 
+	public List<WeatherPreciptByDayDTO> weatherPreciptForStation (long idstation) throws EntityNotFoundException {
+		List<WeatherPreciptByDayDTO> rs = weatherPreciptRepository.getWeatherPreciptByStationIdGroupByDate(String.valueOf(idstation));
+		if (rs.isEmpty()) throw new EntityNotFoundException ("No weither found for parameters {station="+idstation+"}");
+		
+		return rs;
 	}
 }
 

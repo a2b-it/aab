@@ -32,6 +32,7 @@ public class RestExceptionHandler       	 {
 		private ResponseEntity<Object> buildResponseEntity(HttpStatus status, Exception ex) {
 			ApiError apiError =  new ApiError(status);
 			apiError.setMessage(ex.getMessage());
+			logger.error(ex.getMessage(), ex);
 		    return new ResponseEntity<>(apiError, apiError.getStatus());
 		}
 		

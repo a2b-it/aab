@@ -35,9 +35,10 @@ import com.apiweather.app.biz.repo.WeatherPreciptRepository;
 import com.apiweather.app.biz.services.ServiceWeather;
 import com.apiweather.app.rest.clients.WeatherApiCaller;
 import com.apiweather.app.rest.dto.SpacDTO;
-import com.apiweather.app.rest.tools.ModelMapper;
+import com.apiweather.app.rest.dto.WeatherPrecipDTO;
 import com.apiweather.app.tools.exception.BusinessException;
 import com.apiweather.app.tools.exception.EntityNotFoundException;
+import com.apiweather.app.tools.rest.ModelMapper;
 
 
 
@@ -53,6 +54,9 @@ public class WeatherRessource extends AbstractCommonRessource<WeatherPreciptRepo
 	@Autowired
 	private ServiceWeather serviceWeather;
 	
+	@Autowired
+	private StationRepository stationRepository;
+	
 	public WeatherRessource(WeatherPreciptRepository repo) {
 		super(repo);
 		// TODO Auto-generated constructor stub
@@ -67,60 +71,65 @@ public class WeatherRessource extends AbstractCommonRessource<WeatherPreciptRepo
 		return new ResponseEntity(fs,HttpStatus.OK);
 	}	
 	
-	@GetMapping("/current/{id}")
+	@GetMapping("/currentAgroWeather/{id}")
 	@ResponseBody
 	public ResponseEntity<AgroWeather> currentWeather(@Valid  @NotNull @PathVariable(name = "id") long idstation) throws EntityNotFoundException, BusinessException {		
 		AgroWeather  fs = serviceWeather.requestWeatherForStation (idstation);
 		return new ResponseEntity (fs,HttpStatus.OK);
 	}
 	
-	@PostMapping("/savecurrent/{id}")
+	@PostMapping("/saveAgroWeather/{id}")
 	@ResponseBody	
-	public ResponseEntity<AgroWeather> saveCurrentWeather(@Valid  @NotNull @PathVariable(name = "id") long idstation) throws EntityNotFoundException, BusinessException {		
-		AgroWeather fs = serviceWeather.addWeatherEntryForStation (idstation);
+	public ResponseEntity<AgroWeather> saveCurrentWeather(@Valid  @NotNull @PathVariable(name = "id") long idstation) throws EntityNotFoundException, BusinessException {
+		AgroWeather fs = null;
+		try {
+			fs = serviceWeather.addWeatherEntryForStation (idstation);	
+		}catch(BusinessException e) {
+			throw e;
+		}		
 		return new ResponseEntity (fs,HttpStatus.OK);
 	}	
 	
-	@GetMapping("/current/all")
+	@GetMapping("/currentAgroWeather/all")
 	@ResponseBody
 	public ResponseEntity<AgroWeather> currentWeatherAll() throws EntityNotFoundException, BusinessException {		
-		/*List<Station> rs = stationRepository.findAll();
+		List<Station> rs = stationRepository.findAll();
 		if (rs == null || rs.isEmpty()) throw new EntityNotFoundException ("no Station was found for parameters");
 		List<AgroWeather> liste = new ArrayList<AgroWeather>();
 		try {
 			for (int j = 0; j<rs.size();j++) {
 				 Station s = rs.get(j);
-				 AgroWeather fs= weatherApiCallerImp.getCurrentWeatherByLatAndLong(s.getLon(), s.getLon());
-				 fs.setStationId(s.getStationId());				 
+				 AgroWeather fs = serviceWeather.requestWeatherForStation (s.getStationId());	 
 				 liste.add(fs);			 				 
 			}				
 		}catch (Exception e) {
 			throw new BusinessException(e);
-		}					*/
-		return new ResponseEntity(null,HttpStatus.OK);
+		}					
+		return new ResponseEntity(liste,HttpStatus.OK);
 	}
 	
-	@PostMapping("/savecurrent/all")
+	@PostMapping("/saveAgroWeather/all")
 	@ResponseBody
 	@Transactional
 	public ResponseEntity<AgroWeather> saveCurrentWeatherAll() throws EntityNotFoundException, BusinessException {		
-	/*	List<Station> rs = stationRepository.findAll();
+		List<Station> rs = stationRepository.findAll();
 		if (rs == null || rs.isEmpty()) throw new EntityNotFoundException ("no Station was found for parameters");
 		List<AgroWeather> liste = new ArrayList<AgroWeather>();
 		try {
 			for (int j = 0; j<rs.size();j++) {
 				 Station s = rs.get(j);
-				 AgroWeather fs= weatherApiCallerImp.getCurrentWeatherByLatAndLong(s.getLon(), s.getLon());
+				 AgroWeather fs = serviceWeather.addWeatherEntryForStation(s.getStationId());
 				 fs.setStationId(s.getStationId());				 
-				 liste.add(fs);
-				 agroWeatherRepository.save(fs);
-			}		
-			
+				 liste.add(fs);				 
+			}			
 		}catch (Exception e) {
 			throw new BusinessException(e);
-		}				*/	
-		return new ResponseEntity(null,HttpStatus.OK);
+		}					
+		return new ResponseEntity(liste,HttpStatus.OK);
 	}
 	
 	
+	
+	
+	 
 }

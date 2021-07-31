@@ -1,4 +1,4 @@
-package com.apiweather.app.rest.tools;
+package com.apiweather.app.tools.rest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

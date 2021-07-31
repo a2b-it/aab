@@ -7,5 +7,5 @@ import com.apiweather.app.biz.model.Station;
 public interface StationRepository extends MongoRepository<Station, Long> {
 	
 
-
+	public Station findStationByName(String name);
 }

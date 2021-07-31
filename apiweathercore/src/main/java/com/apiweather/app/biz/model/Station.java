@@ -2,6 +2,8 @@ package com.apiweather.app.biz.model;
 
 import java.util.List;
 
+import javax.validation.constraints.NotNull;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 
@@ -15,14 +17,15 @@ public class Station {
 	public static final String SEQUENCE_NAME = "weather_sequence";
 	@Id
 	private Long stationId;	
-	
+	@NotNull
 	private Double lon;
-	
+	@NotNull
 	private Double lat;
 	
-	private float[][] coordinates;
-	
+	@NotNull
 	private String name;
+	@NotNull
+	private String location;
 	
 	private List<Alert> alerts;
 	

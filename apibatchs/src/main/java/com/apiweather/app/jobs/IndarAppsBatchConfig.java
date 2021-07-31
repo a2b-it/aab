@@ -7,12 +7,15 @@ import org.springframework.batch.core.configuration.annotation.EnableBatchProces
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
+import org.springframework.batch.item.ItemStream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.apiweather.app.dss.model.DSSBlock;
 import com.apiweather.app.jobs.domain.SpacFile;
+import com.apiweather.app.jobs.domain.WeatherPrecip;
 
 
 
@@ -61,11 +64,12 @@ public class IndarAppsBatchConfig {
 	@Bean
     public Step weatherDataStep() {		
 		WeatherDataStepRWP p = new WeatherDataStepRWP();
+		//chunk is 1 block by block
         return stepBuilderFactory.get("weatherData")
-                .<SpacFile, SpacFile> chunk(10)
-                .reader(p.weatherDataStepReader())
-                //.processor(processor())
+                .<DSSBlock, DSSBlock> chunk(1)
+                .reader(p.weatherDataStepReader())                
                 .writer(p.weatherDataStepWriter())
+                .stream((ItemStream) p.weatherDataStepReader())
                 .build();
     }
 	/*
