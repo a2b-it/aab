@@ -2,17 +2,13 @@ package com.apiweather.app.rest;
 
 
 import java.util.List;
-import java.util.Optional;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
-import org.springframework.data.domain.Example;
-import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -39,11 +35,15 @@ public class SiteRessource extends AbstractCommonRessource<SiteRepository, Site,
 		// TODO Auto-generated constructor stub
 	}
 	
-	@GetMapping("/findLike/")
+	@GetMapping("/like/")
 	@ResponseBody
 	public ResponseEntity<Site> findElementByExemple(@Valid  @NotNull @RequestBody Site site) throws EntityNotFoundException {		
 		List<Site> sites = getRepository().findAllLikeThis(site);
 		return new ResponseEntity(sites,HttpStatus.OK);
-	}
+	}		
+	
+	
+	
+	
 		
 }

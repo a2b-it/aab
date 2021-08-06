@@ -20,11 +20,9 @@ import org.springframework.batch.item.file.mapping.DefaultLineMapper;
 import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
-import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
-import org.springframework.stereotype.Component;
 
 import com.apiweather.app.dss.DSSFileBuilder;
 import com.apiweather.app.dss.DSSFileBuilderImp;
@@ -34,14 +32,12 @@ import com.apiweather.app.dss.model.DSSBlockData;
 import com.apiweather.app.dss.model.DSSBlockDataDbMapper;
 import com.apiweather.app.dss.model.DSSFile;
 import com.apiweather.app.excep.DSSBuildingException;
-import com.apiweather.app.jobs.domain.SpacFile;
-import com.apiweather.app.jobs.domain.SpacFileMapper;
 
 /**
  * @author a.bouabidi
  *
  */
-@Component
+
 public class DssFileStepRWP {
 
 	private String dssFilePath;

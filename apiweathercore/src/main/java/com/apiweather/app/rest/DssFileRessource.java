@@ -44,7 +44,7 @@ public class DssFileRessource {
 			
 	@GetMapping("/data/{name}")
 	@ResponseBody
-	public DSSBlock getStationWeatherPrecipt(@Valid  @NotNull @PathVariable(name = "name") String station) throws EntityNotFoundException, BusinessException{
+	public DSSBlock[] getStationWeatherPrecipt(@Valid  @NotNull @PathVariable(name = "name") String station) throws EntityNotFoundException, BusinessException{
 		Station s = stationRepository.findStationByName(station);
 		if(s==null)throw new EntityNotFoundException (" NO Station found with this name "+station);
 		List<WeatherPreciptByDayDTO> liste = serviceWeather.weatherPreciptForStation(s.getStationId());
@@ -56,6 +56,7 @@ public class DssFileRessource {
 		block.setDescription(s.getName()+" HSM");
 		block.setDataParam("ET");		
 		block.setTimeInterval("1DAY");
-		return block;
+		
+		return new DSSBlock[] {block};
 	}
 }

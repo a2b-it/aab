@@ -36,8 +36,6 @@ public class Site {
 
 	private List<Station> stations;
 	
-	private List<Model> models;
-	
-	
+	private List<Model> models;		
 	
 }

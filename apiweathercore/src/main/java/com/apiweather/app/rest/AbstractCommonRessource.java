@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.apiweather.app.tools.exception.EntityNotFoundException;
@@ -46,7 +45,7 @@ public class AbstractCommonRessource <R, T, L>{
 		return new ResponseEntity(l,HttpStatus.OK);
 	}
 	
-	@GetMapping("/get/{id}")
+	@GetMapping("/{id}")
 	@ResponseBody
 	public ResponseEntity<T> getElementById(@Valid  @NotNull @PathVariable(name = "id")L id) throws EntityNotFoundException {		
 		Optional<T> r =  ((MongoRepository< T, L>)repo).findById(id);
@@ -61,15 +60,15 @@ public class AbstractCommonRessource <R, T, L>{
 		return new ResponseEntity(r,HttpStatus.OK);
 	}
 		
-	@PutMapping("/update/")
+	@PutMapping("/update/{id}")
 	@ResponseBody
-	public ResponseEntity<T> saveElement(@Valid  @NotNull @RequestParam(name = "id")L id,@Valid @RequestBody T t) {	
+	public ResponseEntity<T> saveElement(@Valid  @NotNull @PathVariable(name = "id")L id,@Valid @RequestBody T t) throws EntityNotFoundException {	
 		Optional<T> r =  ((MongoRepository< T, L>)repo).findById(id);
 		T o = null;
 		if (r.isPresent()) {
 			o = ((MongoRepository< T, L>)repo).save(t);
 		}else {
-			return new ResponseEntity("Element not found",HttpStatus.NOT_FOUND);	
+			throw new EntityNotFoundException("Element not found");	
 		}
 		
 		return new ResponseEntity(o,HttpStatus.OK);

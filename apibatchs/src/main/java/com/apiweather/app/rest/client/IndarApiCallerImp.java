@@ -9,9 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import com.apiweather.app.dss.model.DSSBlock;
-import com.apiweather.app.dto.Station;
 import com.apiweather.app.jobs.domain.SpacFile;
-import com.apiweather.app.jobs.domain.WeatherPrecip;
 
 
 /**
@@ -45,13 +43,13 @@ public class IndarApiCallerImp implements IndarApiCaller {
 
 
 	@Override
-	public List<DSSBlock> processDssFileData(Long id) {
-		String url = "observed/spac/saveall";
+	public List<DSSBlock> retreiveStationDssData (String name) {
+		String url = "dssfile/data/";
 		String rootUrl = clientfactory.getApiUrl();
 						
 		RestTemplate client = clientfactory.createAirFlowClient();
 		
-		ResponseEntity r = client.getForEntity(rootUrl+url,DSSBlock[].class);
+		ResponseEntity r = client.getForEntity(rootUrl+url+name,DSSBlock[].class);
 		if (r.getStatusCodeValue() == 200) {
 			return (Arrays.asList((DSSBlock[])r.getBody()));
 		}

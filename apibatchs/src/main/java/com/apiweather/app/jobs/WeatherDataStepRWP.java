@@ -4,9 +4,11 @@ package com.apiweather.app.jobs;
 import java.util.Arrays;
 import java.util.List;
 
+import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.StepExecution;
 import org.springframework.batch.core.annotation.AfterStep;
 import org.springframework.batch.core.annotation.BeforeStep;
+import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemStream;
@@ -53,34 +55,42 @@ import lombok.Setter;
 @Setter
 public class WeatherDataStepRWP {
 	
+	@Autowired
+	private IndarApiCaller indarApiCallerImp;
 	
 	@Value("${csv.input.path}")
 	private String filePath="F:\\git\\apigeo\\hsm\\dss\\Export_SPAC_2021-04-02-17-03.csv";
+	
+	
+	
 	
 	@Bean
 	/**
 	 * from file get to data token
 	 * @return
-	 */
+	 */	
     public ItemReader<DSSBlock> weatherDataStepReader() {	
-        return new WeatherDataStepReader();		 
+		
+       return new WeatherDataStepReader(indarApiCallerImp);		 
     }
 	
 	@Bean
 	/**
 	 * save token to flow or memrory 
 	 * @return
-	 */
+	 */	
     public ItemWriter<DSSBlock> weatherDataStepWriter() {
 		
 		return new WeatherDataStepWriter();
  
     }
-	@Scope("step")
+	
+	@Getter
+	@Setter
 	public class WeatherDataStepReader implements ItemReader<DSSBlock>, ItemStream{
 		
-		@Autowired
-		private IndarApiCaller IndarApiCallerImp;
+	
+		private IndarApiCaller indarApiCallerImp;
 		
 		private List<DSSBlock> dSSBlocks;
 		
@@ -88,6 +98,16 @@ public class WeatherDataStepRWP {
 		
 	    private int nextElementIndex;
 	    
+	   
+	    private String station;
+	    
+	    
+	    
+	    
+		public WeatherDataStepReader(IndarApiCaller indarApiCallerImp) {
+			super();
+			this.indarApiCallerImp = indarApiCallerImp;			
+		}
 
 		@Override
 		public DSSBlock read()
@@ -112,8 +132,8 @@ public class WeatherDataStepRWP {
 		}
 
 		private List<DSSBlock> fetchDSSBlocksDataFromAPI () {
-			//
-			List<DSSBlock> liste = IndarApiCallerImp.processDssFileData(null);
+			//TODO adding parameter station id
+			List<DSSBlock> liste = indarApiCallerImp.retreiveStationDssData(getStation());
 		    return liste;
 		}
 
@@ -143,10 +163,17 @@ public class WeatherDataStepRWP {
 		
 		@Override
 		public void close() throws ItemStreamException {}
-		
+				
+		@BeforeStep
+	    public void beforeStep(final StepExecution stepExecution) {
+	        JobParameters parameters = stepExecution.getJobExecution().getJobParameters();
+	        //use your parameters
+	        this.station = parameters.getString("dss.param.station");
+		}
 	}
 	
-	@Scope("step")
+	
+	
 	public class WeatherDataStepWriter implements ItemWriter<DSSBlock>{
 		
 		private StepExecution stepExecution;
@@ -178,22 +205,18 @@ public class WeatherDataStepRWP {
 		@BeforeStep
 	    public void saveStepExecution(StepExecution stepExecution) {
 	        this.stepExecution = stepExecution;
+	        JobParameters parameters = stepExecution.getJobExecution().getJobParameters();
+	        this.dss_fileName = parameters.getString("dss.file.path");
+	        this.dss_log_fileName = parameters.getString("dss.log.path");
 	    }
 		
 		@AfterStep
 		public void closeAll() {
-			dSSFileBuilderImp.close();
+			if (dSSFileBuilderImp!=null)
+				dSSFileBuilderImp.close();
 		}
 		
-		@Value("#{jobParameters['dss_fileName']}")
-		public void setPathDssFile (final String name) {
-			this.dss_fileName=name;
-		}
 		
-		@Value("#{jobParameters['dss_log_fileName']}")
-		public void setPathLogDssFile (final String name) {
-			this.dss_log_fileName=name;
-		}
 		
 	}
 	

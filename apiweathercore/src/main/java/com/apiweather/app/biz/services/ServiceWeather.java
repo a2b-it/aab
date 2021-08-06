@@ -7,20 +7,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 
-import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Order;
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.aggregation.Aggregation;
-import org.springframework.data.mongodb.core.aggregation.AggregationResults;
-import org.springframework.data.mongodb.core.aggregation.DateOperators;
-import org.springframework.data.mongodb.core.aggregation.MatchOperation;
-import org.springframework.data.mongodb.core.aggregation.ObjectOperators;
-import org.springframework.data.mongodb.core.aggregation.ProjectionOperation;
-import org.springframework.data.mongodb.core.aggregation.DateOperators.Hour;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import com.apiweather.app.biz.model.Station;
@@ -31,17 +18,12 @@ import com.apiweather.app.biz.repo.AgroWeatherRepository;
 import com.apiweather.app.biz.repo.StationRepository;
 import com.apiweather.app.biz.repo.WeatherPreciptRepository;
 import com.apiweather.app.rest.clients.WeatherApiCaller;
-import com.apiweather.app.rest.dto.WeatherPrecipDTO;
 import com.apiweather.app.rest.dto.WeatherPreciptByDayDTO;
 import com.apiweather.app.tools.exception.BusinessException;
 import com.apiweather.app.tools.exception.EntityNotFoundException;
 import com.apiweather.app.tools.rest.ModelMapper;
 
-import lombok.Getter;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-
-import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
 /**
  * @author a.bouabidi
  *
@@ -53,6 +35,7 @@ public class ServiceWeather {
 	private int interval_between_request=60*60;
 	
 	private Calendar cal = Calendar.getInstance();
+	
 	@Autowired
 	private WeatherApiCaller weatherApiCallerImp;
 	

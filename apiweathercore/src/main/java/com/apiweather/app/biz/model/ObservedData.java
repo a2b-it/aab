@@ -5,14 +5,8 @@ import java.util.Date;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.web.context.ContextLoader;
-import org.springframework.web.context.WebApplicationContext;
 
-import com.apiweather.app.cfg.SequenceGeneratorService;
-
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -20,7 +14,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @Document(value = "ObservedData")
-@AllArgsConstructor
 @NoArgsConstructor
 @CompoundIndex(def = "{'date': 1, 'stationName': 1,'type':1}",unique = true)
 public class ObservedData {
@@ -30,24 +23,36 @@ public class ObservedData {
 	
 	@Id
 	private Long id;
-		
+
+	private Long stationId;
+	
+	private String stationName;
+	
 	private CATEG categ;
 	
 	private Date date;
 	
 	private double value;
 	
-	private String stationName;
-	
 	private String type;
 	
 	private String filename;
 	
-	@DBRef(lazy = true)
-	private Station station;
-	
 	public static enum CATEG{
 		SPAC
+	}
+	
+	public ObservedData(Long id, CATEG categ, Date date, double value,String stationName, String type,
+			String filename,Long stationId) {
+		super();
+		this.id = id;
+		this.stationId = stationId;
+		this.stationName = stationName;
+		this.categ = categ;
+		this.date = date;
+		this.value = value;
+		this.type = type;
+		this.filename = filename;
 	}
 	
 	

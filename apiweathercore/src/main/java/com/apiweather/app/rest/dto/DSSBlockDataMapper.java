@@ -24,7 +24,7 @@ public class DSSBlockDataMapper implements ModelMapper<DSSBlock, WeatherPreciptB
 		DSSBlock block;
 		try {
 		SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
-		SimpleDateFormat fs = new SimpleDateFormat("yyyyMMMdd", new Locale("en", "EN"));
+		SimpleDateFormat fs = new SimpleDateFormat("ddMMMyyyy", new Locale("en", "EN"));
 		block = new DSSBlock();
 		DSSBlockData[] tb = new DSSBlockData[tw.length];
 		Date firstDate = null;

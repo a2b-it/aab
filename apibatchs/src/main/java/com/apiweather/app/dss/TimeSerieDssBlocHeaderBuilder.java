@@ -115,6 +115,7 @@ public class TimeSerieDssBlocHeaderBuilder implements DssBlocHeaderBuilder {
 
 	@Override
 	public int close() {
+		if (dssTimeSeriesWrite != null)
 		dssTimeSeriesWrite.close();		
 		return 0;
 	}

@@ -1,0 +1,19 @@
+17:38:47.605      -----DSS---zopen   Existing file opened,  File: F:\Workspaces\apigeo\apibatchs\MyDSS_file.dss
+17:38:47.605                         Handle 4;  Process: 9848;  DSS Versions - Software: 7-IC, File:  7-IC
+17:38:47.605                         Single-user advisory access mode
+17:38:47.608 -----DSS--- zwrite  Handle 4;  Version 1:  /MOROCCO FLOOD HAZARD/Ennzala/ET/01Jan1970/1Day/Ennzala HSM/
+17:38:56.800      -----DSS---zclose  Handle 4;  Process: 9848;  File: F:\Workspaces\apigeo\apibatchs\MyDSS_file.dss
+17:38:56.800                         Number records:         2
+17:38:56.800                         File size:              15982  64-bit words
+17:38:56.800                         File size:              124 Kb;  0 Mb
+17:38:56.800                         Dead space:             73
+17:38:56.800                         Hash range:             8192
+17:38:56.800                         Number hash used:       2
+17:38:56.800                         Max paths for hash:     1
+17:38:56.800                         Corresponding hash:     1325
+17:38:56.800                         Number non unique hash: 0
+17:38:56.800                         Number bins used:       2
+17:38:56.800                         Number overflow bins:   0
+17:38:56.800                         Number physical reads:  5
+17:38:56.800                         Number physical writes: 10
+17:38:56.800                         Number denied locks:    0

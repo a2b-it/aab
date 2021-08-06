@@ -16,6 +16,6 @@ public interface IndarApiCaller {
 	
 	public List<SpacFile> saveAllObservation (List<SpacFile> liste);
 	
-	public List<DSSBlock> processDssFileData(Long id);
+	public List<DSSBlock> retreiveStationDssData(String name);
 	
 }

@@ -5,6 +5,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import com.apiweather.app.dss.DssBlocHeaderBuilder.TYPE_FILE;
 import com.apiweather.app.excep.DSSBuildingException;
@@ -71,10 +72,10 @@ public class DSSFileBuilderImp implements DSSFileBuilder {
 			this.headerBloc = new TimeSerieDssBlocHeaderBuilder ();
 			this.bodyBloc = new TimeSerieDssBlocBodyBuilder();
 		}
-		SimpleDateFormat f = new SimpleDateFormat("ddMMMyyyy");
+		SimpleDateFormat fs = new SimpleDateFormat("ddMMMyyyy", new Locale("en", "EN"));
 		Date startDate = null;
 		try {
-			startDate = f.parse(pathParts[3]);
+			startDate = fs.parse(pathParts[3]);
 		} catch (ParseException e) {
 			throw new DSSBuildingException(e);
 		}
