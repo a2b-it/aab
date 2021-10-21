@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Ant-Version: Apache Ant 1.9.7
+Created-By: 1.8.0_172-b11 (Oracle Corporation)
+Specification-Title: DSSVue-dev Classes
+Specification-Version: 6.0.0.27G
+Specification-Vendor: HEC
+Implementation-Title: DSSVue-dev
+Implementation-Version: 6.0.0.27G-March 31 2021
+
+Name: NAME
+Implementation-Vendor: BOOM
+

@@ -3,6 +3,8 @@ package com.apiweather.app.dss;
 import java.util.Date;
 
 import com.apiweather.app.dss.DssBlocHeaderBuilder.TYPE_FILE;
+
+import hec.io.TimeSeriesContainer;
 /**
  * 
  * @author a.bouabidi
@@ -27,7 +29,7 @@ public interface DssBlocHeaderBuilder {
 	public int init(TYPE_FILE type, String dssFilePath, Date start);
 	
 	public static enum TYPE_FILE{
-		REGULAR_SERIES,
+		REGULAR_SERIES
 		
 	}
 	
@@ -35,5 +37,6 @@ public interface DssBlocHeaderBuilder {
 	
 	public int close ();
 	
+	public int appendData(TimeSeriesContainer tsc);
 
 }

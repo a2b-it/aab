@@ -18,6 +18,8 @@ import com.apiweather.app.tools.rest.ModelMapper;
  */
 public class DSSBlockDataMapper implements ModelMapper<DSSBlock, WeatherPreciptByDayDTO[]>{
 
+	
+	//TODO transfer the logic to a dedicated service
 	@Override
 	public DSSBlock mapDtoToModel(WeatherPreciptByDayDTO[] tw) throws BusinessException {
 		int i=0;

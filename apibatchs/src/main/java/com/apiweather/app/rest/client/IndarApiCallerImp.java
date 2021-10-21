@@ -58,6 +58,21 @@ public class IndarApiCallerImp implements IndarApiCaller {
 	}
 
 
+	@Override
+	public List<DSSBlock> saveAllDssData(DSSBlock[] blocks) {
+		String url = "dssfile/data/";
+		String rootUrl = clientfactory.getApiUrl();
+		RestTemplate client = clientfactory.createAirFlowClient();
+		
+		ResponseEntity r = client.postForEntity(rootUrl+url, client, DSSBlock[].class);
+		if (r.getStatusCodeValue() == 200) {
+			return (Arrays.asList((DSSBlock[])r.getBody()));
+		}
+		
+		return null;
+	}
+
+
 	
 
 }

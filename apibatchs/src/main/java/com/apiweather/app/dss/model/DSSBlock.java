@@ -4,9 +4,11 @@
 package com.apiweather.app.dss.model;
 
 import com.apiweather.app.excep.DSSBuildingException;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Getter;
 import lombok.Setter;
+
 
 /**
  * @author a.bouabidi
@@ -45,12 +47,19 @@ public class DSSBlock {
 	 */
 	private String description;
 	
+	/**
+	 * "INST-VAL"(A value for a specific time)
+		"INST-CUM"(A cumulative measurement, such as a precipitation mass curve)
+		"PER-AVER"(An average over the previous time and this time)
+		"PER-CUM"(Accumulation over the period, such as incremental precipitation)
+	 */
 	private String units;
 	
 	private String type;
 	
 	private DSSBlockData[] dssBlockDatas;
 	
+	@JsonIgnore
 	public int getTimeIntervalAsInt() throws DSSBuildingException {
 		switch (timeInterval) {
 		case "1DAY":{}
@@ -72,5 +81,7 @@ public class DSSBlock {
 		return tab;
 		
 	}
+	
+	
 
 }

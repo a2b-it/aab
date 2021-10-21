@@ -21,7 +21,11 @@ public class Output {
 	@Id
 	private Long idOutput;
 	
+	private Long IdStation;
+	
 	private Date date;
-	private String path;
-	private String[] files;
+	
+	private String[] imagesPaths;
+	
+	private DSSBlock[] dssBlocks;
 }

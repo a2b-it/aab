@@ -1,19 +1,20 @@
-17:38:47.605      -----DSS---zopen   Existing file opened,  File: F:\Workspaces\apigeo\apibatchs\MyDSS_file.dss
-17:38:47.605                         Handle 4;  Process: 9848;  DSS Versions - Software: 7-IC, File:  7-IC
-17:38:47.605                         Single-user advisory access mode
-17:38:47.608 -----DSS--- zwrite  Handle 4;  Version 1:  /MOROCCO FLOOD HAZARD/Ennzala/ET/01Jan1970/1Day/Ennzala HSM/
-17:38:56.800      -----DSS---zclose  Handle 4;  Process: 9848;  File: F:\Workspaces\apigeo\apibatchs\MyDSS_file.dss
-17:38:56.800                         Number records:         2
-17:38:56.800                         File size:              15982  64-bit words
-17:38:56.800                         File size:              124 Kb;  0 Mb
-17:38:56.800                         Dead space:             73
-17:38:56.800                         Hash range:             8192
-17:38:56.800                         Number hash used:       2
-17:38:56.800                         Max paths for hash:     1
-17:38:56.800                         Corresponding hash:     1325
-17:38:56.800                         Number non unique hash: 0
-17:38:56.800                         Number bins used:       2
-17:38:56.800                         Number overflow bins:   0
-17:38:56.800                         Number physical reads:  5
-17:38:56.800                         Number physical writes: 10
-17:38:56.800                         Number denied locks:    0
+18:09:47.139      -----DSS---zopen   Existing file opened,  File: F:\Workspaces\apigeo\apibatchs\MyDSS_file.dss
+18:09:47.139                         Handle 4;  Process: 20484;  DSS Versions - Software: 7-IC, File:  7-IC
+18:09:47.140                         Single-user advisory access mode
+18:09:47.149 -----DSS--- zread   Handle 4;  Version 23:  /MOROCCO FLOOD HAZARD/BGE_EL_MELLAH/ET/01Jan1970/1Day/EL MELLAH HMS/
+18:09:47.155 -----DSS--- zread   Handle 4;  Version 1:  /MOROCCO FLOOD HAZARD/Ennzala/ET/01Jan1970/1Day/Ennzala HSM/
+18:09:47.235      -----DSS---zclose  Handle 4;  Process: 20484;  File: F:\Workspaces\apigeo\apibatchs\MyDSS_file.dss
+18:09:47.235                         Number records:         2
+18:09:47.235                         File size:              15986  64-bit words
+18:09:47.235                         File size:              124 Kb;  0 Mb
+18:09:47.235                         Dead space:             76
+18:09:47.235                         Hash range:             8192
+18:09:47.235                         Number hash used:       2
+18:09:47.235                         Max paths for hash:     1
+18:09:47.236                         Corresponding hash:     1325
+18:09:47.236                         Number non unique hash: 0
+18:09:47.236                         Number bins used:       2
+18:09:47.236                         Number overflow bins:   0
+18:09:47.236                         Number physical reads:  46
+18:09:47.236                         Number physical writes: 0
+18:09:47.236                         Number denied locks:    0

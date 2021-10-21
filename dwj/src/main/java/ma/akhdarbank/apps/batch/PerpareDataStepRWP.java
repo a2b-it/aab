@@ -18,7 +18,6 @@ import org.springframework.batch.item.database.support.SqlPagingQueryProviderFac
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 
-import ma.akhdarbank.apps.batch.AuthStepRWP.AuthStepWriter;
 import ma.akhdarbank.apps.clients.ApiBatchMatchingClient;
 import ma.akhdarbank.apps.dao.TierRepositoryCustom;
 import ma.akhdarbank.apps.dao.TierRowMapper;

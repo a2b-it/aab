@@ -20,4 +20,6 @@ public class CollectedData {
 	@Id
 	private Long idCollected;
 	
+	private Long stationId;
+	
 }

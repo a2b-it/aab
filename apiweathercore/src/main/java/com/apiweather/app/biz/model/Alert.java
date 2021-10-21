@@ -26,9 +26,7 @@ public class Alert {
 	@Id	
 	private Long idalert;
 	
-	private Site site;
-	
-	@NotNull(message = "{email.notempty}")
+	@NotNull(message = "{msg.alert.date.notnull}")
 	private Date date;
 	
 	private Integer level;

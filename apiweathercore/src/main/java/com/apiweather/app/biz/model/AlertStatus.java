@@ -4,5 +4,6 @@ public enum AlertStatus{
 	sent,
 	confirmed,
 	toBeSend,
-	draft
+	draft,
+	readed
 }

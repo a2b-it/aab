@@ -2,8 +2,12 @@ package com.apiweather.app.biz.model;
 
 import java.util.List;
 
+import javax.validation.constraints.NotNull;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -16,8 +20,11 @@ import lombok.Setter;
 @Setter
 public class Site {
 	@Transient
+	public static final String COLLECTION="Site";
+	
+	@Transient
 	public static final String SEQUENCE_NAME = "site_sequence";
-	@Id
+	@Id	
 	private Long siteId;
 	
 	private String name;
@@ -33,7 +40,8 @@ public class Site {
 	private String clientName;
 	
 	private String spokeperson;
-
+	
+	@NotNull
 	private List<Station> stations;
 	
 	private List<Model> models;		

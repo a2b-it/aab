@@ -7,9 +7,13 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.List;
 
+import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.StepExecution;
 import org.springframework.batch.core.annotation.BeforeStep;
+import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.item.ItemReader;
+import org.springframework.batch.item.ItemStream;
+import org.springframework.batch.item.ItemStreamException;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.NonTransientResourceException;
 import org.springframework.batch.item.ParseException;
@@ -18,11 +22,13 @@ import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.item.file.MultiResourceItemReader;
 import org.springframework.batch.item.file.mapping.DefaultLineMapper;
 import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
+import org.springframework.stereotype.Component;
 
 import com.apiweather.app.dss.DSSFileBuilder;
 import com.apiweather.app.dss.DSSFileBuilderImp;
@@ -31,45 +37,64 @@ import com.apiweather.app.dss.model.DSSBlock;
 import com.apiweather.app.dss.model.DSSBlockData;
 import com.apiweather.app.dss.model.DSSBlockDataDbMapper;
 import com.apiweather.app.dss.model.DSSFile;
+import com.apiweather.app.dss.read.DSSFileReader;
 import com.apiweather.app.excep.DSSBuildingException;
+import com.apiweather.app.excep.DSSReadingException;
+import com.apiweather.app.rest.client.IndarApiCaller;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @author a.bouabidi
  *
  */
-
+@Component
+@Getter
+@Setter
 public class DssFileStepRWP {
 
 	private String dssFilePath;
 
 	private String logFilePath;
 
-	@Bean
-	/**
-	 * save token to flow or memrory
-	 * 
-	 * @return
-	 */
-	public ItemReader<DSSBlockData> dssFileDataStepReader() throws IOException {
-		Resource[] resources = null;
-		ResourcePatternResolver patternResolver = new PathMatchingResourcePatternResolver();
-		try {
-			resources = patternResolver.getResources("F:/WORK/hms/input/*.csv");
-		} catch (IOException e) {
-			throw e;
-		}
-		MultiResourceItemReader<DSSBlockData> reader = new MultiResourceItemReader<>();
-		reader.setResources (resources);
-		//reader.setDelegate (fileReader());
-		return reader;
+	
+	
+	/*
+	 * @Bean
+	 *//**
+		 * save token to flow or memrory
+		 * 
+		 * @return
+		 *//*
+			 * public ItemReader<DSSBlockData> dssFileDataStepReader() throws IOException {
+			 * Resource[] resources = null; ResourcePatternResolver patternResolver = new
+			 * PathMatchingResourcePatternResolver(); try { resources =
+			 * patternResolver.getResources("F:/WORK/hms/input/*.csv"); } catch (IOException
+			 * e) { throw e; } MultiResourceItemReader<DSSBlockData> reader = new
+			 * MultiResourceItemReader<>(); reader.setResources (resources);
+			 * //reader.setDelegate (fileReader()); return reader;
+			 * 
+			 * }
+			 */
+
+	public ItemReader<DSSBlock> dssFileDataStepReader(DSSFileReader dSSFileReaderImp) throws IOException {
+		
+		return new DssFileStepReader(dSSFileReaderImp);
 
 	}
-
-	@Value("#{jobParameters['dssfileName']}")
-	public void setFileName(final String name) {
-		this.dssFilePath = name;
+	
+	
+	public ItemReader<DSSBlock> dssApiDataStepReader () {
+		return null;
 	}
-
+	
+	public ItemWriter<DSSBlock> dssApiDataStepWriter () {
+		return null;
+	}
+	
+/*
 	private FlatFileItemReader<DSSBlockData> fileReader() {
 		//
 		FlatFileItemReader<DSSBlockData> reader = new FlatFileItemReader<DSSBlockData>();
@@ -97,25 +122,76 @@ public class DssFileStepRWP {
 
 		return reader;
 	}
-
+*/
 	@Bean
 	/**
 	 * save token to flow or memrory
 	 * 
 	 * @return
 	 */
-	public ItemWriter<DSSBlock> weatherDataStepWriter() {
+	public ItemWriter<DSSBlock> dssFileDataStepWriter(DSSFileBuilder dSSFileBuilderImp) {
 
-		return new DssFileStepWriter();
+		return new DssFileStepWriter(dSSFileBuilderImp);
 
 	}
+	
+	@Bean
+	/**
+	 * save token to flow or memrory
+	 * 
+	 * @return
+	 */
+	public ItemWriter<DSSBlock> dssFileDataStepWriterToconsole() {
 
-	public class DssFileStepReader implements ItemReader<DSSBlock> {
+		return new DssFileWriteToconsole();
 
-		private StepExecution stepExecution;
+	}
+	
+	@Getter
+	@Setter
+	public class DssFileWriteToconsole implements ItemWriter<DSSBlock>{
+
+		@Override
+		public void write(List<? extends DSSBlock> items) throws Exception {
+			if (items == null) {
+				System.out.println("items is null ");
+				return;
+			}
+			ObjectMapper mapper = new ObjectMapper();
+			String json = mapper.writeValueAsString(items);
+			System.out.println("Size "+ items.size());
+			System.out.println("Items "+ json);
+			
+		}
 		
-		private String dirpath;
+	}
+
+	@Getter
+	@Setter
+	public class DssFileStepReader implements ItemReader<DSSBlock>, ItemStream {
+
+		private String dssFileFullPath = "F:\\INDAR\\Desktop\\01_HMS\\Wadi_El_Mellah_Precipitation_Data.dss";
+
+		private String dssLogFileFullPath = "F:/Workspaces/apigeo/apibatchs/MyDSS_file.log";
+
 		
+		private DSSFileReader dSSFileReaderImp ;
+
+		private DSSBlock[] blocks;
+
+		private static final String CURRENT_INDEX = "current.index";
+
+		private int nextElementIndex;
+		
+		
+		
+		
+		@BeforeStep
+	    public void saveStepExecution(StepExecution stepExecution) {	        
+	        JobParameters parameters = stepExecution.getJobExecution().getJobParameters();
+	        this.dssFileFullPath = parameters.getString("dss.file.path");
+	        this.dssLogFileFullPath = parameters.getString("dss.log.path");
+	    }
 		
 		/**
 		 * read data for one year
@@ -123,32 +199,82 @@ public class DssFileStepRWP {
 		@Override
 		public DSSBlock read()
 				throws Exception, UnexpectedInputException, ParseException, NonTransientResourceException {
+
+			if (dssBlocksDataIsNotInitialized()) {
+				blocks = fetchDSSBlocksDataFromFile();
+			}
+			//
+			DSSBlock nextDSSBlock = null;
+			if (nextElementIndex < blocks.length) {
+				nextDSSBlock = blocks[nextElementIndex];
+				nextElementIndex++;
+			} else {
+				nextElementIndex = 0;
+				blocks = null;
+			}
+
+			return nextDSSBlock;
+		}
+
+		private DSSBlock[] fetchDSSBlocksDataFromFile() throws DSSReadingException {
 			DSSFile dssfile = new DSSFile();
-			dssfile.setFilename("F:/Workspaces/apigeo/apibatchs/MyDSS_file.dss");
-			dssfile.setLogpath("F:/Workspaces/apigeo/apibatchs/logs/MyDSS_file.log");
-
+			dssfile.setFilename(dssFileFullPath);
+			dssfile.setLogpath(dssLogFileFullPath);
+			//
 			// Create reader instance
-			
-			
-			return null;
+			dSSFileReaderImp.init(dssFileFullPath, DSSFileReader.TYPE_FILE.REGULAR_TIME_SERIES, dssLogFileFullPath);
+			DSSBlock[] block = dSSFileReaderImp.read();
+			return block;
 		}
 
-		@BeforeStep
-		public void saveStepExecution(StepExecution stepExecution) {
-			this.stepExecution = stepExecution;
+		private boolean dssBlocksDataIsNotInitialized() {
+			return this.blocks == null;
 		}
+
+		@Override
+		public void open(ExecutionContext executionContext) throws ItemStreamException {
+			if (executionContext.containsKey(CURRENT_INDEX)) {
+				nextElementIndex = Long.valueOf(executionContext.getLong(CURRENT_INDEX)).intValue();
+			} else {
+				nextElementIndex = 0;
+			}
+
+		}
+
+		@Override
+		public void update(ExecutionContext executionContext) throws ItemStreamException {
+			executionContext.putLong(CURRENT_INDEX, Long.valueOf(nextElementIndex).longValue());
+
+		}
+
+		@Override
+		public void close() throws ItemStreamException {
+			int status = dSSFileReaderImp.close();
+			if (status != 0)
+				dSSFileReaderImp.logStatus();
+
+		}
+
+		public DssFileStepReader(DSSFileReader dSSFileReaderImp) {
+			super();
+			this.dSSFileReaderImp = dSSFileReaderImp;
+		}
+
 	}
 
+	@Getter
+	@Setter
 	public class DssFileStepWriter implements ItemWriter<DSSBlock> {
 
 		private DSSFileBuilder dSSFileBuilderImp;
-
+		
+		
 		@Override
 		public void write(List<? extends DSSBlock> items) throws Exception {
 			if (items == null)
 				return;
 			double[] tab = new double[items.size()];
-			//TODO to be reviewed
+			// TODO to be reviewed
 			init(items.get(0));
 			for (int j = 0; j < items.size(); j++) {
 				DSSBlock block = items.get(j);
@@ -166,7 +292,7 @@ public class DssFileStepRWP {
 		private void init(DSSBlock block) throws DSSBuildingException {
 			if (block == null) {
 				throw new DSSBuildingException("Block is null");
-			}			
+			}
 			if (this.dSSFileBuilderImp == null) {
 				this.dSSFileBuilderImp = new DSSFileBuilderImp();
 				this.dSSFileBuilderImp.init(block.getDssFile().getFilename(), block.getDssFile().getLogpath());
@@ -176,9 +302,33 @@ public class DssFileStepRWP {
 
 		}
 
+		public DssFileStepWriter(DSSFileBuilder dSSFileBuilderImp) {
+			super();
+			this.dSSFileBuilderImp = dSSFileBuilderImp;
+		}
+
 	}
 
-	public interface FlatFileHeaderCallback {
-		void writeFooter(Writer writer) throws IOException;
+	@Getter
+	@Setter
+	public class DssApiStepWriter implements ItemWriter<DSSBlock> {
+		
+		private IndarApiCaller indarApiCallerImp;
+		
+		
+		
+		public DssApiStepWriter(IndarApiCaller indarApiCallerImp) {
+			super();
+			this.indarApiCallerImp = indarApiCallerImp;
+		}
+
+
+
+		@Override
+		public void write(List<? extends DSSBlock> items) throws Exception {
+			// TODO Auto-generated method stub
+			
+		}
+		
 	}
 }

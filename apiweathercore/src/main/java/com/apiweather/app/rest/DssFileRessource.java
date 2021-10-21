@@ -18,8 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.apiweather.app.biz.model.DSSBlock;
 import com.apiweather.app.biz.model.Station;
-import com.apiweather.app.biz.model.WeatherPrecipt;
-import com.apiweather.app.biz.repo.StationRepository;
+import com.apiweather.app.biz.services.ServiceStation;
 import com.apiweather.app.biz.services.ServiceWeather;
 import com.apiweather.app.rest.dto.DSSBlockDataMapper;
 import com.apiweather.app.rest.dto.WeatherPreciptByDayDTO;
@@ -40,12 +39,12 @@ public class DssFileRessource {
 	private ServiceWeather serviceWeather;
 	
 	@Autowired
-	private StationRepository stationRepository;
+	private ServiceStation serviceStation;
 			
 	@GetMapping("/data/{name}")
 	@ResponseBody
 	public DSSBlock[] getStationWeatherPrecipt(@Valid  @NotNull @PathVariable(name = "name") String station) throws EntityNotFoundException, BusinessException{
-		Station s = stationRepository.findStationByName(station);
+		Station s = serviceStation.findByStationName(station);
 		if(s==null)throw new EntityNotFoundException (" NO Station found with this name "+station);
 		List<WeatherPreciptByDayDTO> liste = serviceWeather.weatherPreciptForStation(s.getStationId());
 		DSSBlockDataMapper map = new DSSBlockDataMapper();

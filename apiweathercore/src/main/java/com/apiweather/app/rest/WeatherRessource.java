@@ -3,16 +3,11 @@ package com.apiweather.app.rest;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.aggregation.Aggregation;
-import org.springframework.data.mongodb.core.aggregation.MatchOperation;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,22 +18,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.apiweather.app.biz.model.ObservedData;
 import com.apiweather.app.biz.model.Station;
 import com.apiweather.app.biz.model.Weather;
-import com.apiweather.app.biz.model.WeatherPrecipt;
 import com.apiweather.app.biz.model.weather.AgroForcast;
 import com.apiweather.app.biz.model.weather.AgroWeather;
-import com.apiweather.app.biz.repo.AgroWeatherRepository;
-import com.apiweather.app.biz.repo.StationRepository;
 import com.apiweather.app.biz.repo.WeatherPreciptRepository;
+import com.apiweather.app.biz.services.ServiceStation;
 import com.apiweather.app.biz.services.ServiceWeather;
-import com.apiweather.app.rest.clients.WeatherApiCaller;
-import com.apiweather.app.rest.dto.SpacDTO;
-import com.apiweather.app.rest.dto.WeatherPrecipDTO;
 import com.apiweather.app.tools.exception.BusinessException;
 import com.apiweather.app.tools.exception.EntityNotFoundException;
-import com.apiweather.app.tools.rest.ModelMapper;
 
 
 
@@ -55,7 +43,7 @@ public class WeatherRessource extends AbstractCommonRessource<WeatherPreciptRepo
 	private ServiceWeather serviceWeather;
 	
 	@Autowired
-	private StationRepository stationRepository;
+	private ServiceStation serviceStation;
 	
 	public WeatherRessource(WeatherPreciptRepository repo) {
 		super(repo);
@@ -68,7 +56,7 @@ public class WeatherRessource extends AbstractCommonRessource<WeatherPreciptRepo
 	public ResponseEntity<AgroForcast> forcastWeather(long idstation) throws EntityNotFoundException, BusinessException {	
 		List<AgroForcast> fs= serviceWeather.requestWeatherForcastForStation(idstation);
 		System.out.println("F============= " + fs);
-		return new ResponseEntity(fs,HttpStatus.OK);
+		return new ResponseEntity (fs,HttpStatus.OK);
 	}	
 	
 	@GetMapping("/currentAgroWeather/{id}")
@@ -93,7 +81,7 @@ public class WeatherRessource extends AbstractCommonRessource<WeatherPreciptRepo
 	@GetMapping("/currentAgroWeather/all")
 	@ResponseBody
 	public ResponseEntity<AgroWeather> currentWeatherAll() throws EntityNotFoundException, BusinessException {		
-		List<Station> rs = stationRepository.findAll();
+		List<Station> rs = serviceStation.findAllStation();
 		if (rs == null || rs.isEmpty()) throw new EntityNotFoundException ("no Station was found for parameters");
 		List<AgroWeather> liste = new ArrayList<AgroWeather>();
 		try {
@@ -112,7 +100,7 @@ public class WeatherRessource extends AbstractCommonRessource<WeatherPreciptRepo
 	@ResponseBody
 	@Transactional
 	public ResponseEntity<AgroWeather> saveCurrentWeatherAll() throws EntityNotFoundException, BusinessException {		
-		List<Station> rs = stationRepository.findAll();
+		List<Station> rs = serviceStation.findAllStation();
 		if (rs == null || rs.isEmpty()) throw new EntityNotFoundException ("no Station was found for parameters");
 		List<AgroWeather> liste = new ArrayList<AgroWeather>();
 		try {

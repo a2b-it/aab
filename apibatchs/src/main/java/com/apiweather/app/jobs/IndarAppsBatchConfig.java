@@ -1,5 +1,7 @@
 package com.apiweather.app.jobs;
 
+import java.io.IOException;
+
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecutionListener;
 import org.springframework.batch.core.Step;
@@ -17,6 +19,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 
 import com.apiweather.app.dss.model.DSSBlock;
+import com.apiweather.app.dss.read.DSSFileReaderImp;
 import com.apiweather.app.jobs.domain.SpacFile;
 import com.apiweather.app.jobs.domain.WeatherPrecip;
 
@@ -39,6 +42,12 @@ public class IndarAppsBatchConfig {
     @Autowired
     private WeatherDataStepRWP weatherDataStepRWP;
     
+    @Autowired
+    private DssFileStepRWP dssFileStepRWP;
+    
+    @Autowired
+    private DSSFileReaderImp dSSFileReaderImp;
+    
     private static final String OVERRIDDEN_BY_EXPRESSION = null;
         
     @Bean
@@ -46,13 +55,22 @@ public class IndarAppsBatchConfig {
 		return new JobCompletionListener();
 	}
     
-    @Bean
-    @Qualifier(value = "dssFileJob")	
+    @Bean(name = "dssFileJob")	
 	public Job dssFileJob() {
 		return jobBuilderFactory.get("dssFileJob")
 				.incrementer(new RunIdIncrementer())
 				.listener(listener())
 				.flow(weatherDataStep())
+				.end()
+				.build();
+	}
+    
+    @Bean(name = "dssReadFileJob")	    
+	public Job dssReadFileJob() throws IOException {
+		return jobBuilderFactory.get("dssReadFileJob")
+				.incrementer(new RunIdIncrementer())
+				.listener(listener())
+				.flow(dssReadFileDataStep())
 				.end()
 				.build();
 	}
@@ -69,6 +87,16 @@ public class IndarAppsBatchConfig {
    				.build();
    	}*/
 
+    @Bean    
+    public Step dssReadFileDataStep () throws IOException {		
+    	
+		//chunk is 1 block by block
+        return stepBuilderFactory.get("dssReadFileDataStep")
+                .<DSSBlock, DSSBlock> chunk(1)
+                .reader(dssFileStepRWP.dssFileDataStepReader(dSSFileReaderImp))                
+                .writer(dssFileStepRWP.dssFileDataStepWriterToconsole())                
+                .build();
+    }
     
 	@Bean	
     public Step weatherDataStep () {		

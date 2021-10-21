@@ -18,4 +18,6 @@ public interface IndarApiCaller {
 	
 	public List<DSSBlock> retreiveStationDssData(String name);
 	
+	public List<DSSBlock> saveAllDssData (DSSBlock[] blocks);
+	
 }

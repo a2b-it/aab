@@ -5,7 +5,6 @@ package com.apiweather.app.biz.services;
 
 import java.util.Calendar;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,7 +14,6 @@ import com.apiweather.app.biz.model.WeatherPrecipt;
 import com.apiweather.app.biz.model.weather.AgroForcast;
 import com.apiweather.app.biz.model.weather.AgroWeather;
 import com.apiweather.app.biz.repo.AgroWeatherRepository;
-import com.apiweather.app.biz.repo.StationRepository;
 import com.apiweather.app.biz.repo.WeatherPreciptRepository;
 import com.apiweather.app.rest.clients.WeatherApiCaller;
 import com.apiweather.app.rest.dto.WeatherPreciptByDayDTO;
@@ -40,7 +38,7 @@ public class ServiceWeather {
 	private WeatherApiCaller weatherApiCallerImp;
 	
 	@Autowired
-	private StationRepository stationRepository;
+	private ServiceStation serviceStation;
 	
 	@Autowired
 	private AgroWeatherRepository agroWeatherRepository;
@@ -100,17 +98,17 @@ public class ServiceWeather {
 	}
 	
 	public AgroWeather requestWeatherForStation (long idstation) throws EntityNotFoundException {
-		Optional<Station> rs = stationRepository.findById(idstation);
-		if (rs.isEmpty()) throw new EntityNotFoundException ("Station was not found for parameters {id="+idstation+"}");
-		AgroWeather fs= weatherApiCallerImp.getCurrentWeatherByLatAndLong(rs.get().getLon(), rs.get().getLat());
+		Station rs = serviceStation.findByStationId(idstation);
+		if (rs == null) throw new EntityNotFoundException ("Station was not found for parameters {id="+idstation+"}");
+		AgroWeather fs= weatherApiCallerImp.getCurrentWeatherByLatAndLong(rs.getLon(), rs.getLat());
 		fs.setStationId(idstation);
 		return fs;
 	}
 	
 	public List<AgroForcast> requestWeatherForcastForStation (long idstation) throws EntityNotFoundException {
-		Optional<Station> rs = stationRepository.findById(idstation);
-		if (rs.isEmpty()) throw new EntityNotFoundException ("Station was not found for parameters {id="+idstation+"}");
-		List<AgroForcast>  fs= weatherApiCallerImp.getForecastByLatLong(rs.get().getLon(), rs.get().getLat());
+		Station rs = serviceStation.findByStationId(idstation);
+		if (rs == null) throw new EntityNotFoundException ("Station was not found for parameters {id="+idstation+"}");
+		List<AgroForcast>  fs= weatherApiCallerImp.getForecastByLatLong(rs.getLon(), rs.getLat());
 		//fs.setStationId(idstation);
 		return fs;
 	}

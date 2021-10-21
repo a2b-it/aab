@@ -7,6 +7,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import org.springframework.stereotype.Component;
+
 import com.apiweather.app.dss.DssBlocHeaderBuilder.TYPE_FILE;
 import com.apiweather.app.excep.DSSBuildingException;
 
@@ -19,6 +21,7 @@ import hec.heclib.dss.HecDataManager;
  * @author a.bouabidi
  *
  */
+@Component
 public class DSSFileBuilderImp implements DSSFileBuilder {
 	
 	
@@ -28,8 +31,7 @@ public class DSSFileBuilderImp implements DSSFileBuilder {
 	
 	private DssBlocHeaderBuilder headerBloc;
 	
-	private String dssFilePath;
-	
+	private String dssFilePath;	
 	
 	
 	@Override
