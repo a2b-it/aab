@@ -45,8 +45,12 @@ public class JobsController {
 			JobInstanceAlreadyCompleteException, JobParametersInvalidException {
 		// some parameters
 		JobParametersBuilder jobBuilder = new JobParametersBuilder();
-		jobBuilder.addString("json.file.path", "F:\\Workspaces\\ccb\\json");
+		jobBuilder.addString("json.file.path", "F:\\Workspaces\\apigeo\\ccb\\json\\");
 		jobBuilder.addString("json.file.name", "cpts_output.json");		
+		
+		jobBuilder.addString("login", "login");
+		jobBuilder.addString("password", "password");
+		jobBuilder.addString("pub.cert.path", "publique.bin");
 		JobExecution jobExecution = (JobExecution) jobLauncher.run(ccbFileJob, jobBuilder.toJobParameters());
 		return new ResponseEntity(jobExecution.getExitStatus(), HttpStatus.OK);
 

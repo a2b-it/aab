@@ -25,18 +25,17 @@ import lombok.Setter;
 @Setter
 public class WeatherPreciptMapper implements ModelMapper<WeatherPrecipt, AgroWeather>{
 
-	@Autowired
-	SequenceGeneratorService sequenceGeneratorService;
+	
 	
 	@Override
 	public WeatherPrecipt mapDtoToModel(AgroWeather m) {
-		Long id = sequenceGeneratorService.generateSequence(WeatherPrecipt.SEQUENCE_NAME);
+		
 		WeatherPrecipt wp = new WeatherPrecipt();
 		wp.setStationId(m.getStationId());
 		wp.setTime(new Date(m.getDt()*1000));
 		wp.setType("3h");		
 		wp.setValue((m.getRain()!=null)?m.getRain().getCum3h():0d);
-		wp.setWeatherPreciptId(id);		
+		//wp.setWeatherPreciptId(id);		
 		wp.setAgrWtId(m.getId());
 		return wp;
 	}

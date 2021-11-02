@@ -14,9 +14,9 @@ import lombok.Setter;
 @Setter
 public class DSSFile {
 	
-	String filename;
-	String filepath;
-	String logpath;
-	
+	private String filename;
+	private String filepath;
+	private String logpath;
+	private DSSBlock[] blocks;
 
 }

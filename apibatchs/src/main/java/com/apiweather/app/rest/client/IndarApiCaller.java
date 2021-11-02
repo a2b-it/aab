@@ -3,9 +3,9 @@ package com.apiweather.app.rest.client;
 import java.util.List;
 
 import com.apiweather.app.dss.model.DSSBlock;
-import com.apiweather.app.dto.Station;
+import com.apiweather.app.dss.model.DSSFile;
+import com.apiweather.app.excep.DSSReadingException;
 import com.apiweather.app.jobs.domain.SpacFile;
-import com.apiweather.app.jobs.domain.WeatherPrecip;
 
 
 /**
@@ -14,10 +14,10 @@ import com.apiweather.app.jobs.domain.WeatherPrecip;
  */
 public interface IndarApiCaller {
 	
-	public List<SpacFile> saveAllObservation (List<SpacFile> liste);
+	public List<SpacFile> saveAllObservation (List<SpacFile> liste, String station);
 	
 	public List<DSSBlock> retreiveStationDssData(String name);
 	
-	public List<DSSBlock> saveAllDssData (DSSBlock[] blocks);
+	public boolean saveAllDssData(DSSFile file, String station) throws DSSReadingException;
 	
 }

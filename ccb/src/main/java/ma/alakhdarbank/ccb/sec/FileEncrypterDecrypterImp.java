@@ -15,8 +15,10 @@ import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
 import java.security.SecureRandom;
 
+import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.CipherOutputStream;
+import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
@@ -41,6 +43,9 @@ public class FileEncrypterDecrypterImp implements FileEncrypterDecrypter {
 	
 	private Cipher aes;
 	
+	private boolean initialized=false;
+	
+	
 	@Autowired	
 	private SyncEncrypterDecrypter syncEncrypterDecrypterImp;
 	
@@ -57,15 +62,17 @@ public class FileEncrypterDecrypterImp implements FileEncrypterDecrypter {
 		byte[] ivParams = new byte[aes.getBlockSize()]; 
 		IvParameterSpec iv = new IvParameterSpec(ivParams); 
 		this.aes.init(Cipher.ENCRYPT_MODE, secretKey, iv);
+		this.initialized=true;
 	}
 
 	@Override
-	public OutputStream encrypt (String json, String file) throws RCCBAppException {		
+	public OutputStream encrypt (String json, String outfile) throws RCCBAppException {	
+		if (!initialized) throw new RCCBAppException ("Not initialized");
 		FileOutputStream fileOut = null;
 		// json : correspond an declaration sous format JSON a chiffrer 
 		//byte[] cipherrext = aes.doFinal(msg.getBytes()); 
 		try {
-		    	fileOut = new FileOutputStream(file);
+		    	fileOut = new FileOutputStream(outfile);
 		    	CipherOutputStream cipherOut = new CipherOutputStream(fileOut, aes);
 		        //TODO check if iv ust be set here
 		    	fileOut.write(aes.getIV());
@@ -98,7 +105,35 @@ public class FileEncrypterDecrypterImp implements FileEncrypterDecrypter {
 		return fileOut;
 	}
 
-
+	@Override
+	public byte[] encrypt (String json) throws RCCBAppException {		
+		if (!initialized) throw new RCCBAppException ("Not initialized");
+		byte[] cipherrext = null;
+		try {
+			cipherrext = aes.doFinal(json.getBytes());			
+		} catch (IllegalBlockSizeException | BadPaddingException e) {
+			throw new RCCBAppException(e);
+		} 		    	
+		
+		
+		/*
+		// Lecture du certificat (cle publique RSA) 
+		PublicKey clePublique = GestionClesRSA.lectureClePublique(pathClepublic); 
+		// Encrypt AES key (for AE5-256 it's 32 bytes) with RSA private key. 
+		Cipher cipher = Cipher.getInstance("RSA"); cipher.init(Cipher.WRAP_MODE, clePublique); 
+		// wrappedKey : correspond a la cle AES cryptee via RSA 
+		// I1 doit etre transmis an niveau du champs "token" du Header de la requete 
+		byte[] wrappedKey = cipher.wrap(skeySpec); 
+		// Procider a l'encodage du token et des declarations avant transmission 
+		// Le champs encodedData correspond au donnees a transmettre dans le body de la requete 
+		// Le champs encodedioken Correspond a la cle a transmettre au niveau du champs "token" du Header 
+		Base64 codec - new Bese64(); 
+		String encodedData = codec.encodeBase64String(cipherText); 
+		String encodedioken - codec.encodeBase64String(wrappedKey); 
+		*/
+	   
+		return cipherrext;
+	}
 
 
 	

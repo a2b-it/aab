@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -50,14 +51,14 @@ public class JobsController {
 	@Autowired
 	FtpGetGateway ftpGetGateway;
 
-	@GetMapping("/runjob")
+	@PostMapping("/input/runjob")
 	public ResponseEntity<String> startJob() throws JobExecutionAlreadyRunningException, JobRestartException,
 			JobInstanceAlreadyCompleteException, JobParametersInvalidException {
 		// some parameters
 		JobParametersBuilder jobBuilder = new JobParametersBuilder();
 		jobBuilder.addString("dss.param.station", "Ennzala");
-		jobBuilder.addString("dss.file.path", "F:/Workspaces/apigeo/apibatchs/MyDSS_file.dss");
-		jobBuilder.addString("dss.log.path", "F:/Workspaces/apigeo/apibatchs/logs/MyDSS_file.log");
+		jobBuilder.addString("dss.file.path", "F:/INDAR/dss/MyDSS_file4.dss");
+		jobBuilder.addString("dss.log.path", "F:/Workspaces/apigeo/apibatchs/logs/MyDSS_file4.log");
 		JobExecution jobExecution = (JobExecution) jobLauncher.run(dssFileJob, jobBuilder.toJobParameters());
 		return new ResponseEntity(jobExecution.getExitStatus(), HttpStatus.OK);
 
@@ -70,20 +71,21 @@ public class JobsController {
 		return new ResponseEntity(list, HttpStatus.OK);
 	}
 	
-	@GetMapping("/ftpGet")
-	public ResponseEntity<String> startGetFtp() throws JobExecutionAlreadyRunningException, JobRestartException,
+	@GetMapping("/ftpGet/{filename}")
+	public ResponseEntity<String> startGetFtp(@PathVariable(name  ="filename") String filename) throws JobExecutionAlreadyRunningException, JobRestartException,
 			JobInstanceAlreadyCompleteException, JobParametersInvalidException {		
-		File file = ftpGetGateway.retreive("README.txt");
+		File file = ftpGetGateway.retreive(filename);
 		return new ResponseEntity(file.getAbsolutePath(), HttpStatus.OK);
 	}
 	
-	@PostMapping("/dssRead")
-	public ResponseEntity<String> startDssRead() throws JobExecutionAlreadyRunningException, JobRestartException,
+	@PostMapping("/output/dss/upload/{filename}")
+	public ResponseEntity<String> startDssRead (@PathVariable(name  ="filename") String filename) throws JobExecutionAlreadyRunningException, JobRestartException,
 			JobInstanceAlreadyCompleteException, JobParametersInvalidException {		
 		JobParametersBuilder jobBuilder = new JobParametersBuilder();
-		//jobBuilder.addString("dss.param.station", "Ennzala");
-		jobBuilder.addString("dss.file.path", "F:\\Workspaces\\apigeo\\apibatchs\\MyDSS_file.dss");
-		jobBuilder.addString("dss.log.path", "F:/Workspaces/apigeo/apibatchs/logs/MyDSS_file.log");
+		jobBuilder.addString("dss.file.station", "Ennzala");
+		jobBuilder.addString("dss.file.path", "F:/INDAR/dss/");
+		jobBuilder.addString("dss.file.filename", filename);
+		jobBuilder.addString("dss.log.path", "F:/Workspaces/apigeo/apibatchs/logs/"+filename+".log");
 		JobExecution jobExecution = (JobExecution) jobLauncher.run(dssReadFileDataStep, jobBuilder.toJobParameters());
 		return new ResponseEntity(jobExecution.getExitStatus(), HttpStatus.OK);
 	}

@@ -8,7 +8,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import com.apiweather.app.biz.model.DSSBlock;
-import com.apiweather.app.biz.model.DSSBlock.DSSBlockData;
+import com.apiweather.app.biz.model.DSSBlockData;
 import com.apiweather.app.tools.exception.BusinessException;
 import com.apiweather.app.tools.rest.ModelMapper;
 
@@ -35,7 +35,7 @@ public class DSSBlockDataMapper implements ModelMapper<DSSBlock, WeatherPreciptB
 			if(firstDate!=null && firstDate.after(f.parse(w.getId()))) {
 				firstDate=f.parse(w.getId());
 			}
-			tb[i] = block.new DSSBlockData ();
+			tb[i] = new DSSBlockData ();
 			tb[i].setDate(f.parse(w.getId()));
 			tb[i].setIndex(i);
 			tb[i].setValue(w.getSumByDay());

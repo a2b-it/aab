@@ -1,20 +1,19 @@
-18:09:47.139      -----DSS---zopen   Existing file opened,  File: F:\Workspaces\apigeo\apibatchs\MyDSS_file.dss
-18:09:47.139                         Handle 4;  Process: 20484;  DSS Versions - Software: 7-IC, File:  7-IC
-18:09:47.140                         Single-user advisory access mode
-18:09:47.149 -----DSS--- zread   Handle 4;  Version 23:  /MOROCCO FLOOD HAZARD/BGE_EL_MELLAH/ET/01Jan1970/1Day/EL MELLAH HMS/
-18:09:47.155 -----DSS--- zread   Handle 4;  Version 1:  /MOROCCO FLOOD HAZARD/Ennzala/ET/01Jan1970/1Day/Ennzala HSM/
-18:09:47.235      -----DSS---zclose  Handle 4;  Process: 20484;  File: F:\Workspaces\apigeo\apibatchs\MyDSS_file.dss
-18:09:47.235                         Number records:         2
-18:09:47.235                         File size:              15986  64-bit words
-18:09:47.235                         File size:              124 Kb;  0 Mb
-18:09:47.235                         Dead space:             76
-18:09:47.235                         Hash range:             8192
-18:09:47.235                         Number hash used:       2
-18:09:47.235                         Max paths for hash:     1
-18:09:47.236                         Corresponding hash:     1325
-18:09:47.236                         Number non unique hash: 0
-18:09:47.236                         Number bins used:       2
-18:09:47.236                         Number overflow bins:   0
-18:09:47.236                         Number physical reads:  46
-18:09:47.236                         Number physical writes: 0
-18:09:47.236                         Number denied locks:    0
+15:42:50.736      -----DSS---zopen   New file opened,  File: F:\INDAR\dss\MyDSS_file2.dss
+15:42:50.741                         Handle 4;  Process: 26652;  DSS Version:  7-IC
+15:42:50.741                         Single-user advisory access mode
+15:42:50.747 -----DSS--- zwrite  Handle 4;  Version 1:  /Maroc station/Ennzala/ET/01Jan1970/1Day/Ennzala HSM/
+15:42:56.244      -----DSS---zclose  Handle 4;  Process: 26652;  File: F:\INDAR\dss\MyDSS_file2.dss
+15:42:56.244                         Number records:         1
+15:42:56.244                         File size:              15824  64-bit words
+15:42:56.244                         File size:              123 Kb;  0 Mb
+15:42:56.244                         Dead space:             0
+15:42:56.244                         Hash range:             8192
+15:42:56.244                         Number hash used:       1
+15:42:56.244                         Max paths for hash:     1
+15:42:56.244                         Corresponding hash:     158
+15:42:56.244                         Number non unique hash: 0
+15:42:56.244                         Number bins used:       1
+15:42:56.244                         Number overflow bins:   0
+15:42:56.244                         Number physical reads:  4
+15:42:56.244                         Number physical writes: 20
+15:42:56.244                         Number denied locks:    0

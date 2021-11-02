@@ -15,6 +15,11 @@
 	<description>CCB project for Spring Boot</description>
 	<properties>
 		<java.version>11</java.version>
+		<liquibase.version>4.5.0</liquibase.version>		
+		<liquibase-hibernate5.version>4.5.0</liquibase-hibernate5.version>
+		<spring.version>5.3.9</spring.version>
+		<spring-data.version>2.5.4</spring-data.version>
+		<spring-beans.version>5.3.9</spring-beans.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -61,10 +66,78 @@
 			<artifactId>spring-integration-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.liquibase</groupId>
+			<artifactId>liquibase-core</artifactId>
+		</dependency>
+		<dependency>
+		    <groupId>org.liquibase</groupId>
+		    <artifactId>liquibase-maven-plugin</artifactId>
+		    <version>${liquibase.version}</version>		    
+		</dependency> 
+		<dependency>
+		    <groupId>org.liquibase.ext</groupId>
+		    <artifactId>liquibase-hibernate5</artifactId>
+		    <version>${liquibase-hibernate5.version}</version>
+		</dependency>
 	</dependencies>
 
 	<build>
 		<plugins>
+			<plugin>
+		        <groupId>org.liquibase</groupId>
+		        <artifactId>liquibase-maven-plugin</artifactId>
+		        <version>${liquibase.version}</version>
+		        <configuration>                  
+		            <changeLogFile>src/main/resources/db/liquibase-changelog.xml</changeLogFile>
+		            <diffChangeLogFile>src/main/resources/liquibase-{timestamp}_changelog.xml</diffChangeLogFile>
+		            <outputChangeLogFile>src/main/resources/liquibase-db-changeLog.xml</outputChangeLogFile>
+		            <driver>org.h2.Driver</driver>
+		            <url>jdbc:h2:file:F:/Workspaces/apigeo/ccb/db</url>
+		            <username>sa</username>
+		            <password></password>
+		            <dropFirst>true</dropFirst>
+		            <referenceUrl>hibernate:spring:ma.alakhdarbank.ccb.entity?hibernate.physical_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy</referenceUrl>
+		            <verbose>true</verbose>
+		            <logging>trace</logging>
+		        </configuration>
+		        <dependencies>
+		            <dependency>
+		               <groupId>org.liquibase.ext</groupId>
+		               <artifactId>liquibase-hibernate5</artifactId>
+		               <version>${liquibase-hibernate5.version}</version>
+		            </dependency>
+		            <dependency>
+		               <groupId>org.liquibase</groupId>
+		               <artifactId>liquibase-core</artifactId>
+		               <version>${liquibase.version}</version>
+		            </dependency>
+		            <dependency>
+		               <groupId>org.springframework</groupId>
+		               <artifactId>spring-beans</artifactId>
+		               <version>${spring-beans.version}</version>
+		            </dependency>
+		            <dependency>
+		               <groupId>org.springframework</groupId>
+		               <artifactId>spring-core</artifactId>
+		               <version>${spring.version}</version>
+		            </dependency>
+		            <dependency>
+		                <groupId>org.springframework.boot</groupId>
+		                <artifactId>spring-boot-starter-data-jpa</artifactId>
+		                <version>${spring-data.version}</version>
+		            </dependency>
+		            
+		        </dependencies>            
+		    </plugin> 
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>

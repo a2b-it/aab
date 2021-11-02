@@ -39,11 +39,12 @@ public class RestClientsFactory {
 
 
 	@Autowired
-	public RestTemplate createAirFlowClient()  {
-	
+	public RestTemplate createApiClient()  {
+		int sec = 1000;
+		int min = 60*1000;
 		return builder.basicAuthentication(user, password)				
-				.setConnectTimeout(Duration.ofMillis(3000))
-	            .setReadTimeout(Duration.ofMillis(3000)).rootUri(apiUrl).build();	
+				.setConnectTimeout(Duration.ofMillis(1*min))
+	            .setReadTimeout(Duration.ofMillis(5*min)).rootUri(apiUrl).build();	
 	}
 	
 	

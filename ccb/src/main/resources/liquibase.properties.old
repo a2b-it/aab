@@ -1,0 +1,10 @@
+url=jdbc:h2:file:F:/Workspaces/apigeo/ccb/db
+#url=jdbc:h2:mem:AZ;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+username=sa
+password=
+driver=org.h2.Driver
+changeLogFile=src/main/resources/liquibase-changeLog.xml
+referenceUrl=hibernate:spring:ma.alakhdarbank.ccb.entity?dialect=org.hibernate.dialect.H2Dialect&hibernate.physical_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy&hibernate.implicit_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
+diffChangeLogFile=src/main/resources/liquibase-diff-changeLog.xml
+outputChangeLogFile=src/main/resources/liquibase-outputChangeLog.xml
+classpath=F:/Workspaces/apigeo/ccb/driver/h2-1.4.200.jar

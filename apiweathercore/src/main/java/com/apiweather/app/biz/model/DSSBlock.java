@@ -3,8 +3,6 @@
  */
 package com.apiweather.app.biz.model;
 
-import java.util.Date;
-
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,9 +12,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class DSSBlock {
-	
-	private DSSFile dssFile;
+public class DSSBlock {	
 	/**
 	 * Project, river, or basin name
 	 */
@@ -29,11 +25,11 @@ public class DSSBlock {
 	/**
 	 * Data parameter
 	 */
-	private String DataParam;
+	private String dataParam;
 	/**
 	 * Starting date of block, in a 9 character military format
 	 */
-	private String StartDate;
+	private String startDate;
 	
 	/**
 	 * Time interval
@@ -51,24 +47,6 @@ public class DSSBlock {
 	
 	private DSSBlockData[] dssBlockDatas;
 	
-	@Getter
-	@Setter
-	public class DSSBlockData {
-		
-		int index;
-		Date date;
-		double value;
-
-	}
-	@Getter
-	@Setter
-	public class DSSFile {
-		
-		String filename;
-		String filepath;
-		String logpath;
-		
-
-	}
+	
 
 }

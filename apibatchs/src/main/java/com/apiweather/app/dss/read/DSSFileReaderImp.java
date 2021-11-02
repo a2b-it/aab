@@ -35,7 +35,8 @@ public class DSSFileReaderImp implements DSSFileReader{
 
 	@Override
 	public void init(String dssFilePath, TYPE_FILE type, String logFilePath) throws DSSReadingException {		 	
-		this.hecDataManager =  new HecDataManager ();
+		this.hecDataManager = (this.hecDataManager==null)?  new HecDataManager ():this.hecDataManager;
+		
 		int status = HecDataManager.setLogFile(logFilePath);		
 		if (status != 0) {
 			System.out.println("Error opening log file");

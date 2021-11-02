@@ -18,7 +18,7 @@ public interface WeatherPreciptRepository extends MongoRepository<WeatherPrecipt
 	List<WeatherPrecipt> findByStationId(Long stationId);
 	
 	//
-	@Aggregation(pipeline = {"{$match:{stationId:1}}", "{$project: {yearMonthDay:{$dateToString: { format: \"%Y-%m-%d\", date: \"$time\" }},valeur:'$value'} }" , "{$group: { '_id': '$yearMonthDay', sumByDay: {$sum: '$valeur' }}}"} )	
+	@Aggregation(pipeline = {"{$match:{stationId:1}}", "{$project: {yearMonthDay:{$dateToString: { format: \"%Y-%m-%d\", date: \"$time\" }},valeur:'$value'} }" , "{$group: { '_id': '$yearMonthDay', sumByDay: {$sum: '$valeur' }}}"} )		
 	List<WeatherPreciptByDayDTO> getWeatherPreciptByStationIdGroupByDate(String id);
 	
 }

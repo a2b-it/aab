@@ -16,9 +16,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class DSSBlock {
-	
-	private DSSFile dssFile;
+public class DSSBlock {		
 	/**
 	 * Project, river, or basin name
 	 */
@@ -31,11 +29,11 @@ public class DSSBlock {
 	/**
 	 * Data parameter
 	 */
-	private String DataParam;
+	private String dataParam;
 	/**
 	 * Starting date of block, in a 9 character military format
 	 */
-	private String StartDate;
+	private String startDate;
 	
 	/**
 	 * Time interval
@@ -72,6 +70,7 @@ public class DSSBlock {
 		}
 	}
 	
+	@JsonIgnore
 	public double[] getDssBlockDataAsDouble() {
 		double[] tab = new double[dssBlockDatas.length];
 		for (int i=0; i<dssBlockDatas.length; i++ ) {

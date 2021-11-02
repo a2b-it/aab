@@ -21,7 +21,9 @@ public class Output {
 	@Id
 	private Long idOutput;
 	
-	private Long IdStation;
+	private Long idStation;
+	
+	private String filename;
 	
 	private Date date;
 	

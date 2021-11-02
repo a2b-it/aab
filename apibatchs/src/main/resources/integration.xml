@@ -28,6 +28,7 @@
 	
 	<int:gateway id="gwLs" service-interface="com.apiweather.app.flow.FtpLsGateway"
 		default-request-channel="inbound" default-reply-channel="results"/>
+
 	<int:gateway id="gwGet" service-interface="com.apiweather.app.flow.FtpGetGateway"
 		default-request-channel="inboundFile" default-reply-channel="toLocal"/>
 		
@@ -42,7 +43,7 @@
 	</int-ftp:outbound-gateway>
 	
 	<int-ftp:outbound-gateway id="gatewayGET"
-		local-directory="F://docker//ftp"
+		local-directory="F://INDAR//dss//FTP_out"
 		remote-directory="/ftp/one/"
 		session-factory="ftpClientFactory"
 		request-channel="inboundFile"

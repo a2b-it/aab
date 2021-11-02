@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.apiweather.app.biz.model.DSSBlock;
+import com.apiweather.app.biz.model.DSSFile;
 import com.apiweather.app.biz.model.Output;
 import com.apiweather.app.biz.repo.OutputRepository;
 import com.apiweather.app.biz.services.ServiceDSSOutput;
@@ -36,15 +37,15 @@ public class OutputRessource extends AbstractCommonRessource<OutputRepository, O
 	private ServiceDSSOutput serviceOutput;
 	
 	public OutputRessource(OutputRepository repo) {
-		super(repo);
-		// TODO Auto-generated constructor stub
+		super(repo);		
 	}
 	
-	@PostMapping("/{name}/add/")
+	@PostMapping("/{station}/save")
 	@ResponseBody
-	public ResponseEntity<Output> addOutputDssFile (@PathVariable(name = "station") String name, @Valid  @NotNull @RequestBody DSSBlock[] blocks) throws EntityNotFoundException, BusinessException {
-		Output out = serviceOutput.createNewOutputDssFile(name, blocks);
-		return  new ResponseEntity(out,HttpStatus.OK);
+	public ResponseEntity<Output> addOutputDssFile (@Valid  @NotNull @RequestBody DSSFile file,
+			@NotNull @PathVariable(name = "station") String station) throws EntityNotFoundException, BusinessException{						
+		Output output = serviceOutput.saveOutputDssFileBlockData(station, file);	
+		return new ResponseEntity(output,HttpStatus.OK);
 	}
 		
 }

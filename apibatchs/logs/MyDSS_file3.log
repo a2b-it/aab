@@ -1,0 +1,19 @@
+23:36:05.298      -----DSS---zopen   New file opened,  File: F:\INDAR\dss\MyDSS_file3.dss
+23:36:05.298                         Handle 4;  Process: 5140;  DSS Version:  7-IC
+23:36:05.298                         Single-user advisory access mode
+23:36:05.304 -----DSS--- zwrite  Handle 4;  Version 1:  /Maroc station/Ennzala/ET/01Jan1970/1Day/Ennzala HSM/
+23:36:16.706      -----DSS---zclose  Handle 4;  Process: 5140;  File: F:\INDAR\dss\MyDSS_file3.dss
+23:36:16.719                         Number records:         1
+23:36:16.719                         File size:              15825  64-bit words
+23:36:16.720                         File size:              123 Kb;  0 Mb
+23:36:16.720                         Dead space:             0
+23:36:16.720                         Hash range:             8192
+23:36:16.720                         Number hash used:       1
+23:36:16.720                         Max paths for hash:     1
+23:36:16.721                         Corresponding hash:     158
+23:36:16.721                         Number non unique hash: 0
+23:36:16.721                         Number bins used:       1
+23:36:16.721                         Number overflow bins:   0
+23:36:16.721                         Number physical reads:  4
+23:36:16.721                         Number physical writes: 20
+23:36:16.721                         Number denied locks:    0

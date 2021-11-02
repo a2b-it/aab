@@ -27,5 +27,7 @@ public interface FileEncrypterDecrypter {
 	public Key getSecretKey ();
 	
 	public void init () throws  NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException;
+	
+	public byte[] encrypt (String json) throws RCCBAppException;
 
 }

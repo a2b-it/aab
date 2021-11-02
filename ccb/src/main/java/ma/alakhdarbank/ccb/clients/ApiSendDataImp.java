@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import ma.akhdarbank.apps.RestClientsFactory;
+import ma.alakhdarbank.apps.RestClientsFactory;
 
 /**
  * @author a.bouabidi

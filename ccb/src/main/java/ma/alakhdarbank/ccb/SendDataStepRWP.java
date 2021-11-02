@@ -9,17 +9,24 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
 import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 
+import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.StepExecution;
+import org.springframework.batch.core.annotation.AfterStep;
 import org.springframework.batch.core.annotation.BeforeStep;
 import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.item.ExecutionContext;
+import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemStream;
 import org.springframework.batch.item.ItemStreamException;
@@ -36,7 +43,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ma.alakhdarbank.ccb.clients.ApiSendData;
+import ma.alakhdarbank.ccb.entity.Lot;
 import ma.alakhdarbank.ccb.exception.RCCBAppException;
+import ma.alakhdarbank.ccb.persistence.LotRepository;
+import ma.alakhdarbank.ccb.persistence.ServiceLot;
 import ma.alakhdarbank.ccb.sec.FileEncrypterDecrypter;
 import ma.alakhdarbank.ccb.sec.RSAKeyManager;
 import ma.alakhdarbank.ccb.sec.SyncEncrypterDecrypter;
@@ -63,11 +73,25 @@ public class SendDataStepRWP {
 	@Value("${bkam.auth.api.login}")
 	public String login;
 	
+	@Autowired
+	private FileEncrypterDecrypter fileEncrypterDecrypterImp;
+		
+	@Autowired
+	private SyncEncrypterDecrypter syncEncrypterDecrypterImp;
+		
+	@Autowired
+	private RSAKeyManager rsaKeyManager;
 	
-	private String JSON_FILE_PATH="json.file.path";
-	private String JSON_FILE_NAME="json.file.name";
-	private String PASSWORD_HASH="password.hash";
-	private String TOKEN="token";
+	@Autowired
+	private ServiceLot serviceLot;
+	    		
+	public String JSON_FILE_PATH="json.file.path";
+	public String JSON_FILE_NAME="json.file.name";
+	public String PASSWORD_HASH="password.hash";
+	public String TOKEN="token";
+	public String LOGIN="login";
+	public String PASSWORD="password";
+	public String PUB_CERT_PATH="pub.cert.path";
 	
 	
 	@Bean
@@ -78,12 +102,22 @@ public class SendDataStepRWP {
 	 */
     public ItemReader<String> jsonFileReader() {	
 		
-		return new SendDataStepReader(filepath, login, password);
+		return new SendDataStepReader( );
  
     }
 	
 	
-	
+	@Bean
+	@StepScope
+	/**
+	 * from rest get token
+	 * @return
+	 */
+    public ItemProcessor<String, String> jsonFileProcessor() {		
+		return new SendDataStepProcessor( fileEncrypterDecrypterImp, syncEncrypterDecrypterImp, 
+				rsaKeyManager);
+ 
+    }
 	
 	@Bean
 	@StepScope
@@ -93,14 +127,89 @@ public class SendDataStepRWP {
 	 */
     public ItemWriter<String> jsonFileWriter() {
 		
-		return new SendDataStepWriter(apiSendDataImp, login);
+		return new SendDataStepWriter(apiSendDataImp, serviceLot);
  
     }
 	
+	@Getter
+	@Setter
+	public class SendDataStepProcessor implements ItemProcessor<String, String>{
+		
+		private FileEncrypterDecrypter fileEncrypterDecrypterImp;
+		
+		
+		private SyncEncrypterDecrypter syncEncrypterDecrypterImp;
+		
+		
+		private RSAKeyManager rsaKeyManager;
+		
+		private String loginIn;
+		
+		private String passwordIn;
+		
+		private String pubCertPath;
+		
+		private String token;
+		
+		@BeforeStep
+	    public void beforeStep(StepExecution stepExecution) throws RCCBAppException {
+	       
+	        JobParameters parameters = stepExecution.getJobExecution().getJobParameters();
+	        
+	        //this.loginIn = parameters.getString(LOGIN);
+	        //this.passwordIn = parameters.getString(PASSWORD);
+	        
+	        this.pubCertPath = parameters.getString(PUB_CERT_PATH);
+	        try {
+				syncEncrypterDecrypterImp.init(pubCertPath);
+				fileEncrypterDecrypterImp.init();
+			} catch (RCCBAppException | InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException | InvalidAlgorithmParameterException e1) {
+				throw new RCCBAppException(e1);
+			}
+			
+	        
+	    }
+		
+		@AfterStep
+	    public void afterStep(StepExecution stepExecution) throws RCCBAppException {	       
+	        stepExecution.getExecutionContext().put(TOKEN, this.token);   	        
+	    }
+		
+		
+		@Override
+		public String process(String item) throws Exception {						
+			return encryptData (item); 
+		}
+
+
+		public SendDataStepProcessor(FileEncrypterDecrypter fileEncrypterDecrypterImp,
+				SyncEncrypterDecrypter syncEncrypterDecrypterImp, RSAKeyManager rsaKeyManager) {
+			super();
+			this.fileEncrypterDecrypterImp = fileEncrypterDecrypterImp;
+			this.syncEncrypterDecrypterImp = syncEncrypterDecrypterImp;
+			this.rsaKeyManager = rsaKeyManager;
+		}
+		
+		
+		private String encryptData (String spath) throws RCCBAppException, InvalidKeyException {									
+			byte[] ciphered = fileEncrypterDecrypterImp.encrypt(spath);
+			try {
+				byte[] key = syncEncrypterDecrypterImp.encrypt (fileEncrypterDecrypterImp.getSecretKey());
+				this.token = syncEncrypterDecrypterImp.encodeData(key);
+			} catch (InvalidKeyException | IllegalBlockSizeException e) {
+				throw new RCCBAppException (e);
+			}
+			return syncEncrypterDecrypterImp.encodeData(ciphered);
+		}
+		
+	}
 	
 	public class SendDataStepWriter implements ItemWriter<String>, ItemStream{
 				
 		private ApiSendData apiSendDataImp;
+		
+		
+		private ServiceLot serviceLot;
 		
 		private String login="";
 		
@@ -108,11 +217,20 @@ public class SendDataStepRWP {
 		
 		private String token="";
 		
-		public SendDataStepWriter(ApiSendData apiSendDataImp, String login) {
+		public SendDataStepWriter(ApiSendData apiSendDataImp, ServiceLot serviceLot) {
 			super();
 			this.apiSendDataImp = apiSendDataImp;
-			this.login=login;
+			this.serviceLot =  serviceLot;
+			
 		}
+		
+		@BeforeStep
+	    public void saveStepExecution(StepExecution stepExecution) {	        
+	        JobParameters parameters = stepExecution.getJobExecution().getJobParameters();
+	        this.login = parameters.getString(LOGIN);
+	        this.password_hash = parameters.getString(PASSWORD);
+	        this.token = parameters.getString(TOKEN);
+	    }
 
 		@Override
 		public void write(List<? extends String> items) throws Exception {
@@ -122,15 +240,17 @@ public class SendDataStepRWP {
 			//TODO addinh headers
 			headers.put("login", this.login);
 			headers.put("password_hash",this.password_hash);
-			headers.put("token",this.token);					
-			
+			headers.put("token",this.token);								
 			apiSendDataImp.send((String)items.get(0), headers);
+			//
+			serviceLot.set_newLotENVOYER(login);
 		}
+		
+		
+		
 
 		@Override
 		public void open(ExecutionContext executionContext) throws ItemStreamException {
-			this.password_hash=executionContext.getString(PASSWORD_HASH);
-			this.token=executionContext.getString(TOKEN);
 			
 			
 		}
@@ -157,98 +277,60 @@ public class SendDataStepRWP {
 		
 		private String filename;
 		
-		private OutputStream outs;
+		private int interation=0;
 		
-		@Autowired
-		private FileEncrypterDecrypter fileEncrypterDecrypterImp;
 		
-		@Autowired
-		private SyncEncrypterDecrypter syncEncrypterDecrypterImp;
 		
-		@Autowired
-		private RSAKeyManager rsaKeyManager;
 		
-		private String loginIn;
 		
-		private String passwordIn;
 		
-		private String pubCertPath;
-		
-		private String token;
-		
-		public SendDataStepReader(String path, String login, String password) {
+		public SendDataStepReader() {
 			super();
-			this.path = path;
-			this.loginIn = login;
-			this.passwordIn = password;			
+			
+					
 		}
 		
 		
-		private String encryptData (String spath) throws RCCBAppException, InvalidKeyException {
-			Path path = Paths.get(spath);
-			String filename= path.getFileName().toString();
-			String dir = path.getParent().toAbsolutePath().toString();
-			String newfilename = new StringBuilder().append(path).append(filename).append(".cyphering").toString();						
-			fileEncrypterDecrypterImp.encrypt(path.toAbsolutePath().toString(),newfilename);
-			try {
-				byte[] key = syncEncrypterDecrypterImp.encrypt (fileEncrypterDecrypterImp.getSecretKey());
-				this.token = syncEncrypterDecrypterImp.encodeData(key);
-			} catch (InvalidKeyException | IllegalBlockSizeException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			return newfilename;
-		}
+		
 		
 		@BeforeStep
-	    public void saveStepExecution(StepExecution stepExecution) throws RCCBAppException, InvalidKeyException {	        
-	        JobParameters parameters = stepExecution.getJobExecution().getJobParameters();
+	    public void saveStepExecution(StepExecution stepExecution) throws RCCBAppException, InvalidKeyException {	        	        
+			JobParameters parameters = stepExecution.getJobExecution().getJobParameters();
 	        this.path = parameters.getString(JSON_FILE_PATH);
 	        this.filename = parameters.getString(JSON_FILE_NAME);
-	        encryptData (path);
-	        
 	    }
 		
 		@Override
 		public String read() throws Exception, UnexpectedInputException, ParseException, NonTransientResourceException {
-			String data = encryptFileAsString(path, filename);			 
-			return syncEncrypterDecrypterImp.encodeData(data.getBytes());
+			if(this.interation !=0 ) return null;					
+			return encryptFileAsString(path, this.filename);
 		}
 
 		public  String encryptFileAsString(String dir, String filename)throws Exception
 	    {
-			File out = new File (dir + filename + ".cypher");			
-			this.outs =  fileEncrypterDecrypterImp.encrypt(dir + filename, out.getAbsolutePath());	
-	        return new String(Files.readAllBytes(Paths.get(out.getAbsolutePath())));
+			this.interation++;
+	        return new String(Files.readAllBytes(Paths.get(dir+File.separator+filename)));
 	    }
 
 
 		@Override
 		public void open(ExecutionContext executionContext) throws ItemStreamException {
-			this.path = executionContext.getString(JSON_FILE_PATH);
-	        this.filename = executionContext.getString(JSON_FILE_NAME);	        
-	        try {
-				syncEncrypterDecrypterImp.init(pubCertPath);
-			} catch (RCCBAppException e) {
-				throw new ItemStreamException(e);
-			}
+			
 		}
 
 
 		@Override
 		public void update(ExecutionContext executionContext) throws ItemStreamException {
-			executionContext.put(TOKEN, token);
+			
+			executionContext.put(LOGIN, login);
+			executionContext.put(PASSWORD_HASH, password);
 			
 		}
 
 
 		@Override
 		public void close() throws ItemStreamException {
-			try {
-				if(outs!=null)outs.close();
-			} catch (IOException e) {
-				throw new ItemStreamException(e);
-			}
+			
 			
 		}
 	

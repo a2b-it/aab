@@ -9,15 +9,24 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.apiweather.app.biz.model.Alert;
 import com.apiweather.app.biz.model.DSSBlock;
+import com.apiweather.app.biz.model.DSSFile;
+import com.apiweather.app.biz.model.Output;
+import com.apiweather.app.biz.model.Site;
 import com.apiweather.app.biz.model.Station;
+import com.apiweather.app.biz.services.ServiceDSSOutput;
 import com.apiweather.app.biz.services.ServiceStation;
 import com.apiweather.app.biz.services.ServiceWeather;
 import com.apiweather.app.rest.dto.DSSBlockDataMapper;
@@ -40,8 +49,11 @@ public class DssFileRessource {
 	
 	@Autowired
 	private ServiceStation serviceStation;
-			
-	@GetMapping("/data/{name}")
+	
+	@Autowired	
+	private ServiceDSSOutput serviceDSSOutput;
+	
+	@GetMapping("/wheather/station/{name}")
 	@ResponseBody
 	public DSSBlock[] getStationWeatherPrecipt(@Valid  @NotNull @PathVariable(name = "name") String station) throws EntityNotFoundException, BusinessException{
 		Station s = serviceStation.findByStationName(station);
@@ -58,4 +70,5 @@ public class DssFileRessource {
 		
 		return new DSSBlock[] {block};
 	}
+	
 }

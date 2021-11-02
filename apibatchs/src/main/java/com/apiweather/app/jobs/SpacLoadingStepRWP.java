@@ -79,16 +79,19 @@ public class SpacLoadingStepRWP {
 				
 		private IndarApiCallerImp indarApiCallerImp;		
 		
+		private String stationName;
 		
 		@Override
 		public void write(List<? extends SpacFile> items) throws Exception {
 			if(items==null)return ;
-			List<SpacFile> liste = indarApiCallerImp.saveAllObservation((List<SpacFile>) items);	
+			List<SpacFile> liste = indarApiCallerImp.saveAllObservation((List<SpacFile>) items, stationName);	
 		}
 		
 		@BeforeStep
-	    public void saveStepExecution(StepExecution stepExecution) {
+	    public void getParams(StepExecution stepExecution) {
 	        this.stepExecution = stepExecution;
+	        
+	        
 	    }
 		
 		

@@ -92,9 +92,9 @@ public class IndarAppsBatchConfig {
     	
 		//chunk is 1 block by block
         return stepBuilderFactory.get("dssReadFileDataStep")
-                .<DSSBlock, DSSBlock> chunk(1)
+                .<DSSBlock, DSSBlock> chunk(500)
                 .reader(dssFileStepRWP.dssFileDataStepReader(dSSFileReaderImp))                
-                .writer(dssFileStepRWP.dssFileDataStepWriterToconsole())                
+                .writer(dssFileStepRWP.dssApiDataStepWriter())                    
                 .build();
     }
     

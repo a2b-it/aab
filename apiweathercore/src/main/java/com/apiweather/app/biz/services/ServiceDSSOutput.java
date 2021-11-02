@@ -7,15 +7,21 @@ import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 
 import java.util.Calendar;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.data.mongodb.core.FindAndModifyOptions;
+import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.apiweather.app.biz.model.DSSBlock;
+import com.apiweather.app.biz.model.DSSBlockData;
+import com.apiweather.app.biz.model.DSSFile;
 import com.apiweather.app.biz.model.Output;
 import com.apiweather.app.biz.model.Site;
 import com.apiweather.app.biz.model.Station;
@@ -44,21 +50,46 @@ public class ServiceDSSOutput {
 	@Autowired
 	private ServiceStation serviceStation;
 	
+	@Autowired
+	private MongoOperations mongoOperations;
+	
 	@Transactional
-	public Output createNewOutputDssFile (String name, DSSBlock[] blocks) throws EntityNotFoundException, BusinessException {
-		Station station = serviceStation.findByStationName(name);				
-		Long idOutput = sequenceGeneratorService.generateSequence(Output.SEQUENCE_NAME);
+	public Output saveOutputDssFileBlockData (String stationName,DSSFile file) throws EntityNotFoundException, BusinessException {
+		Station station = serviceStation.findByStationName(stationName);				
+		boolean newItem = false;
 		
 		//TODO validation and check block dss 
-		Output output = new Output();
-		output.setIdStation(station.getStationId());
-		output.setDssBlocks(blocks);
-		output.setDate(Calendar.getInstance().getTime());
-		output.setIdOutput(idOutput);
-		output.setImagesPaths(null);		
-		outputRepository.save(output);
+		List<Output> outputs = outputRepository.findOutputByfilenameAndStation( file.getFilename(), station.getStationId());
+		//if(outputs == null || outputs.isEmpty()) throw new EntityNotFoundException ("No output found ");
+		Output output = (outputs!=null && !outputs.isEmpty())?outputs.get(0):null;
+		if(output ==null) {
+			output = new Output();
+			Long idOutput = sequenceGeneratorService.generateSequence(Output.SEQUENCE_NAME);
+			output.setIdOutput(idOutput);
+			newItem =true;
+		}
 				
+		output.setIdStation(station.getStationId());
+		output.setDssBlocks(file.getBlocks());
+		output.setFilename(file.getFilename());
+		output.setDate(Calendar.getInstance().getTime());
+		
+		output.setImagesPaths(null);	
+		if (newItem)
+			output = outputRepository.save(output);
+		else 
+			for (DSSBlock block : output.getDssBlocks())
+				output = appendBlocksData (block.getDssBlockDatas(), block.getName(), output.getIdOutput());
 		return output;
+	}
+	
+	private Output appendBlocksData (DSSBlockData[] datas, String blockname, Long idOutput) {		
+		Query query = query(where("_id").is(idOutput).and("dssBlocks").elemMatch(where("name").is(blockname)));
+				//and("dssBlocks.name").is(name));				
+		Update update = new Update().addToSet("dssBlocks.$.dssBlockDatas").each(datas);
+				//addToSet("dssBlocks",  output.getDssBlocks());		
+		Output r = mongoOperations.findAndModify(query, update,new FindAndModifyOptions().returnNew(true),Output.class);		
+		return r;
 	}
 	
 }

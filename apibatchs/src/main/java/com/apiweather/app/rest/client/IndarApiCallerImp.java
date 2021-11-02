@@ -9,6 +9,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import com.apiweather.app.dss.model.DSSBlock;
+import com.apiweather.app.dss.model.DSSFile;
+import com.apiweather.app.excep.DSSReadingException;
 import com.apiweather.app.jobs.domain.SpacFile;
 
 
@@ -25,11 +27,11 @@ public class IndarApiCallerImp implements IndarApiCaller {
 	
 	
 	@Override
-	public List<SpacFile> saveAllObservation(List<SpacFile> liste) {
+	public List<SpacFile> saveAllObservation(List<SpacFile> liste, String station) {
 		String url = "observed/spac/saveall";
 		String rootUrl = clientfactory.getApiUrl();
 						
-		RestTemplate client = clientfactory.createAirFlowClient();
+		RestTemplate client = clientfactory.createApiClient();
 		
 		SpacFile[] sf =(SpacFile[]) liste.toArray();
 
@@ -44,10 +46,10 @@ public class IndarApiCallerImp implements IndarApiCaller {
 
 	@Override
 	public List<DSSBlock> retreiveStationDssData (String name) {
-		String url = "dssfile/data/";
+		String url = "dssfile/wheather/station/";
 		String rootUrl = clientfactory.getApiUrl();
 						
-		RestTemplate client = clientfactory.createAirFlowClient();
+		RestTemplate client = clientfactory.createApiClient();
 		
 		ResponseEntity r = client.getForEntity(rootUrl+url+name,DSSBlock[].class);
 		if (r.getStatusCodeValue() == 200) {
@@ -59,17 +61,20 @@ public class IndarApiCallerImp implements IndarApiCaller {
 
 
 	@Override
-	public List<DSSBlock> saveAllDssData(DSSBlock[] blocks) {
-		String url = "dssfile/data/";
+	public boolean saveAllDssData(DSSFile file, String station) throws DSSReadingException{
+		if ("".equals(station) || station == null) {
+			throw new DSSReadingException ("Station required");
+		}
+		String url = "output/"+station+"/save/";
 		String rootUrl = clientfactory.getApiUrl();
-		RestTemplate client = clientfactory.createAirFlowClient();
+		RestTemplate client = clientfactory.createApiClient();
 		
-		ResponseEntity r = client.postForEntity(rootUrl+url, client, DSSBlock[].class);
-		if (r.getStatusCodeValue() == 200) {
-			return (Arrays.asList((DSSBlock[])r.getBody()));
+		ResponseEntity r = client.postForEntity(rootUrl+url, file, DSSFile.class);
+		if (r.getStatusCodeValue() == 200) {			
+			return true;
 		}
 		
-		return null;
+		return false;
 	}
 
 

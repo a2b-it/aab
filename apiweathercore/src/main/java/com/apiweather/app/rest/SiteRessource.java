@@ -22,6 +22,7 @@ import com.apiweather.app.biz.model.AlertStatus;
 import com.apiweather.app.biz.model.Site;
 import com.apiweather.app.biz.model.Station;
 import com.apiweather.app.biz.repo.SiteRepository;
+import com.apiweather.app.biz.services.ServiceAlert;
 import com.apiweather.app.biz.services.ServiceStation;
 import com.apiweather.app.tools.exception.BusinessException;
 import com.apiweather.app.tools.exception.EntityNotFoundException;
@@ -43,6 +44,9 @@ public class SiteRessource {
 	
 	@Autowired
 	private ServiceStation serviceStation;
+	
+	@Autowired
+	private ServiceAlert serviceAlert;
 	
 	@Autowired
 	private SiteRepository siteRepository;
@@ -73,14 +77,15 @@ public class SiteRessource {
 	@PostMapping("/station/{id}/alert/")
 	@ResponseBody
 	public ResponseEntity<Site> createAlertForStation (@PathVariable(name = "id") Long idStation,@Valid  @NotNull @RequestBody Alert alert) throws EntityNotFoundException, BusinessException {		
-		Station station = serviceStation.addNewAlert(idStation, alert);
+		//TODO add check for alert type to be approved  
+		Station station = serviceAlert.addNewAlert(idStation, alert);
 		return  new ResponseEntity(station,HttpStatus.OK);
 	}
 	
 	@PostMapping("/station/{station}/alerts/readed")
 	@ResponseBody
 	public ResponseEntity<Site> updateAlertForStation (@PathVariable(name = "station") Long idstation,@NotNull @RequestBody Long [] idalerts) throws EntityNotFoundException, BusinessException {		
-		List<Alert> alrts = serviceStation.setUpdateAlertStatus(idstation, idalerts,AlertStatus.readed);
+		List<Alert> alrts = serviceAlert.setUpdateAlertStatus(idstation, idalerts,AlertStatus.readed);
 		return  new ResponseEntity(alrts,HttpStatus.OK);
 	}
 	
