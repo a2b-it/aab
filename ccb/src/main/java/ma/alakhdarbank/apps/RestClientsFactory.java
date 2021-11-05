@@ -17,6 +17,10 @@ public class RestClientsFactory {
 	RestTemplateBuilder builder ;
 	
 	@Getter
+	@Value("${bkam.receiveCCBCTR.url}")
+	public String apiReceiveCCBCTR;
+	
+	@Getter
 	@Value("${bkam.auth.url}")
 	private String authUrl;
 	
@@ -24,9 +28,7 @@ public class RestClientsFactory {
 	@Value("${bkam.sendCCBData.url}")
 	private String sendingApiUrl;
 	
-	@Getter
-	@Value("${bkam.receiveCCBCTR.url}")
-	private String readingApiUrl;
+	
 	
 	@Autowired
 	public RestClientsFactory(RestTemplateBuilder builder) {
@@ -47,6 +49,15 @@ public class RestClientsFactory {
 	
 	@Autowired
 	public RestTemplate createApiDataCCB()  {
+	
+		return builder				
+				.setConnectTimeout(Duration.ofMillis(3000))
+	            .setReadTimeout(Duration.ofMillis(3000)).build();	
+	
+	}
+	
+	@Autowired
+	public RestTemplate createApiDataCCB_CTR()  {
 	
 		return builder				
 				.setConnectTimeout(Duration.ofMillis(3000))

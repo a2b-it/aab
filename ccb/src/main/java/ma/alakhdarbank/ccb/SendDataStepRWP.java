@@ -12,6 +12,8 @@ import java.nio.file.Paths;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -38,6 +40,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -87,12 +91,15 @@ public class SendDataStepRWP {
 	    		
 	public String JSON_FILE_PATH="json.file.path";
 	public String JSON_FILE_NAME="json.file.name";
+	
 	public String PASSWORD_HASH="password.hash";
 	public String TOKEN="token";
 	public String LOGIN="login";
 	public String PASSWORD="password";
 	public String PUB_CERT_PATH="pub.cert.path";
 	
+	public String ID_LOT="id.lot";
+	public String NBR_CPT="nbr.cpt";
 	
 	@Bean
 	@StepScope
@@ -102,7 +109,7 @@ public class SendDataStepRWP {
 	 */
     public ItemReader<String> jsonFileReader() {	
 		
-		return new SendDataStepReader( );
+		return new SendDataStepReader(serviceLot );
  
     }
 	
@@ -217,6 +224,10 @@ public class SendDataStepRWP {
 		
 		private String token="";
 		
+		private Long idLot;
+		
+		private int nbrCpt;
+		
 		public SendDataStepWriter(ApiSendData apiSendDataImp, ServiceLot serviceLot) {
 			super();
 			this.apiSendDataImp = apiSendDataImp;
@@ -230,6 +241,8 @@ public class SendDataStepRWP {
 	        this.login = parameters.getString(LOGIN);
 	        this.password_hash = parameters.getString(PASSWORD);
 	        this.token = parameters.getString(TOKEN);
+	        this.idLot = parameters.getLong(ID_LOT);
+	        this.nbrCpt= parameters.getLong(NBR_CPT).intValue();
 	    }
 
 		@Override
@@ -237,13 +250,23 @@ public class SendDataStepRWP {
 			//ExecutionContext stepContext = this.stepExecution.getExecutionContext();
 			//stepContext.put("auth_token", items.get(0)); 	
 			HashMap<String, String> headers = new HashMap<String, String>();
-			//TODO addinh headers
+			//TODO addinh headers					
+			Date date = new Date ();
+			SimpleDateFormat f = new SimpleDateFormat("YYYY-MM-DD HH24:mm:ss");
+			
+			headers.put("serviceBAM", "CCB");
+			headers.put("idLot", idLot.toString());
+			headers.put("emetteur", "AAB");
+			headers.put("recepteur", "001");
+			headers.put("dateDeclaration", f.format(date));
+			headers.put("nbrEnregistrement", String.valueOf(nbrCpt));			
 			headers.put("login", this.login);
 			headers.put("password_hash",this.password_hash);
-			headers.put("token",this.token);								
+			headers.put("token",this.token);
+			
 			apiSendDataImp.send((String)items.get(0), headers);
 			//
-			serviceLot.set_newLotENVOYER(login);
+			serviceLot.updateLotENVOYER(idLot.intValue(), date);
 		}
 		
 		
@@ -277,16 +300,17 @@ public class SendDataStepRWP {
 		
 		private String filename;
 		
-		private int interation=0;
+		private int endRead=0;
+		
+		private ServiceLot serviceLot;
+		
+		private Lot lot;
 		
 		
 		
-		
-		
-		
-		public SendDataStepReader() {
+		public SendDataStepReader(ServiceLot serviceLot) {
 			super();
-			
+			this.serviceLot=serviceLot;
 					
 		}
 		
@@ -300,15 +324,25 @@ public class SendDataStepRWP {
 	        this.filename = parameters.getString(JSON_FILE_NAME);
 	    }
 		
+		
+	
 		@Override
 		public String read() throws Exception, UnexpectedInputException, ParseException, NonTransientResourceException {
-			if(this.interation !=0 ) return null;					
-			return encryptFileAsString(path, this.filename);
+			
+			if(this.endRead !=0 ) return null;				
+			String content = encryptFileAsString(path, this.filename);
+			ObjectMapper om = new ObjectMapper();
+			ma.alakhdarbank.dto.Lot lot = om.readValue(content, ma.alakhdarbank.dto.Lot.class);
+			int nbrEnr = Integer.valueOf(lot.getH07());
+			SimpleDateFormat f = new SimpleDateFormat("YYYYMMDD");
+			Date dateArrete = f.parse(lot.h03);
+			this.lot = this.serviceLot.saveNewLotENVOYER(filename, nbrEnr, dateArrete);
+			return content; 
 		}
 
 		public  String encryptFileAsString(String dir, String filename)throws Exception
 	    {
-			this.interation++;
+			this.endRead++;
 	        return new String(Files.readAllBytes(Paths.get(dir+File.separator+filename)));
 	    }
 
@@ -324,7 +358,8 @@ public class SendDataStepRWP {
 			
 			executionContext.put(LOGIN, login);
 			executionContext.put(PASSWORD_HASH, password);
-			
+			executionContext.put(ID_LOT, lot.getId());
+			executionContext.put(NBR_CPT, lot.getNbrCpt());
 		}
 
 
@@ -336,3 +371,4 @@ public class SendDataStepRWP {
 	
 	}
 }
+

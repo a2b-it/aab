@@ -35,7 +35,7 @@ public class ApiAuthClientImp implements ApiAuthClient {
 		String url = clientfactory.getAuthUrl();
 		String body = new StringBuilder().append("{\"").append("username\":\"").
 				append(apiUserLogin).append(",\"password\":\"").append(apiUserPassword).append("\"}").toString();
-		ResponseEntity<String> ru = client.postForEntity(url,body,String.class);
+		ResponseEntity<String> ru = client.postForEntity(url,null,String.class);
 		ObjectMapper om = new ObjectMapper ();
 		JsonNode root, result;
 		String token = null;

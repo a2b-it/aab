@@ -8,6 +8,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -44,7 +45,10 @@ public class ApiSendDataImp implements ApiSendData {
 				queryParam("password_hash", "").
 				queryParam("token", "")
 				.build().toUri();
-		client.postForEntity(uri, data, null);
+		ResponseEntity<String> re = client.postForEntity(uri, data, String.class);
+		if (re.getStatusCodeValue() != 200) {
+			//TODO throw exception
+		}
 		
 
 	}
