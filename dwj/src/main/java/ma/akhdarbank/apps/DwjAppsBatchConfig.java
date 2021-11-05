@@ -39,7 +39,7 @@ public class DwjAppsBatchConfig {
 		return jobBuilderFactory.get("processJob")
 				.incrementer(new RunIdIncrementer())
 				.listener(listener())
-				.flow(authStep())
+				.flow (authStep())
 				.end()
 				.build();
 	}
