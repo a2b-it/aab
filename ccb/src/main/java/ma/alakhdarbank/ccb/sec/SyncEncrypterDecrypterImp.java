@@ -45,7 +45,8 @@ public class SyncEncrypterDecrypterImp implements SyncEncrypterDecrypter {
 	public void init(String pubCertPath) throws RCCBAppException  {		
 		 try {
 			// Lecture du certificat (cle publique RSA) 
-			 PublicKey publicKey =rsaKeyManagerImp.getPublicKeyFromRessource(pubCertPath, "RSA");
+			 PublicKey publicKey =rsaKeyManagerImp.getPublicKeyFromFile(pubCertPath, "RSA");
+					 //FromRessource(pubCertPath, "RSA");
 			// Encrypt AES key (for AE5-256 it's 32 bytes) with RSA private key. 
 			this.cipher = Cipher.getInstance("RSA");
 			cipher.init(Cipher.WRAP_MODE, publicKey);

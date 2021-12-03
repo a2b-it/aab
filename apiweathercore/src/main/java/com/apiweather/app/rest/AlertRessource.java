@@ -20,6 +20,8 @@ import com.apiweather.app.biz.repo.AlertRepository;
 import com.apiweather.app.biz.repo.AlertRepositoryCustom;
 import com.apiweather.app.tools.exception.EntityNotFoundException;
 
+import io.swagger.v3.oas.annotations.Operation;
+
 
 
 
@@ -44,12 +46,14 @@ public class AlertRessource extends AbstractCommonRessource<AlertRepository, Ale
 	public AlertRessource(AlertRepository repo) {
 		super(repo);		
 	}
-				
+
+	@Operation(description = "check alert service if available")
 	@GetMapping("/check")
 	public ResponseEntity<String> test() {		
 		return new ResponseEntity<String>("OK Alert",HttpStatus.OK);
 	}
 	
+	@Operation(description = "find alert like param")
 	@PostMapping("/findLike")
 	@ResponseBody
 	public ResponseEntity<Alert> getElementsByExpl(@RequestBody(required = true) Alert alert) throws EntityNotFoundException {		

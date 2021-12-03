@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import ma.alakhdarbank.apps.ScheduledJob;
 
 /**
  * @author a.bouabidi
@@ -33,26 +34,32 @@ import lombok.extern.slf4j.Slf4j;
 public class JobsController {
 	
 	@Autowired
-	JobLauncher jobLauncher;
+	ScheduledJob scheduledJob;
 	
-	@Autowired
-	@Qualifier("processJob")
-	Job ccbFileJob;
+	
 
 	
-	@RequestMapping("/invokejob")
-	public ResponseEntity<String> startJob() throws JobExecutionAlreadyRunningException, JobRestartException,
-			JobInstanceAlreadyCompleteException, JobParametersInvalidException {
+	@RequestMapping("/start")
+	public ResponseEntity<String> startJob() {
 		// some parameters
-		JobParametersBuilder jobBuilder = new JobParametersBuilder();
-		jobBuilder.addString("json.file.path", "F:\\Workspaces\\apigeo\\ccb\\json\\");
-		jobBuilder.addString("json.file.name", "cpts_output.json");		
-		
-		jobBuilder.addString("login", "login");
-		jobBuilder.addString("password", "password");
-		jobBuilder.addString("pub.cert.path", "publique.bin");
-		JobExecution jobExecution = (JobExecution) jobLauncher.run(ccbFileJob, jobBuilder.toJobParameters());
-		return new ResponseEntity(jobExecution.getExitStatus(), HttpStatus.OK);
+		scheduledJob.setJobEnabled(true);
+		return new ResponseEntity("JOB Schedule Enabled", HttpStatus.OK);
+
+	}
+	
+	@RequestMapping("/stop")
+	public ResponseEntity<String> stopJob() {
+		// some parameters
+		scheduledJob.setJobEnabled(false);
+		return new ResponseEntity("JOB Schedule Disabled", HttpStatus.OK);
+
+	}
+	
+	@RequestMapping("/status")
+	public ResponseEntity<String> status() {
+		// some parameters
+		//scheduledJob.setJobEnabled(false);
+		return new ResponseEntity(scheduledJob.getStatus(), HttpStatus.OK);
 
 	}
 }

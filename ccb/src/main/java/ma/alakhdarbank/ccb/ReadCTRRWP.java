@@ -20,6 +20,7 @@ import org.springframework.batch.item.ParseException;
 import org.springframework.batch.item.UnexpectedInputException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -35,7 +36,7 @@ import ma.alakhdarbank.ccb.sec.FileEncrypterDecrypter;
  * @author a.bouabidi
  *
  */
-
+@Component
 public class ReadCTRRWP {
 	
 	public String JSON_FILE_PATH="json.file.path";

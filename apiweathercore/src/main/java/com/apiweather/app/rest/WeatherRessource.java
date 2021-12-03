@@ -28,6 +28,8 @@ import com.apiweather.app.biz.services.ServiceWeather;
 import com.apiweather.app.tools.exception.BusinessException;
 import com.apiweather.app.tools.exception.EntityNotFoundException;
 
+import io.swagger.v3.oas.annotations.Operation;
+
 
 
 
@@ -78,6 +80,7 @@ public class WeatherRessource extends AbstractCommonRessource<WeatherPreciptRepo
 		return new ResponseEntity (fs,HttpStatus.OK);
 	}	
 	
+	@Operation(description = "get all weather data from cloud for all station without saving to db")
 	@GetMapping("/currentAgroWeather/all")
 	@ResponseBody
 	public ResponseEntity<AgroWeather> currentWeatherAll() throws EntityNotFoundException, BusinessException {		
@@ -96,6 +99,7 @@ public class WeatherRessource extends AbstractCommonRessource<WeatherPreciptRepo
 		return new ResponseEntity(liste,HttpStatus.OK);
 	}
 	
+	@Operation(description = "get all weather data from cloud for all station and save to db")
 	@PostMapping("/saveAgroWeather/all")
 	@ResponseBody
 	@Transactional

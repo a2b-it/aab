@@ -4,16 +4,14 @@
 package ma.alakhdarbank.ccb;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.FileFilter;
+import java.io.FilenameFilter;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -21,12 +19,9 @@ import java.util.List;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
-import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.StepExecution;
-import org.springframework.batch.core.annotation.AfterStep;
 import org.springframework.batch.core.annotation.BeforeStep;
-import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemReader;
@@ -49,7 +44,6 @@ import lombok.Setter;
 import ma.alakhdarbank.ccb.clients.ApiSendData;
 import ma.alakhdarbank.ccb.entity.Lot;
 import ma.alakhdarbank.ccb.exception.RCCBAppException;
-import ma.alakhdarbank.ccb.persistence.LotRepository;
 import ma.alakhdarbank.ccb.persistence.ServiceLot;
 import ma.alakhdarbank.ccb.sec.FileEncrypterDecrypter;
 import ma.alakhdarbank.ccb.sec.RSAKeyManager;
@@ -71,6 +65,9 @@ public class SendDataStepRWP {
 	@Value("${bkam.sendCCBData.filepath.url}")
 	public String filepath;
 	
+	@Value("${bkam.public_key.path}")
+	public String publicKeyPath;
+	
 	@Value("${bkam.auth.api.password}")
 	public String password;
 	
@@ -91,31 +88,31 @@ public class SendDataStepRWP {
 	    		
 	public String JSON_FILE_PATH="json.file.path";
 	public String JSON_FILE_NAME="json.file.name";
+	public String PUBLIC_KEY_PATH="public_key.path";
 	
 	public String PASSWORD_HASH="password.hash";
 	public String TOKEN="token";
-	public String LOGIN="login";
-	public String PASSWORD="password";
+	public String LOGIN="login";	
 	public String PUB_CERT_PATH="pub.cert.path";
 	
 	public String ID_LOT="id.lot";
 	public String NBR_CPT="nbr.cpt";
 	
 	@Bean
-	@StepScope
+	
 	/**
 	 * from rest get token
 	 * @return
 	 */
     public ItemReader<String> jsonFileReader() {	
 		
-		return new SendDataStepReader(serviceLot );
+		return new SendDataStepReader(serviceLot);
  
     }
 	
 	
 	@Bean
-	@StepScope
+	
 	/**
 	 * from rest get token
 	 * @return
@@ -127,7 +124,7 @@ public class SendDataStepRWP {
     }
 	
 	@Bean
-	@StepScope
+	
 	/**
 	 * save token to flow or memrory 
 	 * @return
@@ -139,8 +136,8 @@ public class SendDataStepRWP {
     }
 	
 	@Getter
-	@Setter
-	public class SendDataStepProcessor implements ItemProcessor<String, String>{
+	@Setter	
+	public class SendDataStepProcessor implements ItemProcessor<String, String>, ItemStream{
 		
 		private FileEncrypterDecrypter fileEncrypterDecrypterImp;
 		
@@ -150,42 +147,26 @@ public class SendDataStepRWP {
 		
 		private RSAKeyManager rsaKeyManager;
 		
-		private String loginIn;
+		private String tokenValue;
 		
-		private String passwordIn;
 		
-		private String pubCertPath;
+		private ExecutionContext executionContext;
 		
-		private String token;
-		
-		@BeforeStep
-	    public void beforeStep(StepExecution stepExecution) throws RCCBAppException {
-	       
-	        JobParameters parameters = stepExecution.getJobExecution().getJobParameters();
-	        
-	        //this.loginIn = parameters.getString(LOGIN);
-	        //this.passwordIn = parameters.getString(PASSWORD);
-	        
-	        this.pubCertPath = parameters.getString(PUB_CERT_PATH);
-	        try {
-				syncEncrypterDecrypterImp.init(pubCertPath);
-				fileEncrypterDecrypterImp.init();
-			} catch (RCCBAppException | InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException | InvalidAlgorithmParameterException e1) {
-				throw new RCCBAppException(e1);
-			}
-			
-	        
-	    }
-		
-		@AfterStep
+		/*@AfterStep
 	    public void afterStep(StepExecution stepExecution) throws RCCBAppException {	       
 	        stepExecution.getExecutionContext().put(TOKEN, this.token);   	        
-	    }
+	    }*/
 		
 		
 		@Override
-		public String process(String item) throws Exception {						
-			return encryptData (item); 
+		public String process(String item) throws Exception {		
+			System.out.println("Encrypt Data:["+item+"]");
+			String r = encryptData (item);
+			System.out.println("Token:["+getTokenValue()+"]");
+			System.out.println("Encrypted Data:["+r+"]");
+			executionContext.putString(TOKEN, getTokenValue());
+			return r;
+			
 		}
 
 
@@ -202,15 +183,43 @@ public class SendDataStepRWP {
 			byte[] ciphered = fileEncrypterDecrypterImp.encrypt(spath);
 			try {
 				byte[] key = syncEncrypterDecrypterImp.encrypt (fileEncrypterDecrypterImp.getSecretKey());
-				this.token = syncEncrypterDecrypterImp.encodeData(key);
+				this.tokenValue = syncEncrypterDecrypterImp.encodeData(key);
 			} catch (InvalidKeyException | IllegalBlockSizeException e) {
 				throw new RCCBAppException (e);
 			}
 			return syncEncrypterDecrypterImp.encodeData(ciphered);
 		}
+
+		@Override
+		public void open(ExecutionContext executionContext) throws ItemStreamException {
+			this.executionContext =  executionContext;
+			//JobParameters parameters = stepExecution.getJobExecution().getJobParameters();
+			System.out.println("================== open processor");	       
+			String public_secrt= executionContext.getString(PUB_CERT_PATH);
+			//TODO throw exception if public_secrt is null 
+	        try {
+				syncEncrypterDecrypterImp.init(public_secrt);
+				fileEncrypterDecrypterImp.init();
+			} catch (RCCBAppException | InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException | InvalidAlgorithmParameterException e1) {
+				throw new ItemStreamException(new RCCBAppException(e1));
+			}
+			
+		}
+
+		@Override
+		public void update(ExecutionContext executionContext) throws ItemStreamException {
+			System.out.println("================== update processor");		
+		}
+
+		@Override
+		public void close() throws ItemStreamException {
+			
+		}
 		
 	}
 	
+	@Getter
+	@Setter	
 	public class SendDataStepWriter implements ItemWriter<String>, ItemStream{
 				
 		private ApiSendData apiSendDataImp;
@@ -218,15 +227,13 @@ public class SendDataStepRWP {
 		
 		private ServiceLot serviceLot;
 		
-		private String login="";
-		
-		private String password_hash="";
+		private ExecutionContext executionContext;
 		
 		private String token="";
 		
 		private Long idLot;
 		
-		private int nbrCpt;
+		private Long nbrCpt;
 		
 		public SendDataStepWriter(ApiSendData apiSendDataImp, ServiceLot serviceLot) {
 			super();
@@ -234,7 +241,7 @@ public class SendDataStepRWP {
 			this.serviceLot =  serviceLot;
 			
 		}
-		
+		/*
 		@BeforeStep
 	    public void saveStepExecution(StepExecution stepExecution) {	        
 	        JobParameters parameters = stepExecution.getJobExecution().getJobParameters();
@@ -243,14 +250,16 @@ public class SendDataStepRWP {
 	        this.token = parameters.getString(TOKEN);
 	        this.idLot = parameters.getLong(ID_LOT);
 	        this.nbrCpt= parameters.getLong(NBR_CPT).intValue();
-	    }
+	    }*/
 
 		@Override
 		public void write(List<? extends String> items) throws Exception {
+			System.out.println("================== write");
 			//ExecutionContext stepContext = this.stepExecution.getExecutionContext();
 			//stepContext.put("auth_token", items.get(0)); 	
 			HashMap<String, String> headers = new HashMap<String, String>();
-			//TODO addinh headers					
+			//TODO addinh headers		
+			Long idLot = executionContext.getLong(ID_LOT);
 			Date date = new Date ();
 			SimpleDateFormat f = new SimpleDateFormat("YYYY-MM-DD HH24:mm:ss");
 			
@@ -260,13 +269,13 @@ public class SendDataStepRWP {
 			headers.put("recepteur", "001");
 			headers.put("dateDeclaration", f.format(date));
 			headers.put("nbrEnregistrement", String.valueOf(nbrCpt));			
-			headers.put("login", this.login);
-			headers.put("password_hash",this.password_hash);
+			headers.put("login", getLogin());
+			headers.put("password_hash",getPassword());
 			headers.put("token",this.token);
 			
 			apiSendDataImp.send((String)items.get(0), headers);
 			//
-			serviceLot.updateLotENVOYER(idLot.intValue(), date);
+			serviceLot.updateLotENVOYER(idLot, date);
 		}
 		
 		
@@ -274,14 +283,24 @@ public class SendDataStepRWP {
 
 		@Override
 		public void open(ExecutionContext executionContext) throws ItemStreamException {
+			// JobParameters parameters = executionContext.get
+			this.executionContext = executionContext;
 			
-			
+			System.out.println("================== open writer");
+			//this.login = (executionContext.containsKey(LOGIN))?executionContext.getString(LOGIN):null;
+	        //this.password_hash =(executionContext.containsKey(PASSWORD_HASH))? executionContext.getString(PASSWORD_HASH):null;
+	        /*this.token = (executionContext.containsKey(TOKEN))? executionContext.getString(TOKEN):null;
+	        
+	        
+	        this.idLot = (executionContext.containsKey(ID_LOT))? executionContext.getLong(ID_LOT):null; 
+	        this.nbrCpt=  (executionContext.containsKey(NBR_CPT))?executionContext.getLong(NBR_CPT):null;
+			*/
 		}
 
 		@Override
 		public void update(ExecutionContext executionContext) throws ItemStreamException {
 			// TODO Auto-generated method stub
-			
+			System.out.println("================== update writer");
 		}
 
 		@Override
@@ -293,25 +312,30 @@ public class SendDataStepRWP {
 	}
 	
 	@Getter
-	@Setter
-	public class SendDataStepReader implements ItemReader<String>, ItemStream{
+	@Setter	
+	public class SendDataStepReader implements ItemReader<String>{
 
 		private String path;
 		
 		private String filename;
 		
-		private int endRead=0;
+		private String publicCert;
+		
+		private int index=0;
 		
 		private ServiceLot serviceLot;
 		
 		private Lot lot;
 		
+		private ExecutionContext executionContext;
 		
+		private File[] jsons;
 		
 		public SendDataStepReader(ServiceLot serviceLot) {
 			super();
 			this.serviceLot=serviceLot;
-					
+	
+			
 		}
 		
 		
@@ -320,55 +344,55 @@ public class SendDataStepRWP {
 		@BeforeStep
 	    public void saveStepExecution(StepExecution stepExecution) throws RCCBAppException, InvalidKeyException {	        	        
 			JobParameters parameters = stepExecution.getJobExecution().getJobParameters();
-	        this.path = parameters.getString(JSON_FILE_PATH);
-	        this.filename = parameters.getString(JSON_FILE_NAME);
+	        this.path = getFilepath();
+	        this.filename = getFilename();
+	        this.publicCert = getPublicKeyPath();
+	        
+	        // save variable to context
+	        this.executionContext = stepExecution.getExecutionContext();
+	        this.executionContext.putString(PUB_CERT_PATH, getPublicCert());
 	    }
 		
 		
 	
 		@Override
 		public String read() throws Exception, UnexpectedInputException, ParseException, NonTransientResourceException {
+			System.out.println("================== read .json files");
+			if(this.jsons ==null ) {
+				this.jsons = new File(path).listFiles(new FilenameFilter() {
+					
+					@Override
+					public boolean accept(File dir, String name) {
+						 return name.toLowerCase().endsWith(".json");
+					}
+				});
+			}else if(index >= jsons.length){
+				return null;
+			}
 			
-			if(this.endRead !=0 ) return null;				
-			String content = encryptFileAsString(path, this.filename);
+			File currentFile = jsons[index++];
+			String content = encryptFileAsString(currentFile.getParent(), currentFile.getName());
 			ObjectMapper om = new ObjectMapper();
 			ma.alakhdarbank.dto.Lot lot = om.readValue(content, ma.alakhdarbank.dto.Lot.class);
 			int nbrEnr = Integer.valueOf(lot.getH07());
 			SimpleDateFormat f = new SimpleDateFormat("YYYYMMDD");
 			Date dateArrete = f.parse(lot.h03);
 			this.lot = this.serviceLot.saveNewLotENVOYER(filename, nbrEnr, dateArrete);
+			//
+			executionContext.putLong(ID_LOT, this.lot.getId());
+			executionContext.putLong(NBR_CPT, this.lot.getNbrCpt());			
+			//
 			return content; 
 		}
 
 		public  String encryptFileAsString(String dir, String filename)throws Exception
-	    {
-			this.endRead++;
+	    {			
 	        return new String(Files.readAllBytes(Paths.get(dir+File.separator+filename)));
 	    }
 
 
-		@Override
-		public void open(ExecutionContext executionContext) throws ItemStreamException {
-			
-		}
-
-
-		@Override
-		public void update(ExecutionContext executionContext) throws ItemStreamException {
-			
-			executionContext.put(LOGIN, login);
-			executionContext.put(PASSWORD_HASH, password);
-			executionContext.put(ID_LOT, lot.getId());
-			executionContext.put(NBR_CPT, lot.getNbrCpt());
-		}
-
-
-		@Override
-		public void close() throws ItemStreamException {
-			
-			
-		}
 	
 	}
 }
+
 

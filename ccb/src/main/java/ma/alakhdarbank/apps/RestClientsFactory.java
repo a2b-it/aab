@@ -2,6 +2,10 @@ package ma.alakhdarbank.apps;
 
 import java.time.Duration;
 
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -49,7 +53,14 @@ public class RestClientsFactory {
 	
 	@Autowired
 	public RestTemplate createApiDataCCB()  {
-	
+		HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier() {			
+			@Override
+			public boolean verify(String arg0, SSLSession arg1) {
+				// TODO Auto-generated method stub
+				return true;
+			}
+			});
+		
 		return builder				
 				.setConnectTimeout(Duration.ofMillis(3000))
 	            .setReadTimeout(Duration.ofMillis(3000)).build();	

@@ -29,7 +29,7 @@ public class ServiceLot {
 	@Autowired
 	private CtrRepository ctrRepository;
 	
-	private Integer getMaxLotAccepter () {
+	private Long getMaxLotAccepter () {
 		return lotRepository.findMaxIdByStatus(Lot.STATUT.ACCEPTER.toString());
 	}
 	
@@ -44,8 +44,8 @@ public class ServiceLot {
 		lot.setDateArrete(cal.getTime());
 		*/
 		Lot lot = new Lot();
-		Integer newId = getMaxLotAccepter ();				
-		lot.setIdLot(newId++);
+		Long newId = getMaxLotAccepter ();				
+		lot.setIdLot((newId !=null)?newId++:1);
 		lot.setNomfichier(filename);
 		lot.setNbrCpt(nbrEnr);
 		lot.setStatus(Lot.STATUT.SENDING);	
@@ -55,13 +55,13 @@ public class ServiceLot {
 	}
 	
 	
-	public Ctr saveNewCtrLot (Ctr lot) throws RCCBAppException {		
-		Ctr c = ctrRepository.save(lot);
-		updateLotStatus(lot.getNlot(), lot);		
+	public Ctr saveNewCtrLot (Ctr ctr) throws RCCBAppException {		
+		Ctr c = ctrRepository.save(ctr);
+		updateLotStatus(Long.valueOf(ctr.getNlot ()), ctr);		
 		return c;
 	}
 	
-	public Lot updateLotENVOYER (Integer idLot, Date date) throws RCCBAppException {
+	public Lot updateLotENVOYER (Long idLot, Date date) throws RCCBAppException {
 		Optional<Lot> ol = lotRepository.findById(idLot);
 		if(ol.isEmpty()) throw new RCCBAppException(" Lot Not found ["+idLot+"]");
 		Lot lot = ol.get();
@@ -72,7 +72,7 @@ public class ServiceLot {
 		return lotRepository.save(lot);
 	}
 	
-	public Lot updateLotStatus (Integer idLot, Ctr ctr) throws RCCBAppException {
+	public Lot updateLotStatus (Long idLot, Ctr ctr) throws RCCBAppException {
 		Optional<Lot> ol = lotRepository.findById(idLot);
 		if(ol.isEmpty()) throw new RCCBAppException(" Lot Not found ["+idLot+"]");
 		Lot lot = ol.get();

@@ -2,6 +2,7 @@ package com.apiweather.app.biz.repo;
 
 import java.util.List;
 
+import org.springframework.data.mongodb.repository.Aggregation;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 
@@ -15,4 +16,7 @@ public interface OutputRepository extends MongoRepository<Output, Long> {
 	
 	
 	public List<Object> findByFilename (String filename);
+	
+	@Aggregation(pipeline = {"{'$match':{'stationId': ?0 }}","{$group: { '_id': '', time: {$max: $time }}}"} )
+	public List <Output> findByMaxValue (long maxValue );
 }

@@ -9,6 +9,7 @@ import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 import ma.alakhdarbank.ccb.AuthStepRWP;
 import ma.alakhdarbank.ccb.ReadCTRRWP;
@@ -18,6 +19,7 @@ import ma.alakhdarbank.ccb.entity.Ctr;
 
 
 @Configuration
+@EnableScheduling
 public class CCBAppsBatchConfig {
 
 	@Autowired
@@ -45,8 +47,8 @@ public class CCBAppsBatchConfig {
 		return jobBuilderFactory.get("sendingJob")
 				.incrementer(new RunIdIncrementer())
 				.listener(listener())
-				.flow(authStep ())
-				.next(readJsonStep ())
+				.flow(readJsonStep ())
+				//.next(readJsonStep ())
 				.end()
 				.build();
 	}
@@ -56,8 +58,8 @@ public class CCBAppsBatchConfig {
 		return jobBuilderFactory.get("ctrJob")
 				.incrementer(new RunIdIncrementer())
 				.listener(listener())
-				.flow(authStep ())
-				.next(readCtrStep ())
+				.flow(readCtrStep ())
+				//.next(readCtrStep ())
 				.end()
 				.build();
 	}

@@ -34,6 +34,8 @@ import com.apiweather.app.rest.dto.WeatherPreciptByDayDTO;
 import com.apiweather.app.tools.exception.BusinessException;
 import com.apiweather.app.tools.exception.EntityNotFoundException;
 
+import io.swagger.v3.oas.annotations.Operation;
+
 /**
  * @author a.bouabidi
  *
@@ -48,11 +50,9 @@ public class DssFileRessource {
 	private ServiceWeather serviceWeather;
 	
 	@Autowired
-	private ServiceStation serviceStation;
+	private ServiceStation serviceStation;	
 	
-	@Autowired	
-	private ServiceDSSOutput serviceDSSOutput;
-	
+	@Operation(description = "Batch usage : give wheather data by station name")
 	@GetMapping("/wheather/station/{name}")
 	@ResponseBody
 	public DSSBlock[] getStationWeatherPrecipt(@Valid  @NotNull @PathVariable(name = "name") String station) throws EntityNotFoundException, BusinessException{
