@@ -39,27 +39,50 @@ public class JobsController {
 	
 
 	
-	@RequestMapping("/start")
-	public ResponseEntity<String> startJob() {
+	@RequestMapping("/send/start")
+	public ResponseEntity<String> startSendJob() {
 		// some parameters
-		scheduledJob.setJobEnabled(true);
+		scheduledJob.setSendJobEnabled(true);
 		return new ResponseEntity("JOB Schedule Enabled", HttpStatus.OK);
 
 	}
 	
-	@RequestMapping("/stop")
-	public ResponseEntity<String> stopJob() {
+	@RequestMapping("/send/stop")
+	public ResponseEntity<String> stopSendJob() {
 		// some parameters
-		scheduledJob.setJobEnabled(false);
+		scheduledJob.setSendJobEnabled(false);
 		return new ResponseEntity("JOB Schedule Disabled", HttpStatus.OK);
 
 	}
 	
-	@RequestMapping("/status")
-	public ResponseEntity<String> status() {
+	@RequestMapping("/ctr/start")
+	public ResponseEntity<String> startJob() {
+		// some parameters
+		scheduledJob.setCtrJobEnabled(true);
+		return new ResponseEntity("JOB Schedule Enabled", HttpStatus.OK);
+
+	}
+	
+	@RequestMapping("/ctr/stop")
+	public ResponseEntity<String> stopJob() {
+		// some parameters
+		scheduledJob.setCtrJobEnabled(false);
+		return new ResponseEntity("JOB Schedule Disabled", HttpStatus.OK);
+
+	}
+	
+	@RequestMapping("/send/status")
+	public ResponseEntity<String> sendStatus() {
 		// some parameters
 		//scheduledJob.setJobEnabled(false);
-		return new ResponseEntity(scheduledJob.getStatus(), HttpStatus.OK);
+		return new ResponseEntity(scheduledJob.getSendStatus(), HttpStatus.OK);
+
+	}
+	@RequestMapping("/ctr/status")
+	public ResponseEntity<String> ctrStatus() {
+		// some parameters
+		//scheduledJob.setJobEnabled(false);
+		return new ResponseEntity(scheduledJob.getCtrStatus(), HttpStatus.OK);
 
 	}
 }

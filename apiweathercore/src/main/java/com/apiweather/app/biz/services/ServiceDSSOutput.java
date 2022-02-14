@@ -6,6 +6,7 @@ package com.apiweather.app.biz.services;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -19,6 +20,7 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.apiweather.app.biz.model.Alert;
 import com.apiweather.app.biz.model.DSSBlock;
 import com.apiweather.app.biz.model.DSSBlockData;
 import com.apiweather.app.biz.model.DSSFile;
@@ -28,8 +30,11 @@ import com.apiweather.app.biz.model.Station;
 import com.apiweather.app.biz.repo.OutputRepository;
 import com.apiweather.app.biz.repo.SiteRepository;
 import com.apiweather.app.cfg.SequenceGeneratorService;
+import com.apiweather.app.rest.dto.OutputRpDTO;
+import com.apiweather.app.rest.dto.OutputRpToAlertMapper;
 import com.apiweather.app.tools.exception.BusinessException;
 import com.apiweather.app.tools.exception.EntityNotFoundException;
+import com.mongodb.client.MongoCursor;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -49,6 +54,9 @@ public class ServiceDSSOutput {
 	
 	@Autowired
 	private ServiceStation serviceStation;
+	
+	@Autowired
+	private ServiceAlert serviceAlerts;
 	
 	@Autowired
 	private MongoOperations mongoOperations;
@@ -91,5 +99,36 @@ public class ServiceDSSOutput {
 		Output r = mongoOperations.findAndModify(query, update,new FindAndModifyOptions().returnNew(true),Output.class);		
 		return r;
 	}
+	
+	private List<String> selectDistinctFieldValues (String fieldValue) {
+		// DataParam : 'AREA', 'ELEVATION', 'FLOW', 'FLOW-COMBINE', 'STORAGE'
+		MongoCursor<String> cursor = mongoOperations.getCollection("output").distinct (fieldValue, String.class).iterator();
+        List<String> list = new ArrayList<>();
+        while (cursor.hasNext()) {
+            list.add(cursor.next());
+        }
+        return list;
+	}
+	@Transactional
+	public OutputRpDTO[] findSuspectValues (String location, String dataParam, double seuil) throws EntityNotFoundException, BusinessException{
+		Station station = serviceStation.findByStationName(location);
+		OutputRpToAlertMapper mapper = new OutputRpToAlertMapper();
+		
+		//mapper.mapDtoToModel(null)
+		OutputRpDTO[] outs = outputRepository.findMaxValueByLocationAndDataParam(location, dataParam, seuil);
+		for (OutputRpDTO out : outs) {
+			try {
+				Alert alrt = mapper.mapDtoToModel(out);
+				serviceAlerts.addNewAlert(station.getStationId(), alrt);
+			} catch (BusinessException e) {
+				throw e;
+			}
+			
+		}
+        return outs;
+	}
+	
+	//db.output.aggregate([{$project: {'dssBlocks':{  $filter:{input:'$dssBlocks',as:'t',cond:{$eq:['$$t.location',"BARRAGE EL MALEH"]}}}}}])
+	
 	
 }

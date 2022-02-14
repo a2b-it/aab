@@ -2,6 +2,7 @@ package ma.akhdarbank.apps.clients;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -17,6 +18,7 @@ import ma.akhdarbank.apps.excp.DWJCallException;
 import ma.akhdarbank.apps.model.TicketBatch;
 import ma.akhdarbank.apps.model.TierBatch;
 import ma.akhdarbank.apps.model.TierBatchs;
+import ma.akhdarbank.apps.model.TierBatch.TierBatchRep;
 
 
 @Component
@@ -34,8 +36,9 @@ public class ApiBatchMatchingClientImp implements ApiBatchMatchingClient {
 		//
 	    headers.setContentType(MediaType.APPLICATION_JSON);
 	    headers.setBearerAuth(token);
+	    HttpEntity<TierBatchs> entity = new HttpEntity<TierBatchs>(tiers, headers);
 	    //ObjectMapper objectMapper = new ObjectMapper();	    
-		ResponseEntity<TicketBatch> rp  = client.postForEntity(url, tiers, TicketBatch.class);		
+		ResponseEntity<TicketBatch> rp  = client.postForEntity(url, entity, TicketBatch.class);		
 		if (rp.getStatusCode().equals(HttpStatus.OK))		
 		return rp.getBody().getTicket();	
 		else {
@@ -46,16 +49,18 @@ public class ApiBatchMatchingClientImp implements ApiBatchMatchingClient {
 	}
 
 	@Override
-	public TierBatch[] getDataAfterMathing(String token, Long tiket) throws JsonProcessingException {
+	public TierBatchRep[] getDataAfterMathing(String token, String tiket) {
 		RestTemplate client = clientfactory.createApiBatchMatchingClient();
 		String url = clientfactory.getGetMathingUrl();
 		HttpHeaders headers = new HttpHeaders();
 	    headers.setContentType(MediaType.APPLICATION_JSON);
-	    headers.setBearerAuth(token);
-	    ObjectMapper objectMapper = new ObjectMapper();	    
-	    String body = objectMapper.writeValueAsString(tiket);
-		ResponseEntity<TierBatch[]> rp  = client.postForEntity(url, body, TierBatch[].class);		
-		return rp.getBody();		
+	    headers.setBearerAuth(token);	    
+		String body ="{\"ticket\":"+tiket + "}";
+		HttpEntity<String> entity = new HttpEntity<String>(body, headers);
+        ResponseEntity< TierBatchRep[]> response = client.postForEntity(url, entity, TierBatchRep[].class);
+        TierBatchRep[] tierBatchData = response.getBody();
+        //
+		return tierBatchData;		
 	}
 
 }

@@ -10,7 +10,7 @@ import lombok.Setter;
 
 
 @Entity
-@Table(name = "EMPLOYEE")
+@Table(name = "Tiers")
 @Getter
 @Setter
 public class Tiers {
@@ -44,6 +44,13 @@ public class Tiers {
 	
 	@Column(name = "ETX_RIM")
 	private String numrim;
+	
+	@Column(name = "ID_BATCH")
+	private String idbatch;
+	
+	@Column(name = "ID_PERSONNE")
+	private String idpersonne;
+	
 	
 	public TierBatch.TierBatchReq toDTOObject() {
 		

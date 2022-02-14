@@ -5,16 +5,24 @@ package ma.alakhdarbank.ccb;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FilenameFilter;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
@@ -36,6 +44,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.Getter;
@@ -48,6 +57,8 @@ import ma.alakhdarbank.ccb.persistence.ServiceLot;
 import ma.alakhdarbank.ccb.sec.FileEncrypterDecrypter;
 import ma.alakhdarbank.ccb.sec.RSAKeyManager;
 import ma.alakhdarbank.ccb.sec.SyncEncrypterDecrypter;
+import ma.alakhdarbank.dto.Clis;
+import ma.alakhdarbank.dto.Cpt;
 
 /**
  * @author a.bouabidi
@@ -67,6 +78,9 @@ public class SendDataStepRWP {
 	
 	@Value("${bkam.public_key.path}")
 	public String publicKeyPath;
+	
+	@Value("${bkam.workfile.path}")
+	public String workfilePath;
 	
 	@Value("${bkam.auth.api.password}")
 	public String password;
@@ -97,6 +111,8 @@ public class SendDataStepRWP {
 	
 	public String ID_LOT="id.lot";
 	public String NBR_CPT="nbr.cpt";
+	public String FILENAME="filename";
+	public String DATEARRETE="datearrete";
 	
 	@Bean
 	
@@ -140,15 +156,12 @@ public class SendDataStepRWP {
 	public class SendDataStepProcessor implements ItemProcessor<String, String>, ItemStream{
 		
 		private FileEncrypterDecrypter fileEncrypterDecrypterImp;
-		
-		
-		private SyncEncrypterDecrypter syncEncrypterDecrypterImp;
-		
+				
+		private SyncEncrypterDecrypter syncEncrypterDecrypterImp;		
 		
 		private RSAKeyManager rsaKeyManager;
 		
-		private String tokenValue;
-		
+		private String tokenValue;		
 		
 		private ExecutionContext executionContext;
 		
@@ -160,16 +173,24 @@ public class SendDataStepRWP {
 		
 		@Override
 		public String process(String item) throws Exception {		
-			System.out.println("Encrypt Data:["+item+"]");
 			String r = encryptData (item);
-			System.out.println("Token:["+getTokenValue()+"]");
-			System.out.println("Encrypted Data:["+r+"]");
+			writeTempFile (item,r);
 			executionContext.putString(TOKEN, getTokenValue());
 			return r;
 			
 		}
 
+		
+		private void writeTempFile (String content, String crypted) throws IOException {
+			String filename = executionContext.getString(FILENAME);
+			Path tempToken = Files.createFile(Paths.get(workfilePath,filename.substring(0, filename.length()-5)+".token"));
+			Files.write(tempToken, getTokenValue().getBytes(StandardCharsets.UTF_8));
+			
+			Path tempFile = Files.createFile(Paths.get(workfilePath,filename.substring(0, filename.length()-5)+".bin"));
+			Files.write(tempFile, crypted.getBytes(StandardCharsets.UTF_8));
 
+		}
+		
 		public SendDataStepProcessor(FileEncrypterDecrypter fileEncrypterDecrypterImp,
 				SyncEncrypterDecrypter syncEncrypterDecrypterImp, RSAKeyManager rsaKeyManager) {
 			super();
@@ -223,17 +244,10 @@ public class SendDataStepRWP {
 	public class SendDataStepWriter implements ItemWriter<String>, ItemStream{
 				
 		private ApiSendData apiSendDataImp;
-		
-		
+				
 		private ServiceLot serviceLot;
 		
 		private ExecutionContext executionContext;
-		
-		private String token="";
-		
-		private Long idLot;
-		
-		private Long nbrCpt;
 		
 		public SendDataStepWriter(ApiSendData apiSendDataImp, ServiceLot serviceLot) {
 			super();
@@ -260,22 +274,31 @@ public class SendDataStepRWP {
 			HashMap<String, String> headers = new HashMap<String, String>();
 			//TODO addinh headers		
 			Long idLot = executionContext.getLong(ID_LOT);
-			Date date = new Date ();
-			SimpleDateFormat f = new SimpleDateFormat("YYYY-MM-DD HH24:mm:ss");
+			String token = executionContext.getString(TOKEN);
+			Long nbrCpt =  executionContext.getLong(NBR_CPT);
+			String filename = executionContext.getString(FILENAME);
 			
+			SimpleDateFormat fa = new SimpleDateFormat("yyyyMMdd");
+			Date datearrete = fa.parse(executionContext.getString(DATEARRETE));
+			SimpleDateFormat f = new SimpleDateFormat("YYYY-MM-dd'T'HH:mm:ss");
 			headers.put("serviceBAM", "CCB");
 			headers.put("idLot", idLot.toString());
-			headers.put("emetteur", "AAB");
+			headers.put("emetteur", "365");
 			headers.put("recepteur", "001");
-			headers.put("dateDeclaration", f.format(date));
+			headers.put("dateDeclaration", f.format(datearrete));
 			headers.put("nbrEnregistrement", String.valueOf(nbrCpt));			
 			headers.put("login", getLogin());
 			headers.put("password_hash",getPassword());
-			headers.put("token",this.token);
-			
+			headers.put("token",token);
+			//headers.put("Content-Type","application/octet-stream");			
 			apiSendDataImp.send((String)items.get(0), headers);
 			//
-			serviceLot.updateLotENVOYER(idLot, date);
+			serviceLot.updateLotENVOYER(idLot, new Date());
+			//
+			//Archive file after processing
+			File file = Paths.get(getWorkfilePath(), filename).toFile();			
+			Files.move(Paths.get(file.getParent(),file.getName()), Paths.get(file.getParent(), file.getName()+".archived"));			
+			//
 		}
 		
 		
@@ -317,15 +340,17 @@ public class SendDataStepRWP {
 
 		private String path;
 		
+		private String wpath;
+		
 		private String filename;
 		
 		private String publicCert;
 		
-		private int index=0;
+		private int j=0;
 		
 		private ServiceLot serviceLot;
 		
-		private Lot lot;
+		private int MaxCpt=6000;
 		
 		private ExecutionContext executionContext;
 		
@@ -345,52 +370,197 @@ public class SendDataStepRWP {
 	    public void saveStepExecution(StepExecution stepExecution) throws RCCBAppException, InvalidKeyException {	        	        
 			JobParameters parameters = stepExecution.getJobExecution().getJobParameters();
 	        this.path = getFilepath();
+	        this.wpath = getWorkfilePath();
+	        //create working dir 
+	        Paths.get(wpath).toFile().mkdirs();
+	        //
 	        this.filename = getFilename();
 	        this.publicCert = getPublicKeyPath();
 	        
 	        // save variable to context
 	        this.executionContext = stepExecution.getExecutionContext();
 	        this.executionContext.putString(PUB_CERT_PATH, getPublicCert());
+	        //
+	        try {
+				splitFile () ;
+			} catch (IOException e) {
+				throw new RCCBAppException(e);
+			}
 	    }
 		
 		
-	
+		private void splitFile () throws IOException {			
+			ma.alakhdarbank.dto.Lot lot = null;
+			ObjectMapper om = new ObjectMapper();
+			om.setSerializationInclusion(Include.NON_NULL);
+			File[] files = new File(path).listFiles(new FilenameFilter() {					
+				@Override
+				public boolean accept(File dir, String name) {
+					 return name.toLowerCase().endsWith(".json");
+				}
+			});
+			for (File file:files) {
+				int i = 0;
+				String tempFile = readFileAsString(file.getParent(), file.getName()); 
+				ma.alakhdarbank.dto.Lot glob = om.readValue(tempFile, ma.alakhdarbank.dto.Lot.class);
+				while (i!=glob.cpts.size()) {
+					lot = extract(glob, i);
+					if(lot.cpts.size()<MaxCpt) {
+						i=glob.cpts.size();
+					}else {
+						i=i+MaxCpt;
+					}
+					
+					long id = new Date().getTime();
+					String newContent = om.writeValueAsString(lot);
+					Path newJson = Files.createFile(Paths.get(workfilePath,String.valueOf(id)+".json"));
+					Files.write(newJson,newContent.getBytes(StandardCharsets.UTF_8));
+				}
+				// archive file after processing
+				Files.move(Paths.get(file.getParent(),file.getName()), Paths.get(file.getParent(), file.getName()+".archived"));			
+			}
+			
+		}
+		
+		private ma.alakhdarbank.dto.Lot extract(ma.alakhdarbank.dto.Lot lot, int index) {
+			if(lot.cpts.size()<MaxCpt) {
+				lot.h07=String.valueOf(lot.cpts.size());								
+				lot.h08=String.valueOf(calculerNombreClient(lot.cpts));
+				lot.h09=lot.h07;
+				return lot;
+			}else {
+				if(index+MaxCpt<lot.cpts.size()) {
+					ma.alakhdarbank.dto.Lot loti = new ma.alakhdarbank.dto.Lot();					
+					loti.h01=lot.h01;
+					loti.h02=lot.h02;
+					loti.h03=lot.h03;
+					loti.h04=lot.h04;
+					loti.h05=lot.h05;
+					loti.h06=lot.h06;					
+					loti.cpts= lot.cpts.subList(index, index+MaxCpt);
+					loti.h07=String.valueOf(loti.cpts.size());								
+					loti.h08=String.valueOf(calculerNombreClient(loti.cpts));
+					loti.h09=loti.h07;
+					return loti;
+				}else {
+					ma.alakhdarbank.dto.Lot loti = new ma.alakhdarbank.dto.Lot();
+					loti.h01=lot.h01;
+					loti.h02=lot.h02;
+					loti.h03=lot.h03;
+					loti.h04=lot.h04;
+					loti.h05=lot.h05;
+					loti.h06=lot.h06;
+					loti.h07=lot.h07;					
+					loti.cpts= lot.cpts.subList(index, lot.cpts.size());
+					loti.h07=String.valueOf(loti.cpts.size());			
+					loti.h08=String.valueOf(calculerNombreClient(loti.cpts));		
+					loti.h09=loti.h07;
+					return loti;
+				}
+			}			
+		}
+
+		private int calculerNombreClient (List<Cpt> cpts) {
+			int total =0;
+			ArrayList<Clis> clients = new ArrayList<Clis>();
+			for (Cpt cpt:cpts) {
+				clients.addAll(cpt.getClis());				
+			}
+			Map<String, Long> countForId = clients.stream()
+			        .collect(Collectors.groupingBy(Clis::getId, Collectors.counting()));
+			
+			return countForId.size();
+			
+		}
+		/**
+		 * no more than one file is processed
+		 */
+		
 		@Override
 		public String read() throws Exception, UnexpectedInputException, ParseException, NonTransientResourceException {
 			System.out.println("================== read .json files");
-			if(this.jsons ==null ) {
-				this.jsons = new File(path).listFiles(new FilenameFilter() {
-					
+			SimpleDateFormat f = new SimpleDateFormat("yyyyMMdd");
+			ObjectMapper om = new ObjectMapper();
+			om.setSerializationInclusion(Include.NON_NULL);
+			ma.alakhdarbank.dto.Lot lot = null;
+			//
+			Lot l = this.serviceLot.getLastLotNotYetProceesed();
+			if(l!=null) {
+				// a file is pending
+				return null;
+			}
+			//			
+			if(this.jsons == null ) {
+				this.jsons = new File(wpath).listFiles(new FilenameFilter() {					
 					@Override
 					public boolean accept(File dir, String name) {
 						 return name.toLowerCase().endsWith(".json");
 					}
-				});
-			}else if(index >= jsons.length){
-				return null;
+				});				
 			}
+			if(this.j>=jsons.length ) {
+				this.j=0;
+				this.jsons=null;					
+				//Files.move(Paths.get(path), Paths.get(path,"archive"));
+				return null;
+			}				
+				
+			File currentFile = jsons[this.j++];				
+			this.filename = currentFile.getName();
+			String content = readFileAsString2(currentFile.getParent(), currentFile.getName());				
+			lot = om.readValue(content, ma.alakhdarbank.dto.Lot.class);				
 			
-			File currentFile = jsons[index++];
-			String content = encryptFileAsString(currentFile.getParent(), currentFile.getName());
-			ObjectMapper om = new ObjectMapper();
-			ma.alakhdarbank.dto.Lot lot = om.readValue(content, ma.alakhdarbank.dto.Lot.class);
-			int nbrEnr = Integer.valueOf(lot.getH07());
-			SimpleDateFormat f = new SimpleDateFormat("YYYYMMDD");
+			//one file is processed
+			
+			int nbrEnr = Integer.valueOf(lot.cpts.size());			
 			Date dateArrete = f.parse(lot.h03);
-			this.lot = this.serviceLot.saveNewLotENVOYER(filename, nbrEnr, dateArrete);
+			Lot savedLot = this.serviceLot.saveNewLotENVOYER(filename, nbrEnr, dateArrete);
 			//
-			executionContext.putLong(ID_LOT, this.lot.getId());
-			executionContext.putLong(NBR_CPT, this.lot.getNbrCpt());			
-			//
+			executionContext.putLong(ID_LOT, savedLot.getId());
+			executionContext.putLong(NBR_CPT, savedLot.getNbrCpt());
+			executionContext.putString(FILENAME, filename);
+			executionContext.putString(DATEARRETE, lot.h03);	
+			//			
 			return content; 
 		}
-
-		public  String encryptFileAsString(String dir, String filename)throws Exception
+		
+		public  String readFileAsString(String dir, String filename) throws IOException
 	    {			
-	        return new String(Files.readAllBytes(Paths.get(dir+File.separator+filename)));
+			FileInputStream fis = null;
+			String content = null;
+			try {
+				fis = new FileInputStream(Paths.get(dir,filename).toString());
+				byte[] buffer = new byte[10000];
+				StringBuilder sb = new StringBuilder();
+				while (fis.read(buffer) != -1) {
+					sb.append(new String(buffer));
+					buffer = new byte[10000];
+				}
+				content = sb.toString();
+			} catch (FileNotFoundException e) {
+				throw e;
+			} catch (IOException e) {
+				throw e;
+			}finally {
+				try {
+					fis.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}	
+			}
+			return content;
 	    }
-
-
+		
+		public  String readFileAsString2(String dir, String filename) throws IOException
+	    {			
+			
+			return new String(Files.readAllBytes(Paths.get(dir, filename)));
+	    }
+		
+		
+		
+		
 	
 	}
 }

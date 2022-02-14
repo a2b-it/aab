@@ -3,7 +3,6 @@
  */
 package ma.alakhdarbank.ccb.persistence;
 
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Optional;
 
@@ -21,6 +20,7 @@ import ma.alakhdarbank.ccb.exception.RCCBAppException;
  *
  */
 @Service
+@javax.transaction.Transactional
 public class ServiceLot {
 	
 	@Autowired
@@ -30,11 +30,12 @@ public class ServiceLot {
 	private CtrRepository ctrRepository;
 	
 	private Long getMaxLotAccepter () {
-		return lotRepository.findMaxIdByStatus(Lot.STATUT.ACCEPTER.toString());
+		return lotRepository.findMaxIdByStatus(Lot.STATUT.ACCEPTER.getValue());
 	}
 	
-	public Lot getLastLotEnvoyer () {
-		return lotRepository.findLastLotByStatus(Lot.STATUT.ENVOYER.toString());
+	
+	public Lot getLastLotNotYetProceesed() {
+		return lotRepository.findLastLotByStatus(Lot.STATUT.ENVOYER.getValue(), Lot.STATUT.ENCOURS .getValue());
 	}
 	
 	public Lot saveNewLotENVOYER (String filename, int nbrEnr, Date dateArrete) {
@@ -45,19 +46,19 @@ public class ServiceLot {
 		*/
 		Lot lot = new Lot();
 		Long newId = getMaxLotAccepter ();				
-		lot.setIdLot((newId !=null)?newId++:1);
+		lot.setIdLot((newId !=null)?++newId:1);
 		lot.setNomfichier(filename);
 		lot.setNbrCpt(nbrEnr);
-		lot.setStatus(Lot.STATUT.SENDING);	
+		lot.setStatus(Lot.STATUT.SENDING.getValue());	
 		lot.setDateArrete(dateArrete);
 		lotRepository.save(lot);
 		return lot;
 	}
 	
-	
+
 	public Ctr saveNewCtrLot (Ctr ctr) throws RCCBAppException {		
 		Ctr c = ctrRepository.save(ctr);
-		updateLotStatus(Long.valueOf(ctr.getNlot ()), ctr);		
+		updateLotStatus(Long.valueOf(ctr.getNlot ()), c);		
 		return c;
 	}
 	
@@ -66,7 +67,7 @@ public class ServiceLot {
 		if(ol.isEmpty()) throw new RCCBAppException(" Lot Not found ["+idLot+"]");
 		Lot lot = ol.get();
 		
-		lot.setStatus(STATUT.ENVOYER);
+		lot.setStatus(STATUT.ENVOYER.getValue());
 		lot.setDateEnvoi(date);		
 		
 		return lotRepository.save(lot);
@@ -75,11 +76,16 @@ public class ServiceLot {
 	public Lot updateLotStatus (Long idLot, Ctr ctr) throws RCCBAppException {
 		Optional<Lot> ol = lotRepository.findById(idLot);
 		if(ol.isEmpty()) throw new RCCBAppException(" Lot Not found ["+idLot+"]");
+		if(ctr==null) throw new RCCBAppException(" Ctr Not found ["+idLot+"]");
 		Lot lot = ol.get();
-		if (ctr.getStatut() == CtrStatus.ACCEPTER_TOTAL || ctr.getStatut() == CtrStatus.ACCEPTER_W_ANO) {
-			lot.setStatus(STATUT.ACCEPTER);
+		lot.setIdCtr(ctr.getId());
+		if(ctr.getStatut() == CtrStatus.EN_ATTENTE) {
+			lot.setStatus(STATUT.ENCOURS.getValue());
+		}
+		else if (ctr.getStatut() == CtrStatus.ACCEPTER_TOTAL || ctr.getStatut() == CtrStatus.ACCEPTER_W_ANO) {
+			lot.setStatus(STATUT.ACCEPTER.getValue());
 		}else if (ctr.getStatut() == CtrStatus.REJET_TOTAL || ctr.getStatut() == CtrStatus.REJET_PARTIEL) {
-			lot.setStatus(STATUT.REJETER);
+			lot.setStatus(STATUT.REJETER.getValue());
 		}
 		return lotRepository.save(lot);
 	}

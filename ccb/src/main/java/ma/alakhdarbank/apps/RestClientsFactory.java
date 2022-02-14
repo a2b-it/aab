@@ -9,6 +9,7 @@ import javax.net.ssl.SSLSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
@@ -43,40 +44,32 @@ public class RestClientsFactory {
 
 	@Autowired
 	public RestTemplate createApiAuthClient()  {
-	
-		return builder				
-				.setConnectTimeout(Duration.ofMillis(3000))
-	            .setReadTimeout(Duration.ofMillis(3000)).build();	
+		
+		return createDefault() ;	
 	
 	}
 
 	
 	@Autowired
 	public RestTemplate createApiDataCCB()  {
-		HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier() {			
-			@Override
-			public boolean verify(String arg0, SSLSession arg1) {
-				// TODO Auto-generated method stub
-				return true;
-			}
-			});
 		
-		return builder				
-				.setConnectTimeout(Duration.ofMillis(3000))
-	            .setReadTimeout(Duration.ofMillis(3000)).build();	
+		return createDefault() ;
 	
 	}
 	
 	@Autowired
 	public RestTemplate createApiDataCCB_CTR()  {
-	
-		return builder				
-				.setConnectTimeout(Duration.ofMillis(3000))
-	            .setReadTimeout(Duration.ofMillis(3000)).build();	
-	
+		
+		return createDefault() ;
 	}
 
-	
+	private RestTemplate createDefault()  {
+		RestTemplate client = builder				
+				.setConnectTimeout(Duration.ofMillis(3000))
+	            .setReadTimeout(Duration.ofMillis(3000)).build();
+		client.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
+		return client;
+	}
 	
 	
 }

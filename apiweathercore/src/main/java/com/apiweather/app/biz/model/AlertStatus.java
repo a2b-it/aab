@@ -7,3 +7,6 @@ public enum AlertStatus{
 	draft,
 	readed
 }
+// Model output alerts
+//confirmed
+//

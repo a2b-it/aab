@@ -11,7 +11,6 @@ import org.springframework.batch.item.NonTransientResourceException;
 import org.springframework.batch.item.ParseException;
 import org.springframework.batch.item.UnexpectedInputException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
@@ -19,6 +18,8 @@ import ma.akhdarbank.apps.clients.ApiAuthClient;
 
 @Component
 public class AuthStepRWP {
+	
+	final String AUTH_TOKEN="auth_token";
 	
 	@Autowired
 	private ApiAuthClient apiAuthClientImp;
@@ -59,11 +60,9 @@ public class AuthStepRWP {
 		}
 
 
-
 		@Override
-		public String read() throws Exception, UnexpectedInputException, ParseException, NonTransientResourceException {
-			ExecutionContext stepContext = this.stepExecution.getExecutionContext();
-			String token = (String) stepContext.get("auth_token");
+		public String read() throws Exception, UnexpectedInputException, ParseException, NonTransientResourceException {			
+			String token = (String) this.stepExecution.getJobExecution().getExecutionContext().get(AUTH_TOKEN);
 			if (token != null) return null;
 			return apiAuthClientImp.auth();
 		}
@@ -81,13 +80,13 @@ public class AuthStepRWP {
 		
 		@Override
 		public void write(List<? extends String> items) throws Exception {
-			ExecutionContext stepContext = this.stepExecution.getExecutionContext();
-			stepContext.put("auth_token", items.get(0)); 			
+			this.stepExecution.getJobExecution().getExecutionContext().put(AUTH_TOKEN, items.get(0));
+			//stepContext.put(AUTH_TOKEN, items.get(0)); 			
 		}
 		
 		@BeforeStep
 	    public void saveStepExecution(StepExecution stepExecution) {
-	        this.stepExecution = stepExecution;
+	        this.stepExecution = stepExecution;	        
 	    }
 		
 	}

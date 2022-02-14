@@ -1,5 +1,8 @@
 package com.api.hsm;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import hec.heclib.dss.DSSErrorMessage;
 import hec.heclib.dss.HecDataManager;
 import hec.heclib.dss.HecDss;
@@ -16,7 +19,10 @@ public class MainRead {
 	public static void main(String[] args) {
 		//System.load("F:\\Workspaces\\TestHEC\\lib\\javaHeclib.dll");
 		int version = 3;
-		
+		Date date = new Date ();
+		SimpleDateFormat f = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss");
+		System.out.println("date"+f.format(date));
+		/*
 		HecDataManager dataManager = new HecDataManager();
 		int status = HecDataManager.setLogFile("F:/Workspaces/apigeo/TestHEC/log/MyProgramName"+version);
 		if (status != 0) System.out.println("Error opening log file");
@@ -48,7 +54,8 @@ public class MainRead {
 			dssTimeSeriesWrite.done();
 			if (status < 0) {
 		    	logStatus(dataManager);
-		    }*/					
+		    }*/		
+		/*
 			tsc2 = createTimeSeriesContainer(path, new double[] {0.2f,2.2f,1.2f,4.2f,3.2f,6.2f,5.2f,8.2f,7.2f,9.2f},  start  );
 			int value = dssTimeSeriesWrite.getCollectionSize(path);
 			
@@ -65,7 +72,7 @@ public class MainRead {
 		}
 		
 		HecDataManager.closeAllFiles();
-		HecDataManager.closeLogFile();
+		HecDataManager.closeLogFile();*/
 		
 	}
 	

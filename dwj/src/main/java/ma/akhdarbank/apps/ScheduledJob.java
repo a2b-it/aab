@@ -1,7 +1,7 @@
 /**
  * 
  */
-package ma.alakhdarbank.apps;
+package ma.akhdarbank.apps;
 
 import java.time.LocalDateTime;
 import java.util.Iterator;
@@ -20,6 +20,7 @@ import org.springframework.stereotype.Component;
 
 import lombok.Getter;
 import lombok.Setter;
+import ma.akhdarbank.apps.dao.BatchRepository;
 
 /**
  * @author a.bouabidi
@@ -29,23 +30,26 @@ import lombok.Setter;
 public class ScheduledJob {
 	@Setter	
 	@Getter
-	private boolean isSendJobEnabled = false;
+	private boolean isPrepareJobEnabled = false;
 	
 	@Setter	
 	@Getter
-	private boolean isCtrJobEnabled = false;
+	private boolean isGetDataJobEnabled = false;
 	
 	
 	@Autowired
-	@Qualifier("sendingJob")
-	Job sendingJob;
+	@Qualifier("prepareDataJob")
+	Job prepareDataJob;
 
 	@Autowired
-	@Qualifier("ctrJob")
-	Job ctrJob;
+	@Qualifier("getDataJob")
+	Job getDataJob;
 
 	@Autowired
 	private JobLauncher jobLauncher;
+	
+	@Autowired
+	private BatchRepository batchRepo;
 	
 	private final int s = 1000;		
 	
@@ -55,45 +59,46 @@ public class ScheduledJob {
 	
 	
 
-	@Scheduled(fixedDelay = 1 * m)
-	public void runCtrJob() throws Exception {
-		if (isCtrJobEnabled) {
+	//@Scheduled(fixedDelay = 12 * h)
+	public void runGetDataJob() throws Exception {
+		if (isGetDataJobEnabled) {
 			JobParametersBuilder jobBuilder = new JobParametersBuilder();
 			// JobParameters jobParameters = new JobParametersBuilder().addString("time",
 			// LocalDateTime.now().toString()).toJobParameters();
 			jobBuilder.addString("time", LocalDateTime.now().toString());
 			// jobBuilder.addString("login", "login");
 			// jobBuilder.addString("password", "password");
-			jobBuilder.addString("pub.cert.path", "F:\\WORK\\CCBV2\\publique.bin");
-			JobExecution execution = jobLauncher.run(ctrJob, jobBuilder.toJobParameters());			
+			
+			JobExecution execution = jobLauncher.run(getDataJob, jobBuilder.toJobParameters());
+			// schedule run of other job
+			
 			System.out.println("Job Getting Ctr Data Exit Status :: " + execution.getExitStatus());
 		}
 	}
 
-	@Scheduled(fixedDelay = 1 * m)
-	public void runSending() throws Exception {
-		if (isSendJobEnabled) {
+	
+	//@Scheduled(fixedDelay = 1 * m)
+	public void runPrepareDataJob() throws Exception {
+		if (isPrepareJobEnabled) {
 			JobParametersBuilder jobBuilder = new JobParametersBuilder();
 			// JobParameters jobParameters = new JobParametersBuilder().addString("time",
 			// LocalDateTime.now().toString()).toJobParameters();
-			jobBuilder.addString("json.file.path", "F:\\Workspaces\\apigeo\\ccb\\json\\");
-			jobBuilder.addString("json.file.name", "cpts_output.json");
 			jobBuilder.addString("time", LocalDateTime.now().toString());
 			// jobBuilder.addString("login", "login");
 			// jobBuilder.addString("password", "password");
-			jobBuilder.addString("pub.cert.path", "F:\\WORK\\CCBV2\\publique.bin");
-			JobExecution execution = jobLauncher.run(sendingJob, jobBuilder.toJobParameters());
+			
+			JobExecution execution = jobLauncher.run(prepareDataJob, jobBuilder.toJobParameters());
 			System.out.println("Job Sendind Data Exit Status :: " + execution.getExitStatus());
 		}
 	}
 	
-	public String getSendStatus () {
+	public String getPrepareJobStatus () {
 		//JobExplorer explorer =
-		return (isSendJobEnabled)?"Enabled":"Disabled";
+		return (isPrepareJobEnabled)?"Enabled":"Disabled";
 	}
 	
 	public String getCtrStatus () {
 		//JobExplorer explorer =
-		return (isCtrJobEnabled)?"Enabled":"Disabled";
+		return (isGetDataJobEnabled)?"Enabled":"Disabled";
 	}
 }

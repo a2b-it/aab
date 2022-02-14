@@ -15,7 +15,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class Cli {
+public class CliP {
 	@JsonProperty("Z01") 
     public String z01;
     @JsonProperty("P41") 

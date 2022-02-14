@@ -21,7 +21,7 @@ public class LabFMatching {
 	@Id
 	private Long identifiant;
 	
-	@Column(name = "ETXRIM")
+	@Column(name = "ETX_RIM")
 	private String numRim;
 	
 	@Column(name = "NOM")

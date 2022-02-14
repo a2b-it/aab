@@ -26,6 +26,9 @@ public class TierBatch {
 	@Setter
 	public static class TierBatchRep{
 		
+		public TierBatchRep() {
+			super();	
+		}
 		public String firstname;
 	    public String middlename;
 	    public String surname;
@@ -43,6 +46,7 @@ public class TierBatch {
 	    public boolean flague;
 	    public boolean flagus;
 	    public boolean flagpep;
+	    public String raisonsocial;
 	}
 	
 

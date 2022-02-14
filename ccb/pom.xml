@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>ma.akhdarbank.software</groupId>
 	<artifactId>ccbv2</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>${major.minor.version}</version>
 	<name>ccb</name>
 	<description>CCB project for Spring Boot</description>
 	<properties>
@@ -20,6 +20,7 @@
 		<spring.version>5.3.9</spring.version>
 		<spring-data.version>2.5.4</spring-data.version>
 		<spring-beans.version>5.3.9</spring-beans.version>
+		<major.minor.version>1.2.6</major.minor.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -87,6 +88,11 @@
 		    <groupId>org.liquibase.ext</groupId>
 		    <artifactId>liquibase-hibernate5</artifactId>
 		    <version>${liquibase-hibernate5.version}</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.apache.httpcomponents</groupId>
+		    <artifactId>httpclient</artifactId>
+		    <version>4.5.13</version>
 		</dependency>
 	</dependencies>
 

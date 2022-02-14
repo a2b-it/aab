@@ -27,26 +27,40 @@ public class Lot {
     @GeneratedValue
     private Long id;
 	
+	@Column(columnDefinition="number(10,0)")
 	private Long idLot;
 	
+	@Column(columnDefinition="number(10,0)")
 	private Integer nbrCpt;
 	
 	private String nomfichier ;
 	
-	private STATUT status;
+	@Column(columnDefinition="number(10,0)")
+	private int status;
 	
 	private Date dateEnvoi;
 	
-	private Integer idCtr;
+	@Column(columnDefinition="number(10,0)")
+	private Long idCtr;
 	
 	private Date dateArrete;
 	
 	
 	public enum STATUT {
-		SENDING,
-		ENVOYER,
-		ACCEPTER,
-		REJETER
+		SENDING(1),
+		ENVOYER(2),
+		ENCOURS(3),
+		ACCEPTER(4),
+		REJETER(5);
+		
+		private final int value;
+	    private STATUT(int value) {
+	        this.value = value;
+	    }
+
+	    public int getValue() {
+	        return value;
+	    }
 	}
 	
 

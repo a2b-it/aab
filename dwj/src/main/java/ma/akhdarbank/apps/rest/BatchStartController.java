@@ -15,12 +15,13 @@ import org.springframework.batch.core.repository.JobExecutionAlreadyRunningExcep
 import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException;
 import org.springframework.batch.core.repository.JobRestartException;
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import ma.akhdarbank.apps.ScheduledJob;
 
 @RestController
 @AllArgsConstructor
@@ -29,15 +30,34 @@ public class BatchStartController {
 	@Autowired
 	JobLauncher jobLauncher;
 	
-	Job processJob;
+	@Autowired	
+	ScheduledJob scheduledJob;		
 	
-	@GetMapping("/job")
-    public void startJob() throws JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException, JobParametersInvalidException {
+	@GetMapping("/prep")
+    public void startPrepareJob() throws JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException, JobParametersInvalidException {
 	//some parameters
     Map<String, JobParameter> parameters = new HashMap<>();
-    JobExecution jobExecution = (JobExecution) jobLauncher.run(processJob, new JobParameters(parameters));
+    try {
+    	scheduledJob.setPrepareJobEnabled(true);
+		scheduledJob.runPrepareDataJob();
+	} catch (Exception e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	}
     
-	
+    @GetMapping("/get")
+    public void startGetJob() throws JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException, JobParametersInvalidException {
+	//some parameters
+    Map<String, JobParameter> parameters = new HashMap<>();
+    try {
+    	scheduledJob.setGetDataJobEnabled(true);
+		scheduledJob.runGetDataJob();
+	} catch (Exception e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+    
 	}    
 	
 	

@@ -5,6 +5,8 @@ package ma.alakhdarbank.ccb.clients;
 
 import java.util.Map;
 
+import ma.alakhdarbank.ccb.entity.Ctr;
+
 /**
  * @author a.bouabidi
  *
