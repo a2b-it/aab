@@ -20,22 +20,21 @@ import lombok.Setter;
 @Setter
 public class SpacFile {
 private Long id;
-	
-	private Integer nligne;
-	
-	@JsonFormat(shape = JsonFormat.Shape.STRING,
-			pattern = "dd/MM/yyyy HH:mm:ss")
-	@JsonProperty("dateObs")
-	private Date dateObs;
-	
-	@JsonFormat(shape = JsonFormat.Shape.STRING,
-			pattern = "dd/MM/yyyy HH:mm:ss")	
-	@JsonProperty("station")
-	private String stationName;
-	
-	private String filename;
-	
-	private String type;
-	
-	private double valeur;
+private Integer nligne;
+
+@JsonFormat(shape = JsonFormat.Shape.STRING,
+		pattern = "dd/MM/yyyy HH:mm:ss")
+@JsonProperty("dateObs")
+private Date dateObs;
+
+@JsonFormat(shape = JsonFormat.Shape.STRING,
+		pattern = "dd/MM/yyyy HH:mm:ss")	
+@JsonProperty("station")
+private String stationName;
+
+private String filename;
+
+private String type;
+
+private double valeur;
 }

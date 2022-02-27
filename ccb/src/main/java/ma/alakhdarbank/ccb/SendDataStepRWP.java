@@ -4,7 +4,6 @@
 package ma.alakhdarbank.ccb;
 
 import java.io.File;
-import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FilenameFilter;
@@ -16,6 +15,7 @@ import java.nio.file.Paths;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -36,11 +36,9 @@ import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemStream;
 import org.springframework.batch.item.ItemStreamException;
 import org.springframework.batch.item.ItemWriter;
-import org.springframework.batch.item.NonTransientResourceException;
-import org.springframework.batch.item.ParseException;
-import org.springframework.batch.item.UnexpectedInputException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
@@ -97,8 +95,7 @@ public class SendDataStepRWP {
 	@Autowired
 	private RSAKeyManager rsaKeyManager;
 	
-	@Autowired
-	private ServiceLot serviceLot;
+	
 	    		
 	public String JSON_FILE_PATH="json.file.path";
 	public String JSON_FILE_NAME="json.file.name";
@@ -110,9 +107,13 @@ public class SendDataStepRWP {
 	public String PUB_CERT_PATH="pub.cert.path";
 	
 	public String ID_LOT="id.lot";
+	public String ID="id";
 	public String NBR_CPT="nbr.cpt";
 	public String FILENAME="filename";
 	public String DATEARRETE="datearrete";
+	
+	@Autowired
+    private ApplicationContext context;
 	
 	@Bean
 	
@@ -122,6 +123,7 @@ public class SendDataStepRWP {
 	 */
     public ItemReader<String> jsonFileReader() {	
 		
+		ServiceLot serviceLot = context.getBean(ServiceLot.class);
 		return new SendDataStepReader(serviceLot);
  
     }
@@ -146,7 +148,7 @@ public class SendDataStepRWP {
 	 * @return
 	 */
     public ItemWriter<String> jsonFileWriter() {
-		
+		ServiceLot serviceLot = context.getBean(ServiceLot.class);
 		return new SendDataStepWriter(apiSendDataImp, serviceLot);
  
     }
@@ -267,20 +269,22 @@ public class SendDataStepRWP {
 	    }*/
 
 		@Override
-		public void write(List<? extends String> items) throws Exception {
+		public void write(List<? extends String> items) throws ParseException, RCCBAppException  {
 			System.out.println("================== write");
 			//ExecutionContext stepContext = this.stepExecution.getExecutionContext();
 			//stepContext.put("auth_token", items.get(0)); 	
 			HashMap<String, String> headers = new HashMap<String, String>();
 			//TODO addinh headers		
 			Long idLot = executionContext.getLong(ID_LOT);
+			Long id = executionContext.getLong(ID);
 			String token = executionContext.getString(TOKEN);
 			Long nbrCpt =  executionContext.getLong(NBR_CPT);
 			String filename = executionContext.getString(FILENAME);
 			
 			SimpleDateFormat fa = new SimpleDateFormat("yyyyMMdd");
 			Date datearrete = fa.parse(executionContext.getString(DATEARRETE));
-			SimpleDateFormat f = new SimpleDateFormat("YYYY-MM-dd'T'HH:mm:ss");
+			SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss");
+			
 			headers.put("serviceBAM", "CCB");
 			headers.put("idLot", idLot.toString());
 			headers.put("emetteur", "365");
@@ -290,15 +294,33 @@ public class SendDataStepRWP {
 			headers.put("login", getLogin());
 			headers.put("password_hash",getPassword());
 			headers.put("token",token);
-			//headers.put("Content-Type","application/octet-stream");			
-			apiSendDataImp.send((String)items.get(0), headers);
+			//headers.put("Content-Type","application/octet-stream");	
+			boolean sent = false;
+			try {
+				apiSendDataImp.send((String)items.get(0), headers);
+				sent=true;
+			} catch (RCCBAppException e) {// make all exception silent
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				
+			} finally {
+				
+			}
 			//
-			serviceLot.updateLotENVOYER(idLot, new Date());
-			//
-			//Archive file after processing
-			File file = Paths.get(getWorkfilePath(), filename).toFile();			
-			Files.move(Paths.get(file.getParent(),file.getName()), Paths.get(file.getParent(), file.getName()+".archived"));			
-			//
+			if(sent) {
+				serviceLot.updateLotENVOYER(id, new Date());
+				//
+				//Archive file after processing
+				File file = Paths.get(getWorkfilePath(), filename).toFile();			
+				try {
+					Files.move(Paths.get(file.getParent(),file.getName()), Paths.get(file.getParent(), file.getName()+".archived"));
+				} catch (IOException e) {
+					throw new RCCBAppException(e);
+				}			
+				//
+			}
+			
+			
 		}
 		
 		
@@ -474,10 +496,12 @@ public class SendDataStepRWP {
 		}
 		/**
 		 * no more than one file is processed
+		 * @throws RCCBAppException 
+		 * @throws java.text.ParseException 
 		 */
 		
 		@Override
-		public String read() throws Exception, UnexpectedInputException, ParseException, NonTransientResourceException {
+		public String read() throws RCCBAppException, java.text.ParseException  {
 			System.out.println("================== read .json files");
 			SimpleDateFormat f = new SimpleDateFormat("yyyyMMdd");
 			ObjectMapper om = new ObjectMapper();
@@ -507,21 +531,39 @@ public class SendDataStepRWP {
 				
 			File currentFile = jsons[this.j++];				
 			this.filename = currentFile.getName();
-			String content = readFileAsString2(currentFile.getParent(), currentFile.getName());				
-			lot = om.readValue(content, ma.alakhdarbank.dto.Lot.class);				
+			String content;
+			try {
+				content = readFileAsString2(currentFile.getParent(), currentFile.getName());
+				lot = om.readValue(content, ma.alakhdarbank.dto.Lot.class);		
+			} catch (IOException e) {
+				throw new RCCBAppException(e);
+			}				
+					
 			
 			//one file is processed
 			
 			int nbrEnr = Integer.valueOf(lot.cpts.size());			
 			Date dateArrete = f.parse(lot.h03);
 			Lot savedLot = this.serviceLot.saveNewLotENVOYER(filename, nbrEnr, dateArrete);
+			
 			//
-			executionContext.putLong(ID_LOT, savedLot.getId());
+			executionContext.putLong(ID_LOT, savedLot.getIdLot());
+			executionContext.putLong(ID, savedLot.getId());
 			executionContext.putLong(NBR_CPT, savedLot.getNbrCpt());
 			executionContext.putString(FILENAME, filename);
 			executionContext.putString(DATEARRETE, lot.h03);	
-			//			
-			return content; 
+			
+			//
+			int posd = content.indexOf("\"h05\"");
+			int posf = content.indexOf("\"h06\"");
+			String debut = content.substring(0,posd+5);
+			String fin = content.substring(posf);
+			StringBuilder b = new StringBuilder().append(debut)
+								.append(":\"")
+								.append(savedLot.getIdLot())
+								.append("\",")
+								.append(fin);
+			return b.toString(); 
 		}
 		
 		public  String readFileAsString(String dir, String filename) throws IOException

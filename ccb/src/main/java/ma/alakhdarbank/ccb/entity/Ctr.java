@@ -4,11 +4,15 @@
 package ma.alakhdarbank.ccb.entity;
 
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -45,11 +49,13 @@ public class Ctr {
 	private Date datearrete;
 	
 	@JsonProperty("e05")
-	@JsonFormat(pattern = "YYYY-MM-DD hh:mm:ss")
+	@JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss")
 	private Date datecreation;
 	
 	@JsonProperty("ctr")
-	private CtrDeatil[] ctrs;
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	@JoinColumn(name = "ctr_id")
+	private List<CtrDetail> ctrs;
 	
 	
 	

@@ -46,10 +46,11 @@ public class Lot {
 	private Date dateArrete;
 	
 	
+	
 	public enum STATUT {
 		SENDING(1),
 		ENVOYER(2),
-		ENCOURS(3),
+		ENCOURS(3),//en cours de traitement par bam
 		ACCEPTER(4),
 		REJETER(5);
 		
