@@ -14,10 +14,12 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.apiweather.app.biz.model.ObservedData;
 import com.apiweather.app.biz.model.Station;
 import com.apiweather.app.biz.model.Weather;
 import com.apiweather.app.biz.model.weather.AgroForcast;
@@ -25,8 +27,11 @@ import com.apiweather.app.biz.model.weather.AgroWeather;
 import com.apiweather.app.biz.repo.WeatherPreciptRepository;
 import com.apiweather.app.biz.services.ServiceStation;
 import com.apiweather.app.biz.services.ServiceWeather;
+import com.apiweather.app.rest.dto.BCRFileDTO;
+import com.apiweather.app.rest.dto.SpacDTO;
 import com.apiweather.app.tools.exception.BusinessException;
 import com.apiweather.app.tools.exception.EntityNotFoundException;
+import com.apiweather.app.tools.rest.ModelMapper;
 
 import io.swagger.v3.oas.annotations.Operation;
 
@@ -47,13 +52,16 @@ public class WeatherRessource extends AbstractCommonRessource<WeatherPreciptRepo
 	@Autowired
 	private ServiceStation serviceStation;
 	
+	@Autowired
+	ModelMapper<Weather, BCRFileDTO> bcrDataMapper = null;
+	
 	public WeatherRessource(WeatherPreciptRepository repo) {
 		super(repo);
 		// TODO Auto-generated constructor stub
 	}
 	
 	
-	@GetMapping("/forcast")
+	@GetMapping("/agro/forcast")
 	@ResponseBody
 	public ResponseEntity<AgroForcast> forcastWeather(long idstation) throws EntityNotFoundException, BusinessException {	
 		List<AgroForcast> fs= serviceWeather.requestWeatherForcastForStation(idstation);
@@ -61,14 +69,14 @@ public class WeatherRessource extends AbstractCommonRessource<WeatherPreciptRepo
 		return new ResponseEntity (fs,HttpStatus.OK);
 	}	
 	
-	@GetMapping("/currentAgroWeather/{id}")
+	@GetMapping("/agro/currentAgroWeather/{id}")
 	@ResponseBody
 	public ResponseEntity<AgroWeather> currentWeather(@Valid  @NotNull @PathVariable(name = "id") long idstation) throws EntityNotFoundException, BusinessException {		
 		AgroWeather  fs = serviceWeather.requestWeatherForStation (idstation);
 		return new ResponseEntity (fs,HttpStatus.OK);
 	}
 	
-	@PostMapping("/saveAgroWeather/{id}")
+	@PostMapping("/agro/saveAgroWeather/{id}")
 	@ResponseBody	
 	public ResponseEntity<AgroWeather> saveCurrentWeather(@Valid  @NotNull @PathVariable(name = "id") long idstation) throws EntityNotFoundException, BusinessException {
 		AgroWeather fs = null;
@@ -81,7 +89,7 @@ public class WeatherRessource extends AbstractCommonRessource<WeatherPreciptRepo
 	}	
 	
 	@Operation(description = "get all weather data from cloud for all station without saving to db")
-	@GetMapping("/currentAgroWeather/all")
+	@GetMapping("/agro/currentAgroWeather/all")
 	@ResponseBody
 	public ResponseEntity<AgroWeather> currentWeatherAll() throws EntityNotFoundException, BusinessException {		
 		List<Station> rs = serviceStation.findAllStation();
@@ -100,7 +108,7 @@ public class WeatherRessource extends AbstractCommonRessource<WeatherPreciptRepo
 	}
 	
 	@Operation(description = "get all weather data from cloud for all station and save to db")
-	@PostMapping("/saveAgroWeather/all")
+	@PostMapping("/agro/saveAgroWeather/all")
 	@ResponseBody
 	@Transactional
 	public ResponseEntity<AgroWeather> saveCurrentWeatherAll() throws EntityNotFoundException, BusinessException {		
@@ -122,6 +130,12 @@ public class WeatherRessource extends AbstractCommonRessource<WeatherPreciptRepo
 	
 	
 	
-	
+	@PostMapping("/saveWeather/")
+	@ResponseBody	
+	public ResponseEntity<Weather[]> saveBCRWeather(@RequestBody(required = true) List<BCRFileDTO> bcr) {		
+		List<Weather> savedListe = serviceWeather.saveAllBcrEntries(bcr);
+		return new ResponseEntity<Weather[]>(savedListe.toArray(new Weather[savedListe.size()]),HttpStatus.OK);	
+		
+	}
 	 
 }

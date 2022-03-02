@@ -13,8 +13,8 @@ public interface WeatherPreciptRepository extends MongoRepository<WeatherPrecipt
 	
 	@Aggregation(pipeline = {"{'$match':{'stationId': ?0 }}","{$group: { '_id': '', time: {$max: $time }}}"} )
 	public WeatherPrecipt getMaxElementsByTime (long idStation);
-	//@Aggregation(pipeline = {"{ '$group': { '_id' : '$lastname', names : { $addToSet : '$?0' } } }", "{ '$sort' : { 'lastname' : -1 } }"})
-	
+
+	//@Aggregation(pipeline = {"{ '$group': { '_id' : '$lastname', names : { $addToSet : '$?0' } } }", "{ '$sort' : { 'lastname' : -1 } }"})	
 	List<WeatherPrecipt> findByStationId(Long stationId);
 	
 	//

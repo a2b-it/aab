@@ -28,6 +28,8 @@ import com.apiweather.app.biz.repo.WeatherPreciptRepository;
 import com.apiweather.app.biz.repo.WeatherRepository;
 import com.apiweather.app.cfg.SequenceGeneratorService;
 import com.apiweather.app.rest.clients.WeatherApiCaller;
+import com.apiweather.app.rest.dto.BCRDataMapper;
+import com.apiweather.app.rest.dto.BCRFileDTO;
 import com.apiweather.app.rest.dto.WeatherPreciptByDayDTO;
 import com.apiweather.app.tools.exception.BusinessException;
 import com.apiweather.app.tools.exception.EntityNotFoundException;
@@ -163,6 +165,27 @@ public class ServiceWeather {
 		if (rs.isEmpty()) throw new EntityNotFoundException ("No weither found for parameters {station="+idstation+"}");
 		
 		return rs;
+	}
+	
+	/**
+	 * get list of entries bcr format and adding them to existing station
+	 * @param liste
+	 * @return
+	 */
+	public List<Weather> saveAllBcrEntries (List<BCRFileDTO> liste){
+		// Get list of real station already existing 
+		for (int i = 0; i<liste.size();i++) {
+			
+		}
+		
+		BCRDataMapper mapper = new BCRDataMapper();
+		for (BCRFileDTO dto : liste) {
+			WeatherPrecipt wp = mapper.mapDtoToModel(dto);
+			//TODO add weather 
+			
+			
+		}
+		return null;
 	}
 }
 
