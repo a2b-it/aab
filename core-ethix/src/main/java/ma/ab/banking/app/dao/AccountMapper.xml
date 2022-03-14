@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="ma.ab.banking.app.dao.AccountMapper">
+	
+	<resultMap type="ma.ab.banking.app.entity.AcctDpDto" id="acctdpdto">
+        <id column="acct_no" property="acctNo"/>
+        <result column="acct_type" property="acctType"/>
+        <result column="appl_type" property="applType"/>
+        <result column="branch_no" property="branchno"/>
+         <result column="titulaire" property="titulaire"/>
+         <result column="status" property="status"/>
+        <result column="iso_code" property="isoCode"/>
+    </resultMap>
+	<select id="getAccountInfos" resultMap="acctdpdto">
+		SELECT a.acct_no acct_no, a.acct_type acct_type, a.appl_type appl_type, c.iso_code iso_code,
+		 a.branch_no,a.title_1 titulaire,a.status, 'DP' dpLn 
+		FROM sa.dp_acct a, sa.dp_display d, sa.ad_gb_crncy c  
+		WHERE a.acct_no =  #{acctNo}  AND a.acct_no=d.acct_no and d.crncy_id = c.crncy_id
+	</select>
+	
+	<resultMap id="testResultMap" type="OutParam">
+	  <result property="outparam" column="outparam" />	 
+	</resultMap>
+
+	<select id="callproc" parameterType="Integer"
+            resultMap="testResultMap" statementType="CALLABLE">
+	{? = call psp_test (?)}
+	</select>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<select id="execEthixTran" resultType="map" statementType="CALLABLE">
+		{#{retour,mode=OUT,jdbcType=INTEGER} = call atm.psp_ex_main3(
+			#{pnservicesid, mode=IN, jdbcType=INTEGER},
+			#{pdttrandt, mode=IN, jdbcType=DATE},
+			#{pdteffectivedt, mode=IN, jdbcType=DATE},
+			#{psterminalid, mode=IN, jdbcType=VARCHAR},
+			#{psproprietaryatm, mode=IN, jdbcType=VARCHAR},
+			#{psatmswitchid, mode=IN, jdbcType=VARCHAR},
+			#{psmanneddevice, mode=IN, jdbcType=VARCHAR},
+			#{psreferenceno, mode=IN, jdbcType=VARCHAR},
+			#{psorigreferenceno, mode=IN, jdbcType=VARCHAR},
+			#{psoffline, mode=IN, jdbcType=VARCHAR},
+			#{psreversal, mode=IN, jdbcType=VARCHAR},
+			#{pspin, mode=IN, jdbcType=VARCHAR},
+			#{psnewpin, mode=IN, jdbcType=VARCHAR},
+			#{pscardno, mode=IN, jdbcType=VARCHAR},
+			#{pntrancode, mode=IN, jdbcType=INTEGER},
+			#{psisocurrency, mode=IN, jdbcType=VARCHAR},
+			#{pnptid, mode=IN, jdbcType=INTEGER},
+			#{psappltype1, mode=IN, jdbcType=VARCHAR},
+			#{psaccttype1, mode=IN, jdbcType=VARCHAR},
+			#{psacctno1, mode=IN, jdbcType=VARCHAR},
+			#{psappltype2, mode=IN, jdbcType=VARCHAR},
+			#{psaccttype2, mode=IN, jdbcType=VARCHAR},
+			#{psacctno2, mode=IN, jdbcType=VARCHAR},
+			#{pnamt1, mode=IN, jdbcType=DOUBLE},
+			#{pnamt2, mode=IN, jdbcType=DOUBLE},
+			#{pncheckno1, mode=IN, jdbcType=INTEGER},
+			#{pncheckno2, mode=IN, jdbcType=INTEGER},
+			#{pdtdate1, mode=IN, jdbcType=DATE},
+			#{pdtdate2, mode=IN, jdbcType=DATE},
+			#{pnpayeeno, mode=IN, jdbcType=INTEGER},
+			#{psdevicelocation, mode=IN, jdbcType=VARCHAR},
+			#{psdescription, mode=IN, jdbcType=VARCHAR},
+			#{pspbupdated, mode=IN, jdbcType=VARCHAR},
+			#{pnemployeeid, mode=IN, jdbcType=INTEGER},
+			#{pnsupervisorid, mode=IN, jdbcType=INTEGER},
+			#{psversion, mode=IN, jdbcType=VARCHAR},
+			#{pntrantype, mode=IN, jdbcType=INTEGER},
+			#{psdeploan, mode=IN, jdbcType=VARCHAR},
+			#{pssdacctid, mode=IN, jdbcType=INTEGER},
+			#{psusername, mode=IN, jdbcType=VARCHAR},
+			#{pnbranchno, mode=IN, jdbcType=INTEGER},
+			#{pndrawerno, mode=IN, jdbcType=INTEGER},
+			#{pnfloatamt1, mode=IN, jdbcType=DOUBLE},
+			#{pnfloatamt2, mode=IN, jdbcType=DOUBLE},
+			#{psisocurrency2, mode=IN, jdbcType=VARCHAR},
+			#{pnrate1, mode=IN, jdbcType=DOUBLE},
+			#{pnrate2, mode=IN, jdbcType=DOUBLE},
+			#{pnrate3, mode=IN, jdbcType=DOUBLE},
+			#{pnrate4, mode=IN, jdbcType=DOUBLE},
+			#{pnrate5, mode=IN, jdbcType=DOUBLE},
+			#{pnrate6, mode=IN, jdbcType=DOUBLE},
+			#{pnrateindexid, mode=IN, jdbcType=INTEGER},
+			#{pnphoenixtc, mode=IN, jdbcType=INTEGER},
+			#{pnphoenixcc, mode=IN, jdbcType=INTEGER},
+			#{pnphoenixccamt, mode=IN, jdbcType=DOUBLE},
+			#{pstablename, mode=IN, jdbcType=VARCHAR},
+			#{pstablekey, mode=IN, jdbcType=VARCHAR},
+			#{pstablekeytype, mode=IN, jdbcType=VARCHAR},
+			#{psstring1, mode=IN, jdbcType=VARCHAR},
+			#{psstring2, mode=IN, jdbcType=VARCHAR},
+			#{psstring3, mode=IN, jdbcType=VARCHAR},
+			#{psstring4, mode=IN, jdbcType=VARCHAR},
+			#{pninteger1, mode=IN, jdbcType=INTEGER},
+			#{pninteger2, mode=IN, jdbcType=INTEGER},
+			#{pndebug, mode=IN, jdbcType=INTEGER}
+		)}
+	
+	</select>
+</mapper>
