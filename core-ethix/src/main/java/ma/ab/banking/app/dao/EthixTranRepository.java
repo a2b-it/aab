@@ -122,7 +122,7 @@ public class EthixTranRepository {
 		params.add(SqlParam.create("pdtEffectiveDt",journee,Date.class.getName()));
 		params.add(SqlParam.create("pdtCreateDt",journee,Date.class.getName()));
 		params.add(SqlParam.createInOut("rsTracerNo","",String.class.getName()));
-		Integer i = (Integer)exec.executeFunction(SqlParam.createOut("",Integer.class.getName()),"atm", "psp_genrate_trans_tracer_no", params);
+		Integer i = (Integer)exec.executeFunction(SqlParam.createOut("",Integer.class.getName()),"sa", "psp_genrate_trans_tracer_no", params);
 		return (i==0)?(String)params.get(3).getValue():null;
 	}
 

@@ -12,15 +12,17 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class TranCall {
+public class TranSetting {
 	
-	private String codeTran;
+	private String[] clscpt;
 	
-	private String codeAgc;
+	private String[] tpcpt;
 	
-	private String acctDeb;
+	private String tc;
 	
-	private String acctCrd;
+	private String phxTc;
 	
-	private Double amount;
+	
+	
+	
 }

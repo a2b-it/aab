@@ -37,7 +37,7 @@ public interface AccountMapper {
 			String pstablename, String pstablekey, String pstablekeytype, String psstring1, String psstring2,
 			String psstring3, String psstring4, Integer pninteger1, Integer pninteger2, Integer pndebug);
 	
-	@Select("SELECT last_to_dt+1 FROM atm.OV_CONTROL")
+	@Select("SELECT last_to_dt+1 FROM sa.OV_CONTROL")
 	Date findByNativeQueryGetCurrentJounee ();
 	
 	

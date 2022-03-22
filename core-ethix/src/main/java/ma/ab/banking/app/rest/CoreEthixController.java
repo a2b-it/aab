@@ -27,7 +27,7 @@ public class CoreEthixController {
 	private TransactionEthixService txEtxService; 
 	
 	@GetMapping("/exec")
-    public ResponseEntity<String> exec_virement(@RequestBody TranCall call)  {
+    public ResponseEntity<String> exec_virement(@RequestBody(required = true) TranCall call)  {
 		long n;
 		try {
 			n = txEtxService.ExecuteTransactionSet(call.getAcctDeb(), call.getAcctCrd(),call.getAmount());

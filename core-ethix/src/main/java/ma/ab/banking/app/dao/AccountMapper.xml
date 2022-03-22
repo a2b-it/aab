@@ -26,15 +26,7 @@
             resultMap="testResultMap" statementType="CALLABLE">
 	{? = call psp_test (?)}
 	</select>
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 	
 	<select id="execEthixTran" resultType="map" statementType="CALLABLE">
 		{#{retour,mode=OUT,jdbcType=INTEGER} = call atm.psp_ex_main3(

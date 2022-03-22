@@ -37,12 +37,12 @@ public class TransactionEthixService {
 		AcctDpDto actDebit = accountMapper.getAccountInfos(acctNoDebit);
 		AcctDpDto actCredit = accountMapper.getAccountInfos(acctNoCredit);
 		
-		int n = legExecDpDebit (actDebit,Integer.valueOf(108), journee, journee,referenceNum,acctNoDebit, mt, 0, "EMISSION VIRT EN FAVEUR DE"+actCredit.getTitulaire(),null,Integer.valueOf(600));	
+		int n = legExecDpDebit (actDebit,Integer.valueOf(108), journee, journee,referenceNum, mt, 0, "EMISSION VIRT EN FAVEUR DE "+actCredit.getTitulaire(),null,Integer.valueOf(600));	
 		if(n!=0) {
 			//run reverse of first leg
 		}
 		
-		n = legExecDpCredit (actCredit,Integer.valueOf(108), journee, journee,referenceNum,acctNoCredit, mt, 0, "Réception VIRT DE"+actDebit.getTitulaire(),null,Integer.valueOf(600));
+		n = legExecDpCredit (actCredit,Integer.valueOf(108), journee, journee,referenceNum, mt, 0, "Réception VIRT DE "+actDebit.getTitulaire(),null,Integer.valueOf(600));
 		if(n!=0) {
 			//run reverse of 2 legs
 		}
@@ -52,14 +52,14 @@ public class TransactionEthixService {
 	
 	
 	private int legExecDpDebit(AcctDpDto act,Integer pnservicesid, Date pdttrndt, Date pdteffectivedt, String pstracerno, 
-			String psacctno, Double pnamt, Integer pncheckno1, // -- if pnphoenixtc <> 171 and null if not
+			Double pnamt, Integer pncheckno1, // -- if pnphoenixtc <> 171 and null if not
 			String pstrandescr, // up to 100 char
 			//Integer pnpostingbranchno,
 			Integer pnphoenixcc,
 			Integer pnchannel_id) throws TransactionValidationException, TransactionException {
 		
 		if (pnservicesid ==null || pdttrndt == null || pdteffectivedt == null
-				|| pstracerno == null|| psacctno == null
+				|| pstracerno == null
 				|| pnamt == null|| pstrandescr == null
 				//|| pnpostingbranchno == null
 				||  pnchannel_id==null) {
@@ -79,79 +79,32 @@ public class TransactionEthixService {
 		// --------------------------------------
 		// --DEFALUT VALUE
 		// --------------------------------------
-		String psproprietaryatm = "N";
-		String psterminalid = "1";
-		String psatmswitchid = "";
-		String psmanneddevice = "N";
-		String psorigreferenceno = null;
-		String psoffline = "N";
-		String psreversal = "N";
-		String pspin = null;
-		String psnewpin = null;
-		String pscardno = null;
-		Integer pnptid = 0;
-		String psappltype2 = null;
-		String psaccttype2 = null;
-		String psacctno2 = null;
-		Double pnamt2 = Double.valueOf(0);
-		Integer pncheckno2 = null;
-		Date pdtdate1 = null;
-		Date pdtdate2 = null;
-		Integer pnpayeeno = null;
-		String psdevicelocation = null;
-		String pspbupdated = "N";
-		Integer pnsupervisorid = 0;
-		String psversion = "3.0";
-		Integer pntrantype = 0;
-		Integer pssdacctid = 0;
-		String psusername = "PHOENIX";
-		Integer pndrawerno = 0;
-		Double pnfloatamt1 = 0d;
-		Double pnfloatamt2 = 0d;
-		String psisocurrency2 = null;
-		Double pnrate1 = 0d;
-		Double pnrate2 = 0d;
-		Double pnrate3 = 0d;
-		Double pnrate4 = 0d;
-		Double pnrate5 = 0d;
-		Double pnrate6 = 0d;
-		Integer pnrateindexid = 0;
-		Double pnphoenixccamt=0d;
-		String pstablename = null;
-		String pstablekey = null;
-		String pstablekeytype = null;
-		String psstring1 = null;
-		String psstring2 = null;
-		String psstring3 = null;
-		String psstring4 = null;
-		Integer pninteger1 = 0;
-		Integer pninteger2 = 0;
-		Integer pndebug = 0;
+		XapiCParams xapic = new XapiCParams();
 		int nrc = 0;
 		
 		
-		nrc = tranRepo.execEthixTran(pnservicesid, pdttrndt, pdteffectivedt, psterminalid, psproprietaryatm,
-				psatmswitchid, psmanneddevice, pstracerno, psorigreferenceno, psoffline, psreversal, pspin, psnewpin,
-				pscardno, 905, psisocurrency, pnptid, psappltype1, psaccttype1, psacctno, psappltype2, psaccttype2,
-				psacctno2, pnamt, pnamt2, pncheckno1, pncheckno2, pdtdate1, pdtdate2, pnpayeeno, psdevicelocation,
-				pstrandescr, pspbupdated, pnemployeeid, pnsupervisorid, psversion, pntrantype, psdepln, pssdacctid,
-				psusername, act.getBranchno(), pndrawerno, pnfloatamt1, pnfloatamt2, psisocurrency2, pnrate1, pnrate2,
-				pnrate3, pnrate4, pnrate5, pnrate6, pnrateindexid, 150, pnphoenixcc, pnphoenixccamt,
-				pstablename, pstablekey, pstablekeytype, psstring1, psstring2, psstring3, psstring4, pninteger1,
-				pninteger2, pndebug);
+		nrc = tranRepo.execEthixTran(pnservicesid, pdttrndt, pdteffectivedt, xapic.psterminalid, xapic.psproprietaryatm,
+				xapic.psatmswitchid, xapic.psmanneddevice, pstracerno, xapic.psorigreferenceno, xapic.psoffline, xapic.psreversal, xapic.pspin, xapic.psnewpin,
+				xapic.pscardno, 905, psisocurrency, xapic.pnptid, psappltype1, psaccttype1, act.getAcctNo(), xapic.psappltype2, xapic.psaccttype2,
+				xapic.psacctno2, pnamt, xapic.pnamt2, pncheckno1, xapic.pncheckno2, xapic.pdtdate1, xapic.pdtdate2, xapic.pnpayeeno, xapic.psdevicelocation,
+				pstrandescr, xapic.pspbupdated, pnemployeeid, xapic.pnsupervisorid, xapic.psversion, xapic.pntrantype, psdepln, xapic.pssdacctid,
+				xapic.psusername, act.getBranchno(), xapic.pndrawerno, xapic.pnfloatamt1, xapic.pnfloatamt2, xapic.psisocurrency2, xapic.pnrate1, xapic.pnrate2,
+				xapic.pnrate3, xapic.pnrate4, xapic.pnrate5, xapic.pnrate6, xapic.pnrateindexid, 150, pnphoenixcc, xapic.pnphoenixccamt,
+				xapic.pstablename, xapic.pstablekey, xapic.pstablekeytype, xapic.psstring1, xapic.psstring2, xapic.psstring3, xapic.psstring4, xapic.pninteger1,
+				xapic.pninteger2, xapic.pndebug);
 
 		return nrc;
 	}
 	
 	private int legExecDpCredit(AcctDpDto act,Integer pnservicesid, Date pdttrndt, Date pdteffectivedt, String pstracerno, 
-			String psacctno, Double pnamt, Integer pncheckno1, // -- if pnphoenixtc <> 171 and null if not
+			Double pnamt, Integer pncheckno1, // -- if pnphoenixtc <> 171 and null if not
 			String pstrandescr, // up to 100 char
 			//Integer pnpostingbranchno, 
 			Integer pnphoenixcc,
 			Integer pnchannel_id) throws TransactionValidationException, TransactionException {
 		
 		if (pnservicesid ==null || pdttrndt == null || pdteffectivedt == null
-				|| pstracerno == null|| psacctno == null
+				|| pstracerno == null
 				|| pnamt == null|| pstrandescr == null
 				//|| pnpostingbranchno == null
 				||  pnchannel_id==null) {
@@ -172,66 +125,19 @@ public class TransactionEthixService {
 		// --------------------------------------
 		// --DEFALUT VALUE
 		// --------------------------------------
-		String psproprietaryatm = "N";
-		String psterminalid = "1";
-		String psatmswitchid = "";
-		String psmanneddevice = "N";
-		String psorigreferenceno = null;
-		String psoffline = "N";
-		String psreversal = "N";
-		String pspin = null;
-		String psnewpin = null;
-		String pscardno = null;
-		Integer pnptid = 0;
-		String psappltype2 = null;
-		String psaccttype2 = null;
-		String psacctno2 = null;
-		Double pnamt2 = Double.valueOf(0);
-		Integer pncheckno2 = null;
-		Date pdtdate1 = null;
-		Date pdtdate2 = null;
-		Integer pnpayeeno = null;
-		String psdevicelocation = null;
-		String pspbupdated = "N";
-		Integer pnsupervisorid = 0;
-		String psversion = "3.0";
-		Integer pntrantype = 0;
-		Integer pssdacctid = 0;
-		String psusername = "PHOENIX";
-		Integer pndrawerno = 0;
-		Double pnfloatamt1 = 0d;
-		Double pnfloatamt2 = 0d;
-		String psisocurrency2 = null;
-		Double pnrate1 = 0d;
-		Double pnrate2 = 0d;
-		Double pnrate3 = 0d;
-		Double pnrate4 = 0d;
-		Double pnrate5 = 0d;
-		Double pnrate6 = 0d;
-		Integer pnrateindexid = 0;
-		Double pnphoenixccamt=0d;
-		String pstablename = null;
-		String pstablekey = null;
-		String pstablekeytype = null;
-		String psstring1 = null;
-		String psstring2 = null;
-		String psstring3 = null;
-		String psstring4 = null;
-		Integer pninteger1 = 0;
-		Integer pninteger2 = 0;
-		Integer pndebug = 0;
+		XapiCParams xapic = new XapiCParams();
 		int nrc = 0;
 		
 		
-		nrc = tranRepo.execEthixTran(pnservicesid, pdttrndt, pdteffectivedt, psterminalid, psproprietaryatm,
-				psatmswitchid, psmanneddevice, pstracerno, psorigreferenceno, psoffline, psreversal, pspin, psnewpin,
-				pscardno, 904, psisocurrency, pnptid, psappltype1, psaccttype1, psacctno, psappltype2, psaccttype2,
-				psacctno2, pnamt, pnamt2, pncheckno1, pncheckno2, pdtdate1, pdtdate2, pnpayeeno, psdevicelocation,
-				pstrandescr, pspbupdated, pnemployeeid, pnsupervisorid, psversion, pntrantype, psdepln, pssdacctid,
-				psusername, act.getBranchno(), pndrawerno, pnfloatamt1, pnfloatamt2, psisocurrency2, pnrate1, pnrate2,
-				pnrate3, pnrate4, pnrate5, pnrate6, pnrateindexid, 101, pnphoenixcc, pnphoenixccamt,
-				pstablename, pstablekey, pstablekeytype, psstring1, psstring2, psstring3, psstring4, pninteger1,
-				pninteger2, pndebug);
+		nrc = tranRepo.execEthixTran(pnservicesid, pdttrndt, pdteffectivedt, xapic.psterminalid, xapic.psproprietaryatm,
+				xapic.psatmswitchid, xapic.psmanneddevice, pstracerno, xapic.psorigreferenceno, xapic.psoffline, xapic.psreversal, xapic.pspin, xapic.psnewpin,
+				xapic.pscardno, 904, psisocurrency, xapic.pnptid, psappltype1, psaccttype1, act.getAcctNo(), xapic.psappltype2, xapic.psaccttype2,
+				xapic.psacctno2, pnamt, xapic.pnamt2, pncheckno1, xapic.pncheckno2, xapic.pdtdate1, xapic.pdtdate2, xapic.pnpayeeno, xapic.psdevicelocation,
+				pstrandescr, xapic.pspbupdated, pnemployeeid, xapic.pnsupervisorid, xapic.psversion, xapic.pntrantype, psdepln, xapic.pssdacctid,
+				xapic.psusername, act.getBranchno(), xapic.pndrawerno, xapic.pnfloatamt1, xapic.pnfloatamt2, xapic.psisocurrency2, xapic.pnrate1, xapic.pnrate2,
+				xapic.pnrate3, xapic.pnrate4, xapic.pnrate5, xapic.pnrate6, xapic.pnrateindexid, 101, pnphoenixcc, xapic.pnphoenixccamt,
+				xapic.pstablename, xapic.pstablekey, xapic.pstablekeytype, xapic.psstring1, xapic.psstring2, xapic.psstring3, xapic.psstring4, xapic.pninteger1,
+				xapic.pninteger2, xapic.pndebug);
 
 		return nrc;
 	}

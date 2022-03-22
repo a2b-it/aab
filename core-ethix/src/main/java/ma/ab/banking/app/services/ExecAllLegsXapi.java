@@ -7,8 +7,8 @@ package ma.ab.banking.app.services;
  * @author a.bouabidi
  *
  */
-public interface ExecutePkgLegTransaction {
+public interface ExecAllLegsXapi {
 	
-	public int execute ();
+	public int execute (String ref);
 
 }
