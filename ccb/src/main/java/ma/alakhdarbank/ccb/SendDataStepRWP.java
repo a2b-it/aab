@@ -48,6 +48,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import ma.alakhdarbank.ccb.clients.ApiSendData;
 import ma.alakhdarbank.ccb.entity.Lot;
 import ma.alakhdarbank.ccb.exception.RCCBAppException;
@@ -66,6 +67,7 @@ import ma.alakhdarbank.dto.Cpt;
 @NoArgsConstructor
 @Getter
 @Setter
+@Slf4j
 public class SendDataStepRWP {
 	
 	@Autowired
@@ -269,8 +271,8 @@ public class SendDataStepRWP {
 	    }*/
 
 		@Override
-		public void write(List<? extends String> items) throws ParseException, RCCBAppException  {
-			System.out.println("================== write");
+		public void write(List<? extends String> items) {
+			log.debug("================== write");
 			//ExecutionContext stepContext = this.stepExecution.getExecutionContext();
 			//stepContext.put("auth_token", items.get(0)); 	
 			HashMap<String, String> headers = new HashMap<String, String>();
@@ -279,8 +281,8 @@ public class SendDataStepRWP {
 			Long id = executionContext.getLong(ID);
 			String token = executionContext.getString(TOKEN);
 			Long nbrCpt =  executionContext.getLong(NBR_CPT);
-			String filename = executionContext.getString(FILENAME);
-			
+			String filename = executionContext.getString(FILENAME);			
+			try {
 			SimpleDateFormat fa = new SimpleDateFormat("yyyyMMdd");
 			Date datearrete = fa.parse(executionContext.getString(DATEARRETE));
 			SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss");
@@ -295,30 +297,24 @@ public class SendDataStepRWP {
 			headers.put("password_hash",getPassword());
 			headers.put("token",token);
 			//headers.put("Content-Type","application/octet-stream");	
-			boolean sent = false;
+			apiSendDataImp.send((String)items.get(0), headers);
+			serviceLot.updateLotENVOYER(id, new Date());
+			//
+			//Archive file after processing
+			File file = Paths.get(getWorkfilePath(), filename).toFile();			
 			try {
-				apiSendDataImp.send((String)items.get(0), headers);
-				sent=true;
-			} catch (RCCBAppException e) {// make all exception silent
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				Files.move(Paths.get(file.getParent(),file.getName()), Paths.get(file.getParent(), file.getName()+".archived"));
+			} catch (IOException e) {
+				log.error(e.getMessage(),e);
+			}			
+			} catch (RCCBAppException | ParseException e) {// make all exception silent
+				log.error(e.getMessage(),e);
 				
 			} finally {
 				
 			}
 			//
-			if(sent) {
-				serviceLot.updateLotENVOYER(id, new Date());
-				//
-				//Archive file after processing
-				File file = Paths.get(getWorkfilePath(), filename).toFile();			
-				try {
-					Files.move(Paths.get(file.getParent(),file.getName()), Paths.get(file.getParent(), file.getName()+".archived"));
-				} catch (IOException e) {
-					throw new RCCBAppException(e);
-				}			
-				//
-			}
+			
 			
 			
 		}
