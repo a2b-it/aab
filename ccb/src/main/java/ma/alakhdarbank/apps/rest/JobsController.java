@@ -35,8 +35,6 @@ public class JobsController {
 	
 	@Autowired
 	ScheduledJob scheduledJob;
-	
-	
 
 	
 	@RequestMapping("/send/start")
@@ -78,6 +76,7 @@ public class JobsController {
 		return new ResponseEntity(scheduledJob.getSendStatus(), HttpStatus.OK);
 
 	}
+	
 	@RequestMapping("/ctr/status")
 	public ResponseEntity<String> ctrStatus() {
 		// some parameters

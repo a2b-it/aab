@@ -34,8 +34,7 @@ public class CCBAppsBatchConfig {
     @Autowired
     private ReadCTRRWP readCTRRWP;
    
-	@Autowired
-	private AuthStepRWP authStepRWP;
+	
 	
     @Bean
 	public JobExecutionListener listener() {
@@ -64,16 +63,7 @@ public class CCBAppsBatchConfig {
 				.build();
 	}
     
-    @Bean
-    public Step authStep() {
-		
-        return stepBuilderFactory.get("authStep")
-                .<String, String> chunk(1)
-                .reader(authStepRWP.authReader())
-                //.processor(authStepRWP.jsonFileProcessor())
-                .writer(authStepRWP.authWriter())
-                .build();
-    }
+  
     
 	@Bean
     public Step readJsonStep() {

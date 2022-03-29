@@ -40,7 +40,7 @@ public class ServiceLot {
 		return lotRepository.findLastLotByStatus(Lot.STATUT.ENVOYER.getValue(), Lot.STATUT.ENCOURS .getValue());
 	}
 	
-	@Transactional(propagation = Propagation.REQUIRES_NEW)
+	@Transactional
 	public Lot saveNewLotENVOYER (String filename, int nbrEnr, Date dateArrete) {
 		/*Calendar cal = Calendar.getInstance();
 		cal.setTime(new Date());		 
@@ -54,13 +54,14 @@ public class ServiceLot {
 		lot.setNbrCpt(nbrEnr);
 		lot.setStatus(Lot.STATUT.SENDING.getValue());	
 		lot.setDateArrete(dateArrete);
-		lotRepository.save(lot);
+		lot = lotRepository.saveAndFlush(lot);
+		
 		return lot;
 	}
 	
 	@Transactional
 	public Ctr saveNewCtrLot (Ctr ctr) throws RCCBAppException {		
-		Ctr c = ctrRepository.save(ctr);
+		Ctr c = ctrRepository.saveAndFlush(ctr);
 		updateLotStatus(Long.valueOf(ctr.getNlot ()), c);		
 		return c;
 	}
@@ -73,7 +74,7 @@ public class ServiceLot {
 		
 		lot.setStatus(STATUT.ENVOYER.getValue());
 		lot.setDateEnvoi(date);				
-		return lotRepository.save(lot);
+		return lotRepository.saveAndFlush(lot);
 	}
 	
 	@Transactional
@@ -85,7 +86,7 @@ public class ServiceLot {
 		lot.setStatus(STATUT.SENDING.getValue());
 		lot.setDateEnvoi(date);		
 		
-		return lotRepository.save(lot);
+		return lotRepository.saveAndFlush(lot);
 	}
 	
 	private Lot updateLotStatus (Long idLot, Ctr ctr) throws RCCBAppException {
@@ -102,6 +103,6 @@ public class ServiceLot {
 		}else if (ctr.getStatut() == CtrStatus.REJET_TOTAL ) {
 			ol.setStatus(STATUT.REJETER.getValue());
 		}
-		return lotRepository.save(ol);
+		return lotRepository.saveAndFlush(ol);
 	}
 }
