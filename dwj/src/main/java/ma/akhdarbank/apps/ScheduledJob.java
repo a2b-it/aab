@@ -4,14 +4,10 @@
 package ma.akhdarbank.apps;
 
 import java.time.LocalDateTime;
-import java.util.Iterator;
-import java.util.Map;
 
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;
-import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.JobParametersBuilder;
-import org.springframework.batch.core.explore.JobExplorer;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -20,21 +16,22 @@ import org.springframework.stereotype.Component;
 
 import lombok.Getter;
 import lombok.Setter;
-import ma.akhdarbank.apps.dao.BatchRepository;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author a.bouabidi
  *
  */
 @Component
+@Slf4j
 public class ScheduledJob {
 	@Setter	
 	@Getter
-	private boolean isPrepareJobEnabled = false;
+	private boolean isPrepareJobEnabled = true;
 	
 	@Setter	
 	@Getter
-	private boolean isGetDataJobEnabled = false;
+	private boolean isGetDataJobEnabled = true;
 	
 	
 	@Autowired
@@ -48,8 +45,7 @@ public class ScheduledJob {
 	@Autowired
 	private JobLauncher jobLauncher;
 	
-	@Autowired
-	private BatchRepository batchRepo;
+	
 	
 	private final int s = 1000;		
 	
@@ -59,7 +55,7 @@ public class ScheduledJob {
 	
 	
 
-	//@Scheduled(fixedDelay = 12 * h)
+	@Scheduled(fixedDelay = 12 * h)
 	public void runGetDataJob() throws Exception {
 		if (isGetDataJobEnabled) {
 			JobParametersBuilder jobBuilder = new JobParametersBuilder();
@@ -72,12 +68,12 @@ public class ScheduledJob {
 			JobExecution execution = jobLauncher.run(getDataJob, jobBuilder.toJobParameters());
 			// schedule run of other job
 			
-			System.out.println("Job Getting Ctr Data Exit Status :: " + execution.getExitStatus());
+			log.info("Job Getting Ctr Data Exit Status :: " + execution.getExitStatus());
 		}
 	}
 
 	
-	//@Scheduled(fixedDelay = 1 * m)
+	@Scheduled(fixedDelay = 1 * m)
 	public void runPrepareDataJob() throws Exception {
 		if (isPrepareJobEnabled) {
 			JobParametersBuilder jobBuilder = new JobParametersBuilder();
@@ -88,7 +84,7 @@ public class ScheduledJob {
 			// jobBuilder.addString("password", "password");
 			
 			JobExecution execution = jobLauncher.run(prepareDataJob, jobBuilder.toJobParameters());
-			System.out.println("Job Sendind Data Exit Status :: " + execution.getExitStatus());
+			log.info("Job Sendind Data Exit Status :: " + execution.getExitStatus());
 		}
 	}
 	

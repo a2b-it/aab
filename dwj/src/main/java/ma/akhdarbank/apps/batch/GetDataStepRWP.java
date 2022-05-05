@@ -76,7 +76,9 @@ public class GetDataStepRWP {
 		@Override
 		public FlowExecutionStatus decide(JobExecution jobExecution, StepExecution stepExecution) {
 			List liste = batchRepo.findAllActiveBatch();
-			int nbrBatchRest = stepExecution.getJobExecution().getExecutionContext().getInt(BATCH_SIZE);
+			int nbrBatchRest = 0;
+			if (stepExecution.getJobExecution().getExecutionContext().containsKey(BATCH_SIZE))
+				nbrBatchRest = stepExecution.getJobExecution().getExecutionContext().getInt(BATCH_SIZE);
 			return (liste==null || liste.isEmpty() || nbrBatchRest==0)? new FlowExecutionStatus("COMPLETED"):new FlowExecutionStatus("CONTINUE");
 		}
 		

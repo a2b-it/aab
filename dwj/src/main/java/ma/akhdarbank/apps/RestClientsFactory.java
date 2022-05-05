@@ -1,7 +1,17 @@
 package ma.akhdarbank.apps;
 
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.X509Certificate;
 import java.time.Duration;
 
+import javax.net.ssl.SSLContext;
+
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.ssl.TrustStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -11,9 +21,11 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
 
 @Component
+@Slf4j
 public class RestClientsFactory {
 	
 	RestTemplateBuilder builder ;
@@ -40,7 +52,7 @@ public class RestClientsFactory {
 	@Autowired
 	public RestTemplate createApiAuthClient()  {
 	
-		return createDefault ();	
+		return restNoSslCheckTemplate ();	
 	
 	}
 
@@ -48,7 +60,7 @@ public class RestClientsFactory {
 	@Autowired
 	public RestTemplate createApiBatchMatchingClient()  {
 	
-		return createDefault ();	
+		return restNoSslCheckTemplate ();	
 	
 	}
 
@@ -60,5 +72,34 @@ public class RestClientsFactory {
 		return client;
 	}
 	
+	
+	
+	public RestTemplate restNoSslCheckTemplate() {
+    		TrustStrategy acceptingTrustStrategy = (X509Certificate[] chain, String authType) -> true;
+    		RestTemplate restTemplate = null;
+    		SSLContext sslContext;
+			try {
+				sslContext = org.apache.http.ssl.SSLContexts.custom()
+				        		.loadTrustMaterial(null, acceptingTrustStrategy)
+				        		.build();
+				SSLConnectionSocketFactory csf = new SSLConnectionSocketFactory(sslContext);
+				 
+	    		CloseableHttpClient httpClient = HttpClients.custom()
+	                    		.setSSLSocketFactory(csf)
+	                    		.build();
+	 
+	    		HttpComponentsClientHttpRequestFactory requestFactory =
+	                    		new HttpComponentsClientHttpRequestFactory();
+	 
+	    		requestFactory.setHttpClient(httpClient);
+	    		restTemplate = new RestTemplate(requestFactory);
+			} catch (KeyManagementException | NoSuchAlgorithmException | KeyStoreException e) {
+				// TODO Auto-generated catch block				
+				log.error(e.getMessage());
+			}
+ 
+    		
+   		return restTemplate;
+ 	}
 	
 }

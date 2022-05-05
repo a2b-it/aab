@@ -15,6 +15,7 @@ import org.springframework.batch.core.explore.JobExplorer;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -27,6 +28,10 @@ import lombok.Setter;
  */
 @Component
 public class ScheduledJob {
+	
+	@Value("${app.sending.runOnstart}")
+	private boolean enableOnStart=false;
+	
 	@Setter	
 	@Getter
 	private boolean isSendJobEnabled = false;
@@ -55,7 +60,7 @@ public class ScheduledJob {
 	
 	
 
-	@Scheduled(fixedDelay = 1 * m)
+	@Scheduled(fixedDelay = 5 * m)
 	public void runCtrJob() throws Exception {
 		if (isCtrJobEnabled) {
 			JobParametersBuilder jobBuilder = new JobParametersBuilder();

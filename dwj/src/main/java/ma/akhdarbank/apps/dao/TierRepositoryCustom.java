@@ -150,7 +150,7 @@ public class TierRepositoryCustom {
 		
 		String upsert_batch= "INSERT INTO LAB_F_MATCHING_BATCH ( DATEJOURNEE,NOMBRELIGNE,NUMTICKET,STATUT,MSGERREUR) "
 	    		+ "        VALUES( :datejournee, :nombreligne, :numTicket, :statut, :msgerreur)";
-	    namedParameterJdbcTemplate.update(upsert_batch, namedParameters);
+	    namedParameterJdbcTemplate.update(upsert_batch, namedParameters);	    
 		return namedParameters;
 	}
 	
