@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import ma.alakhdarbank.apps.RestClientsFactory;
+import ma.alakhdarbank.ccb.exception.RCCBAppException;
 
 /**
  * @author a.bouabidi
@@ -28,7 +29,7 @@ public class ApiReadCTRImp implements ApiReadCTR {
 	
 	
 	@Override
-	public String read( Map<String, String> headers) {
+	public String read( Map<String, String> headers) throws RCCBAppException {
 		String url = clientfactory.getApiReceiveCCBCTR();
 		RestTemplate client = clientfactory.createApiDataCCB();
 		HttpHeaders httphead = new HttpHeaders();
@@ -45,8 +46,10 @@ public class ApiReadCTRImp implements ApiReadCTR {
 		
 		if (re.getStatusCodeValue()==200) {			
 			return re.getBody();
+		}else {
+			throw new  RCCBAppException ("Erreur lors du retour statut="+re.getStatusCode());
 		}
-		return null;
+		
 	}
 
 }

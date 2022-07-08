@@ -118,7 +118,7 @@ public class ReadCTRRWP {
 		@Override
 		public Ctr process(String item) throws Exception {
 			ObjectMapper om = new ObjectMapper();
-			Ctr ctr = om.readValue(item, Ctr.class);
+			Ctr ctr = om.readValue(item, Ctr.class);			
 			serviceLot.saveNewCtrLot (ctr);
 			return ctr;
 		}
@@ -133,6 +133,8 @@ public class ReadCTRRWP {
 		private ApiReadCTR apiReadCTRImp;		
 		
 		private ServiceLot serviceLot;
+		
+		private int status=0;
 
 		public ReadCTRStepReader(ApiReadCTR apiReadCTRImp, ServiceLot serviceLot) {
 			super();
@@ -143,7 +145,8 @@ public class ReadCTRRWP {
 		@BeforeStep
 	    public void saveStepExecution(StepExecution stepExecution) {	        
 	        JobParameters parameters = stepExecution.getJobExecution().getJobParameters();	        
-	        //this.token = parameters.getString(TOKEN);	        
+	        //this.token = parameters.getString(TOKEN);	 
+	        this.status=0;
 	    }
 
 		
@@ -153,7 +156,9 @@ public class ReadCTRRWP {
 			Map<String, String> headers = new HashMap<String, String>();
 			SimpleDateFormat f = new SimpleDateFormat("yyyyMMdd");
 			Lot lot = serviceLot.getLastLotNotYetProceesed();
-			if(lot == null ) return null;			
+			if(lot == null ) return null;
+			if (this.status != 0) return null;
+			
 			headers.put("serviceBAM", "CCB");
 			headers.put("idLot", lot.getIdLot().toString());
 			headers.put("emetteur", "365");
@@ -161,12 +166,12 @@ public class ReadCTRRWP {
 			headers.put("dateArrete", f.format(lot.getDateArrete ()));
 			headers.put("password_hash", password);
 			headers.put("login", login);
-			
-			
+			//			
 			String jsonCtr = apiReadCTRImp.read(headers);
 			//
-			
-			
+			ObjectMapper om = new ObjectMapper();
+			Ctr ctr = om.readValue(jsonCtr, Ctr.class);
+			if (ctr.getStatut()==-1) this.status=-1;
 			
 			return jsonCtr;
 		}
@@ -177,21 +182,16 @@ public class ReadCTRRWP {
 
 		private ServiceLot serviceLot;
 		
-		
-		
-		
 		public ReadCTRStepWriter(ServiceLot serviceLot) {
 			super();
 			this.serviceLot = serviceLot;
 		}
 
-
-
-
 		@Override
 		public void write(List<? extends Ctr> items) throws Exception {
 			//TODO loop for ctr
 			this.serviceLot.saveNewCtrLot(items.get(0));
+			
 		}
 		
 	}

@@ -278,7 +278,7 @@ public class SendDataStepRWP {
 			// ExecutionContext stepContext = this.stepExecution.getExecutionContext();
 			// stepContext.put("auth_token", items.get(0));
 			HashMap<String, String> headers = new HashMap<String, String>();
-			// TODO addinh headers
+			// TODO adding headers
 			Long idLot = executionContext.getLong(ID_LOT);
 			Long id = executionContext.getLong(ID);
 			String token = executionContext.getString(TOKEN);
@@ -307,6 +307,10 @@ public class SendDataStepRWP {
 				try {
 					Files.move(Paths.get(file.getParent(), file.getName()),
 							Paths.get(file.getParent(), file.getName() + ".archived"));
+					Files.move(Paths.get(file.getParent(), file.getName().replace(".json", ".bin")),
+							Paths.get(file.getParent(), file.getName().replace(".json", ".bin") + ".archived"));
+					Files.move(Paths.get(file.getParent(), file.getName().replace(".json", ".token")),
+							Paths.get(file.getParent(), file.getName().replace(".json", ".token") + ".archived"));
 				} catch (IOException e) {
 					log.error(e.getMessage(), e);
 				}
@@ -429,7 +433,7 @@ public class SendDataStepRWP {
 
 					long id = new Date().getTime();
 					String newContent = om.writeValueAsString(lot);
-					Path newJson = Files.createFile(Paths.get(workfilePath, String.valueOf(id) + ".json"));
+					Path newJson = Files.createFile(Paths.get(workfilePath, file.getName()+"_"+String.valueOf(id) + ".json"));
 					Files.write(newJson, newContent.getBytes(StandardCharsets.UTF_8));
 				}
 				// archive file after processing

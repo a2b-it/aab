@@ -4,6 +4,7 @@
 package ma.alakhdarbank.apps;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -19,14 +20,17 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import jdk.jfr.StackTrace;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author a.bouabidi
  *
  */
 @Component
+@Slf4j
 public class ScheduledJob {
 	
 	@Value("${app.sending.runOnstart}")
@@ -59,17 +63,19 @@ public class ScheduledJob {
 	private final int h = 60 * m;
 	
 	
+	
 
-	@Scheduled(fixedDelay = 5 * m)
+	@Scheduled(fixedRate  = 5 * m)
 	public void runCtrJob() throws Exception {
-		if (isCtrJobEnabled) {
+		if (isCtrJobEnabled||enableOnStart) {
+			log.debug(" ================================== runCtrJob runned");
 			JobParametersBuilder jobBuilder = new JobParametersBuilder();
 			// JobParameters jobParameters = new JobParametersBuilder().addString("time",
 			// LocalDateTime.now().toString()).toJobParameters();
 			jobBuilder.addString("time", LocalDateTime.now().toString());
 			// jobBuilder.addString("login", "login");
 			// jobBuilder.addString("password", "password");
-			jobBuilder.addString("pub.cert.path", "F:\\WORK\\CCBV2\\publique.bin");
+			//jobBuilder.addString("pub.cert.path", "F:\\WORK\\CCBV2\\publique.bin");
 			JobExecution execution = jobLauncher.run(ctrJob, jobBuilder.toJobParameters());			
 			System.out.println("Job Getting Ctr Data Exit Status :: " + execution.getExitStatus());
 		}
@@ -77,7 +83,9 @@ public class ScheduledJob {
 
 	@Scheduled(fixedDelay = 1 * m)
 	public void runSending() throws Exception {
-		if (isSendJobEnabled) {
+		
+		if (isSendJobEnabled||enableOnStart) {
+			log.debug(" ================================== runSending runned");
 			JobParametersBuilder jobBuilder = new JobParametersBuilder();
 			// JobParameters jobParameters = new JobParametersBuilder().addString("time",
 			// LocalDateTime.now().toString()).toJobParameters();
@@ -94,11 +102,11 @@ public class ScheduledJob {
 	
 	public String getSendStatus () {
 		//JobExplorer explorer =
-		return (isSendJobEnabled)?"Enabled":"Disabled";
+		return (isSendJobEnabled||enableOnStart)?"Enabled":"Disabled";
 	}
 	
 	public String getCtrStatus () {
 		//JobExplorer explorer =
-		return (isCtrJobEnabled)?"Enabled":"Disabled";
+		return (isCtrJobEnabled||enableOnStart)?"Enabled":"Disabled";
 	}
 }
