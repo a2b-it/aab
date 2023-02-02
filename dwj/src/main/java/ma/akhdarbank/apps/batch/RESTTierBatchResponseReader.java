@@ -48,6 +48,7 @@ public class RESTTierBatchResponseReader implements ItemReader<TierBatchRep>, It
     
     private BatchRepository batchRepo;
     
+    private TierBatchRep lastRep;
 
 	public RESTTierBatchResponseReader (BatchRepository batchRepo, ApiBatchMatchingClient apiBatchMatchingClient) {	
 		super();
@@ -60,14 +61,21 @@ public class RESTTierBatchResponseReader implements ItemReader<TierBatchRep>, It
 		if (listeBatch==null || listeBatch.isEmpty()) {
 			return null;
 		}
+		if(lastRep!=null && "NOMATCHING".equals(lastRep.getMsgerreur())){
+			lastRep=null;
+			return null;
+		}
 		if (tierBatchDataIsNotInitialized()) {
 			tierBatchData = fetchTierBatchDataFromAPI();
         }
+		
 		//processing  empty response
 		if (tierBatchData!=null && tierBatchData.isEmpty()) {
-			TierBatchRep t = new TierBatchRep();
-			t.msgerreur="NOMATCHING";
-			return t;
+			tierBatchData = null;
+			lastRep = new TierBatchRep();
+			lastRep.msgerreur="NOMATCHING";
+			tierBatchData=null;
+			return lastRep;
 		}
 		TierBatchRep nextTierBatch = null;
  
@@ -93,7 +101,7 @@ public class RESTTierBatchResponseReader implements ItemReader<TierBatchRep>, It
     	TierBatchRep[] tierBatchData = apiBatchMatchingClient.getDataAfterMathing(auth_token, idBatch.getNumTicket());
     	this.stepExecution.getJobExecution().getExecutionContext().putString(NUM_TICKET,idBatch.getNumTicket());
     	this.stepExecution.getJobExecution().getExecutionContext().putInt(BATCH_SIZE,listeBatch.size());
-        return Arrays.asList(tierBatchData);
+        return (tierBatchData!=null)?Arrays.asList(tierBatchData):null;
     }
 
 	@Override
@@ -120,5 +128,11 @@ public class RESTTierBatchResponseReader implements ItemReader<TierBatchRep>, It
 	public void saveStepExecution(StepExecution stepExecution) {
 		this.stepExecution = stepExecution;
 	}
+
+	public List<LabFMatchingBatch> getListeBatch() {
+		return listeBatch;
+	}
+
+
 
 }

@@ -57,9 +57,7 @@ public class TierBatchPreparedStatementSetter implements BatchPreparedStatementS
 			if(th.getIdbatch()!=null)
 				ps.setLong(12, Long.valueOf(th.getIdbatch()));
 			if(th.getIdpersonne()!=null)
-				ps.setLong(13,  Long.valueOf(th.getIdpersonne()));
-			
-		
+				ps.setLong(13,  Long.valueOf(th.getIdpersonne()));					
 	}
 
 	@Override

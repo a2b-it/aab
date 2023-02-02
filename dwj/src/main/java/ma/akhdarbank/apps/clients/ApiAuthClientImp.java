@@ -1,7 +1,5 @@
 package ma.akhdarbank.apps.clients;
 
-import java.util.Collections;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -12,13 +10,11 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ma.akhdarbank.apps.RestClientsFactory;
 import ma.akhdarbank.apps.excp.DWJCallException;
-import ma.akhdarbank.apps.model.User;
 
 
 
@@ -53,7 +49,6 @@ public class ApiAuthClientImp implements ApiAuthClient {
 		ResponseEntity<String> ru = client.postForEntity(url,entity,String.class);
 		ObjectMapper om = new ObjectMapper ();
 		JsonNode root, result;
-	
 		
 			root = om.readTree(ru.getBody());
 			result = root.path("result");

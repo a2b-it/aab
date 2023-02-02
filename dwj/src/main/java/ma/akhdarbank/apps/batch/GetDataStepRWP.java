@@ -75,11 +75,10 @@ public class GetDataStepRWP {
 
 		@Override
 		public FlowExecutionStatus decide(JobExecution jobExecution, StepExecution stepExecution) {
-			List liste = batchRepo.findAllActiveBatch();
 			int nbrBatchRest = 0;
 			if (stepExecution.getJobExecution().getExecutionContext().containsKey(BATCH_SIZE))
 				nbrBatchRest = stepExecution.getJobExecution().getExecutionContext().getInt(BATCH_SIZE);
-			return (liste==null || liste.isEmpty() || nbrBatchRest==0)? new FlowExecutionStatus("COMPLETED"):new FlowExecutionStatus("CONTINUE");
+			return (nbrBatchRest==0)? new FlowExecutionStatus("COMPLETED"):new FlowExecutionStatus("CONTINUE");
 		}
 		
 	
@@ -103,6 +102,7 @@ public class GetDataStepRWP {
 			//String auth_token = this.stepExecution.getJobExecution().getExecutionContext().getString(AUTH_TOKEN);
 			//
 			String num_Ticket = this.stepExecution.getJobExecution().getExecutionContext().getString(NUM_TICKET);
+			
 			// TODO Auto-generated method stub
 			tierRepository.updateTiersBatchRep(items, num_Ticket);
 		}

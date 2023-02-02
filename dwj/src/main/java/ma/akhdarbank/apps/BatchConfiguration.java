@@ -14,6 +14,7 @@ import org.springframework.boot.autoconfigure.batch.BatchProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 /**
  * @author a.bouabidi
@@ -22,6 +23,7 @@ import org.springframework.core.io.ResourceLoader;
 
 @Configuration
 @EnableBatchProcessing
+@EnableScheduling
 public class BatchConfiguration extends DefaultBatchConfigurer  {
 	@Override
     @Autowired

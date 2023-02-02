@@ -36,8 +36,8 @@ public class TierRepositoryCustom {
 	public void updateTiersBatchReq (List<TierBatch.TierBatchReq> tiers, Long ticket) throws DAOCallException {		
 		StopWatch timer = new StopWatch();	    
 		String upsert_sql = 
-				"    INSERT INTO LAB_F_MATCHING  (ETX_RIM, NOM, PRENOM, ID_BATCH, IDPERSONNE)\r\n"
-				+ "        VALUES(:numRim, :nom, :prenom, :idbatch, :idpersonne)"
+				"    INSERT INTO LAB_F_MATCHING  (ETX_RIM, NOM, PRENOM, ID_BATCH, IDPERSONNE, DATEJOURNEE)\r\n"
+				+ "        VALUES(:numRim, :nom, :prenom, :idbatch, :idpersonne, :datejournee)"
 				;
 		//String sql = "insert into LAB_F_MATCHING (ETX_RIM, NOM, PRENOM, ID_BATCH, IDPERSONNE) values(:idclient, :nom, :prenom, :idbatch, :idpersonne)";
 	    timer.start(); 
@@ -73,15 +73,27 @@ public class TierRepositoryCustom {
 				;
 		//String sql = "insert into LAB_F_MATCHING (ETX_RIM, NOM, PRENOM, ID_BATCH, IDPERSONNE) values(:idclient, :nom, :prenom, :idbatch, :idpersonne)";
 		//
+		// No matching
+		if (tiers!=null && tiers.size()==1 && "Le batch n'a pas encore débuter !!".equals(tiers.get(0).getMsgerreur())) {			
+			return;
+		}
+		//
+		// No matching
+		if (tiers!=null && tiers.size()==1 && "NOMATCHING".equals(tiers.get(0).getMsgerreur())) {			
+			//			
+			String upsql ="update LAB_F_MATCHING set datejournee=sysdate where id_batch = :numTicket";
+			SqlParameterSource namedParameters = new MapSqlParameterSource()
+					.addValue("numTicket", numTicket);
+			int counts = namedParameterJdbcTemplate.update(upsql,namedParameters);	 
+			saveBatchStatusVA (counts, Long.valueOf(numTicket));
+			return;
+		}
 		if (tiers!=null && tiers.get(0).msgerreur!=null) {
 			saveBatchStatusRJ (Long.valueOf(numTicket),tiers.get(0).msgerreur );
 			return;
 		}
-		// No matching
-		if (tiers!=null && tiers.size()==1 && "NOMATCHING".equals(tiers.get(0).getMsgerreur())) {
-			saveBatchStatusVA (Long.valueOf(numTicket));
-			return;
-		}
+	
+		
 	    timer.start(); 	  
 	    SqlParameterSource[] namedParameters = new SqlParameterSource[tiers.size()];
 	    int i =0;
@@ -108,7 +120,9 @@ public class TierRepositoryCustom {
 	    }	   
 	    int[] counts = namedParameterJdbcTemplate.batchUpdate(upsert_sql,namedParameters);	   
 	    //
-	    saveBatchStatusVA( Arrays.stream(counts).sum(), Long.valueOf(numTicket));
+	    int t = Arrays.stream(counts).sum();
+	    log.debug("updateTiersBatchRep Total "+t);
+	    saveBatchStatusVA( t, Long.valueOf(numTicket));
 	    /* 
 	     * not correct
 	     * if (totalrows != tiers.size()) {
@@ -116,7 +130,7 @@ public class TierRepositoryCustom {
 	    	throw new DAOCallException("Number of updated rows is diffenrent from client number");
 	    }*/
 	    timer.stop();
-	   log.info("updateTiersBatch response= -> Total time in seconds: " + timer.getTotalTimeSeconds());
+	    log.info("updateTiersBatch response= -> Total time in seconds: " + timer.getTotalTimeSeconds());
 		
 	}
 	
@@ -128,11 +142,12 @@ public class TierRepositoryCustom {
 		for (TierBatch.TierBatchReq t : tiers) {
 			if (list==null)list = new ArrayList<LabFMatching>();
 			LabFMatching l = new LabFMatching();
-			l.setIdbatch(String.valueOf(ticket));
+			l.setIdbatch(ticket);
 			l.setNumRim(t.getIdclient());
 			l.setNom(t.getNom());
 			l.setPrenom(t.getPrenom());
-			l.setNumRim(t.getIdclient());			
+			l.setNumRim(t.getIdclient());	
+			l.setDatejournee(new Date() );
 			//l.setIdpersonne(t.get);i
 			list.add(l);
 		}
@@ -182,10 +197,10 @@ public class TierRepositoryCustom {
 		return namedParameters;
 	}
 	
-	private SqlParameterSource saveBatchStatusVA(Long numTicket) {
+	private SqlParameterSource saveBatchStatusVA(Long nbrLigne, Long numTicket) {
 		SqlParameterSource namedParameters = new MapSqlParameterSource()
 				.addValue("datejournee", new Date())
-				.addValue("nombreligne", 0)
+				.addValue("nombreligne", nbrLigne)
 				.addValue("numTicket", numTicket)
 				.addValue("statut", "VA")
 				.addValue("msgerreur", "No matching");

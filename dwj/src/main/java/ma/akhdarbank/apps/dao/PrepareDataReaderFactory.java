@@ -53,10 +53,22 @@ public class PrepareDataReaderFactory {
 	
 	public PagingQueryProvider queryProvider() throws Exception {
 		SqlPagingQueryProviderFactoryBean provider = new SqlPagingQueryProviderFactoryBean();
-		provider.setSelectClause("select IDENTIFIANT,TYPEPERSONNE,NOM,PRENOM,RAISONSOCIALE,ETX_RIM ");
-		provider.setFromClause("from tiers");
+		provider.setSelectClause("select t.IDENTIFIANT,TYPEPERSONNE,t.NOM,t.PRENOM,RAISONSOCIALE,ETX_RIM,\r\n"
+				+ "to_number(to_char(trunc(DATENAISSANCE),'YYYY')) ANNEENAISSANCE ,p.codealpha NATIONALITE,REFERENCEPIECE  ");
+		provider.setFromClause("from tiers t\r\n"
+				+ "join p_pays p on t.nationalite=p.identifiant");
 		//provider.setWhereClause("where status=:status");
 		provider.setSortKey("IDENTIFIANT");
+		provider.setDataSource(dataSource);
+		return provider.getObject();
+	}
+	
+	public PagingQueryProvider queryOcasProvider() throws Exception {
+		SqlPagingQueryProviderFactoryBean provider = new SqlPagingQueryProviderFactoryBean();
+		provider.setSelectClause("select REFOPERATION, NOM, VALEUR ");
+		provider.setFromClause("from W_VIG_TEMP_DATA");
+		//provider.setWhereClause("where status=:status");
+		provider.setSortKey("REFOPERATION");
 		provider.setDataSource(dataSource);
 		return provider.getObject();
 	}

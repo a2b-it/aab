@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>ma.akhdarbank.software</groupId>
 	<artifactId>dwj</artifactId>
-	<version>0.0.5</version>
+	<version>1.0.6</version>
 	<name>dwj</name>
 	<description>Project DWJ with Spring Boot</description>
 	<properties>

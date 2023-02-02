@@ -1,5 +1,7 @@
 package ma.akhdarbank.apps.model;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -55,7 +57,7 @@ public class LabFMatching {
 	private String address;
 	
 	@Column(name = "SCORE")
-	private String score;
+	private Double score;
 	
 	@Column(name = "IDPERSONNE")
 	private String idpersonne;
@@ -67,10 +69,10 @@ public class LabFMatching {
 	private String msgerreur;
 	
 	@Column(name = "DATEJOURNEE")
-	private String datejournee;
+	private Date datejournee;
 	
 	@Column(name = "ID_BATCH")
-	private String idbatch;
+	private Long idbatch;
 	
 	@Column(name = "RAISONSOCIAL")
 	private String raisonsocial;

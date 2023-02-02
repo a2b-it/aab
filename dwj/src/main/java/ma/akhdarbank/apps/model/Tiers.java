@@ -20,7 +20,8 @@ public class Tiers {
 	private Long id;
 	
 	
-	public Tiers(Long id, String typepersonne, String nom, String prenom, String raisonsocial, String numrim) {
+	public Tiers(Long id, String typepersonne, String nom, String prenom, 
+			String raisonsocial, String numrim) {
 		super();
 		this.id = id;
 		this.typepersonne = typepersonne;
@@ -29,7 +30,8 @@ public class Tiers {
 		this.raisonsocial = raisonsocial;
 		this.numrim = numrim;
 	}
-
+	
+	
 	@Column(name = "TYPEPERSONNE")
 	private String typepersonne;
 	
@@ -51,12 +53,37 @@ public class Tiers {
 	@Column(name = "ID_PERSONNE")
 	private String idpersonne;
 	
+	@Column(name = "ANNEENAISSANCE")
+	private String anneenaissance;
+	
+	@Column(name = "NATIONALITE")
+	private String nationnalite;
+	
+	
+	@Column(name = "REFERENCEPIECE")
+	private String referencepiece;
 	
 	public TierBatch.TierBatchReq toDTOObject() {
 		
     	return new TierBatch.TierBatchReq(getNom(),getPrenom(), 
     			getRaisonsocial(),getTypepersonne(),
-    			null,null,null,getNumrim() 
+    			getReferencepiece(),getNationnalite(),getAnneenaissance(),getNumrim() 
     			);
     }
+
+	public Tiers(Long id, String typepersonne, String nom, String prenom, String raisonsocial, String numrim,
+			String idbatch, String idpersonne, String anneenaissance, String nationnalite, String referencepiece) {
+		super();
+		this.id = id;
+		this.typepersonne = typepersonne;
+		this.nom = nom;
+		this.prenom = prenom;
+		this.raisonsocial = raisonsocial;
+		this.numrim = numrim;
+		this.idbatch = idbatch;
+		this.idpersonne = idpersonne;
+		this.anneenaissance = anneenaissance;
+		this.nationnalite = nationnalite;
+		this.referencepiece = referencepiece;
+	}
 }

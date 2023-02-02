@@ -11,6 +11,7 @@ import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -52,19 +53,19 @@ public class ScheduledJob {
 	private final int m = 60 * s ;
 	
 	private final int h = 60 * m;
-	
+
 	
 
-	@Scheduled(fixedDelay = 12 * h)
+	@Scheduled(cron = "${aab.param.sched.get}")
 	public void runGetDataJob() throws Exception {
+		
 		if (isGetDataJobEnabled) {
 			JobParametersBuilder jobBuilder = new JobParametersBuilder();
 			// JobParameters jobParameters = new JobParametersBuilder().addString("time",
 			// LocalDateTime.now().toString()).toJobParameters();
 			jobBuilder.addString("time", LocalDateTime.now().toString());
 			// jobBuilder.addString("login", "login");
-			// jobBuilder.addString("password", "password");
-			
+			// jobBuilder.addString("password", "password");			
 			JobExecution execution = jobLauncher.run(getDataJob, jobBuilder.toJobParameters());
 			// schedule run of other job
 			
@@ -73,7 +74,7 @@ public class ScheduledJob {
 	}
 
 	
-	@Scheduled(fixedDelay = 1 * m)
+	@Scheduled(cron = "${aab.param.sched.prep}")
 	public void runPrepareDataJob() throws Exception {
 		if (isPrepareJobEnabled) {
 			JobParametersBuilder jobBuilder = new JobParametersBuilder();
