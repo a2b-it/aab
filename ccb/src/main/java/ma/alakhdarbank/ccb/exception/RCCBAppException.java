@@ -1,5 +1,6 @@
 package ma.alakhdarbank.ccb.exception;
 
+import java.util.logging.Level;
 
 /**
  * @author a.bouabidi
@@ -12,9 +13,19 @@ public class RCCBAppException extends Exception {
 	 */
 	private static final long serialVersionUID = -8716473631750857442L;
 
+	public Level getLevel() {
+		return level;
+	}
+
+	public void setLevel(Level level) {
+		this.level = level;
+	}
+
 	/**
 	 * 
 	 */
+	
+	private Level level;
 	
 	public RCCBAppException() {
 		super();

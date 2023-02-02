@@ -14,6 +14,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -187,12 +188,10 @@ public class SendDataStepRWP {
 
 		private void writeTempFile(String content, String crypted) throws IOException {
 			String filename = executionContext.getString(FILENAME);
-			Path tempToken = Files
-					.createFile(Paths.get(workfilePath, filename.substring(0, filename.length() - 5) + ".token"));
+			Path tempToken = Paths.get(workfilePath, filename.substring(0, filename.length() - 5) + ".token");
 			Files.write(tempToken, getTokenValue().getBytes(StandardCharsets.UTF_8));
 
-			Path tempFile = Files
-					.createFile(Paths.get(workfilePath, filename.substring(0, filename.length() - 5) + ".bin"));
+			Path tempFile = Paths.get(workfilePath, filename.substring(0, filename.length() - 5) + ".bin");
 			Files.write(tempFile, crypted.getBytes(StandardCharsets.UTF_8));
 
 		}
@@ -274,7 +273,7 @@ public class SendDataStepRWP {
 
 		@Override
 		public void write(List<? extends String> items) {
-			log.debug("================== write");
+			log.debug("================== write ==================");
 			// ExecutionContext stepContext = this.stepExecution.getExecutionContext();
 			// stepContext.put("auth_token", items.get(0));
 			HashMap<String, String> headers = new HashMap<String, String>();
@@ -286,7 +285,8 @@ public class SendDataStepRWP {
 			String filename = executionContext.getString(FILENAME);
 			try {
 				SimpleDateFormat fa = new SimpleDateFormat("yyyyMMdd");
-				Date datearrete = fa.parse(executionContext.getString(DATEARRETE));
+				Date datearrete = new Date();
+				//@ fa.parse(executionContext.getString(DATEARRETE));
 				SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss");
 
 				headers.put("serviceBAM", "CCB");
@@ -299,7 +299,12 @@ public class SendDataStepRWP {
 				headers.put("password_hash", getPassword());
 				headers.put("token", token);
 				// headers.put("Content-Type","application/octet-stream");
-				apiSendDataImp.send((String) items.get(0), headers);
+				try {
+					apiSendDataImp.send((String) items.get(0), headers);
+				}catch (Exception e) {
+					// TODO: handle exception
+				}
+				
 				serviceLot.updateLotENVOYER(id, new Date());
 				//
 				// Archive file after processing
@@ -314,7 +319,7 @@ public class SendDataStepRWP {
 				} catch (IOException e) {
 					log.error(e.getMessage(), e);
 				}
-			} catch (RCCBAppException | ParseException e) {// make all exception silent
+			} catch (RCCBAppException  e) {// make all exception silent
 				log.error(e.getMessage(), e);
 
 			} finally {
@@ -329,7 +334,7 @@ public class SendDataStepRWP {
 			// JobParameters parameters = executionContext.get
 			this.executionContext = executionContext;
 
-			System.out.println("================== open writer");
+			System.out.println("================== open writer ==================");
 			// this.login =
 			// (executionContext.containsKey(LOGIN))?executionContext.getString(LOGIN):null;
 			// this.password_hash =(executionContext.containsKey(PASSWORD_HASH))?
@@ -349,7 +354,7 @@ public class SendDataStepRWP {
 		@Override
 		public void update(ExecutionContext executionContext) throws ItemStreamException {
 			// TODO Auto-generated method stub
-			System.out.println("================== update writer");
+			System.out.println("================== update writer ==================");
 		}
 
 		@Override
