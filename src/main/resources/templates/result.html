@@ -1,0 +1,19 @@
+<!DOCTYPE HTML>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>Getting Started: Handling Form Submission</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+	<h1>Result</h1>
+    
+     <table border="1">
+    <tr th:each="gr : ${listOfParamConfig}">
+            <td><span th:text="${gr.id}"> Id </span></td>
+            <td><span th:text="${gr.content}"> content </span></td>
+        </tr>
+       </table>
+       
+    <a href="/ws-siob-virement-instantane/config">Submit another message</a>
+</body>
+</html>
